@@ -108,6 +108,8 @@
     <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\VertexColor.shader" />
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\SSBillboard.shader" />
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
+    <None Include="Assets\FinalCurved.shader" />
+    <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
@@ -185,6 +187,8 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+    <None Include="Assets\Toony.shader" />
+    <None Include="Assets\ToonyLit.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

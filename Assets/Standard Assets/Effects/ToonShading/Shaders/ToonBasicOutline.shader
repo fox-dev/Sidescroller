@@ -31,7 +31,7 @@ Shader "Toon/Basic Outline" {
 		float3 norm   = normalize(mul ((float3x3)UNITY_MATRIX_IT_MV, v.normal));
 		float2 offset = TransformViewToProjection(norm.xy);
 
-		o.pos.xy += offset * o.pos.z * _Outline;
+		o.pos.xy += offset  * _Outline;
 		o.color = _OutlineColor;
 		UNITY_TRANSFER_FOG(o,o.pos);
 		return o;
