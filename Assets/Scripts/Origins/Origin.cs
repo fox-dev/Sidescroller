@@ -4,6 +4,7 @@ using System.Collections;
 public class Origin : MonoBehaviour {
 
     public GameObject player;
+    public GameObject origin, origin2;
     Rigidbody rb;
 
     public LayerMask collisionMask;
@@ -80,9 +81,29 @@ public class Origin : MonoBehaviour {
             velocity.y = 0;
         }
 
+        
+
+       
+
+        if (transform.tag == "PlayerOrigin")
+        {
+
+            Vector3 clampedPosition = transform.position;
+            clampedPosition.x = Mathf.Clamp(transform.position.x, origin.transform.position.x, origin2.transform.position.x);
+            if (origin.GetComponent<OriginController>().collisions.climbingSlope || origin2.GetComponent<OriginController>().collisions.climbingSlope)
+            {
+                clampedPosition.y = Mathf.Clamp(transform.position.y, origin.transform.position.y, Mathf.Infinity); //for climbing slopes, to prevent falling through terrain
+            }
+
+            transform.position = clampedPosition;
 
 
+            velocity.x = player.GetComponent<PlayerMovement>().getVelocity().x;
 
+           
+
+
+        }
 
         /*
 

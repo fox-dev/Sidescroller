@@ -21,6 +21,8 @@ public class OriginController : MonoBehaviour
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
+    public GameObject playerModel;
+
     
 
 
@@ -91,6 +93,10 @@ public class OriginController : MonoBehaviour
         }
 
 
+        if(playerModel != null)
+        {
+            playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, collisions.target, 20 * Time.deltaTime); playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, collisions.target, 20 * Time.deltaTime);
+        }
         
 
         transform.Translate(velocity);
@@ -219,7 +225,7 @@ public class OriginController : MonoBehaviour
 
         if (velocity.y <= climbVelocityY)
         {
-            print("HERE");
+            //print("HERE");
             velocity.y = climbVelocityY;
             velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
             collisions.below = true;

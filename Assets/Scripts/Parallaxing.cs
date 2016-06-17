@@ -7,12 +7,17 @@ public class Parallaxing : MonoBehaviour {
     public Transform[] backgrounds;
     private float[] parallaxScales;
     public float smoothing = 1f;
+    float commonY;
 
-    [Header("Between 0 - 1")]
-    public float speedFactor, x, y;
+    [Header("Between 0 - 6")]
+    public float speedMultiplier;
+    private float speedFactor;
+
+
 
     private Transform cam;
     private Vector3 prevCamPos;
+    private Vector3 prevCam;
 
     void Awake()
     {
@@ -26,6 +31,7 @@ public class Parallaxing : MonoBehaviour {
         origin2 = GameObject.FindGameObjectWithTag("Origin2");
         //The previous frame that had the current frame's camera pos
         prevCamPos = cam.position;
+        prevCam = new Vector3(cam.position.x, cam.position.y, cam.position.z);
         parallaxScales = new float[backgrounds.Length];
 
         //assign corresponding parallaxScales
@@ -37,10 +43,11 @@ public class Parallaxing : MonoBehaviour {
 
         parallaxScales[4] = parallaxScales[0];
 
-        
 
-        parallaxScales[2] = backgrounds[2].position.z * -4f;
-        parallaxScales[1] = backgrounds[1].position.z * -2f;
+
+
+        //parallaxScales[2] = backgrounds[2].position.z * -4f;
+        //parallaxScales[1] = backgrounds[1].position.z * -2f;
     }
 	
    
@@ -52,35 +59,60 @@ public class Parallaxing : MonoBehaviour {
         //for each background
         for (int i = 0; i < backgrounds.Length; i++)
         {
+            if (i == 0) //Foreground
+            {
+                speedFactor = speedMultiplier * 4;
+            }
+            if (i == 3)//Frontground
+            {
+                speedFactor = speedMultiplier * -3;
+            }
+            if (i == 1) //background
+            {
+                speedFactor = speedMultiplier * 3/5;
+            }
+            if (i == 2) //background2
+            {
+                speedFactor = speedMultiplier * -1/5;
+            }
+            if (i == 4) //platforms
+            {
+                speedFactor = speedMultiplier * 5;
+            }
+       
+
+
+
+
             //the parallax is the opposite of the camera movement b/c prev frame multiplied by the scale
-            //float parallax = (prevCamPos.x - cam.position.x) * parallaxScales[i];
-            Vector3 parallax = (prevCamPos - cam.position) * (parallaxScales[i] / (smoothing));
-            //parallax = parallax + new Vector3(0.2f, 0, 0);
+            Vector3 parallax = ((prevCamPos - cam.position) + new Vector3(speedFactor, 0, 0 )) * (parallaxScales[i]);
+   
 
             //Set a target x position which is the current position plus the parallax
-            //float backgroundTargetPosX = backgrounds[i].position.x + parallax;
-            Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x - speedFactor + parallax.x , backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
-            if(i == 2)
+            Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
+
+            if(i == 4)
             {
-                backgroundTargetPos = new Vector3(backgrounds[i].position.x - 0.3f + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
+                //backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y, backgrounds[i].position.z);
             }
 
-            if (i == 5)
-            {
-                backgroundTargetPos = new Vector3(backgrounds[i].position.x - 0.3f + parallax.x, backgrounds[i].position.y, backgrounds[i].position.z);
-            }
 
 
             //create a target pos which is the background's current pos with it's target x position
             //Vector3 backgroundTargetPos = new Vector3(backgroundTargetPosX, backgrounds[i].position.y, backgrounds[i].position.z);
 
             //fade between current pos and the target pos using lerp
-            //backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
-            backgrounds[i].position = backgroundTargetPos;
+            backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
         }
+
+
+
+
 
         //set prevCamPos to the camera's position at the end of the frame
         prevCamPos = cam.position;
+      
+
 
     }
 }

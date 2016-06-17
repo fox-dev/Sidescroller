@@ -13,18 +13,20 @@ public class CameraScript : MonoBehaviour {
         desc = -5f;
         climb = 20f;
         current = flat; //starting position
-        transform.position = new Vector3(transform.position.x, current, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, current, transform.localPosition.z);
             
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        
         transform.localPosition = new Vector3(transform.localPosition.x, current, transform.localPosition.z);
         if (origin2.GetComponent<OriginController>().collisions.descendingSlope)
         {
             current = Mathf.Lerp(current, desc, Time.deltaTime * 0.7f);
             if (origin.GetComponent<OriginController>().collisions.descendingSlope)
             {
+                print("down");
                 //transform.localPosition = new Vector3(transform.localPosition.x, desc, transform.localPosition.z);
                 transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, desc, transform.localPosition.z), Time.deltaTime * 10f);
 
@@ -41,6 +43,7 @@ public class CameraScript : MonoBehaviour {
 
             }
         }
+        /*
         else
         {
             current = Mathf.Lerp(current, flat, Time.deltaTime * 0.5f);
@@ -50,6 +53,9 @@ public class CameraScript : MonoBehaviour {
                 transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, flat, transform.localPosition.z), Time.deltaTime * 10f);
             }
         }
+        */
+        
+       
 	
 	}
 }

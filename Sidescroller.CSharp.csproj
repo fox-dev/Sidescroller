@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\BoundaryHandler.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
     <Compile Include="Assets\Scripts\DestroyMe.cs" />
+    <Compile Include="Assets\Scripts\EndlessRoad.cs" />
     <Compile Include="Assets\Scripts\Enemy\Boom.cs" />
     <Compile Include="Assets\Scripts\Enemy\BossExplosion.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy Projectiles\Fireball.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Assets\Scripts\Enemy\StatusIndicator.cs" />
     <Compile Include="Assets\Scripts\ExitBounds.cs" />
     <Compile Include="Assets\Scripts\Explosion.cs" />
+    <Compile Include="Assets\Scripts\Follow.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\ObstacleBounds.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\RepeatTheRoad.cs" />
     <Compile Include="Assets\Scripts\RoadManager.cs" />
     <Compile Include="Assets\Scripts\WeaponScript\Buddy.cs" />
     <Compile Include="Assets\Scripts\WeaponScript\Crosshair.cs" />
