@@ -56,9 +56,9 @@ public class ShootFireBall : MonoBehaviour {
         {
             velocityCompensation = 0;
         }
-      
 
-      //  print(velocityCompensation);
+        velocityCompensation = 0;
+        //  print(velocityCompensation);
 
         rb = GetComponent<Rigidbody>();
 

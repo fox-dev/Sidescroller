@@ -26,7 +26,6 @@ public class RepeatTheRoad : MonoBehaviour
 
         if (!onScreen && (origin.transform.position.x > (lastBuilding.transform.position.x + 10f)))
         {
-            //print(origin.transform.position.x + "        " + lastBuilding.transform.position.x);
 
             if (transform.gameObject.tag == "Platform")
             {

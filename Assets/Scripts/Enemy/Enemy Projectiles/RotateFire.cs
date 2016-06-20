@@ -95,11 +95,11 @@ public class RotateFire : MonoBehaviour
             //transform.rotation = lookRotation * Quaternion.Euler(0, -179, 0);
             if(shootDirection == Quaternion.Euler(0, 90, 0))
             {
-                rb.AddForce(transform.forward * (speed + 15), ForceMode.Impulse);
+                //rb.AddForce(transform.forward * (speed + 15), ForceMode.Impulse);
             }
             else
             {
-                rb.AddForce(transform.forward * (speed + 0), ForceMode.Impulse);
+               // rb.AddForce(transform.forward * (speed + 0), ForceMode.Impulse);
             }
            
             //transform.parent.parent = null;

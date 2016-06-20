@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour {
 
     float gravity;
     float jumpVelocity;
-    Vector3 velocity;
+    Vector3 velocity, groundedVelocity;
     float velocityXSmoothing;
 
     PlayerController controller;
@@ -66,13 +66,15 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
+        groundedVelocity = velocity;
+        groundedVelocity.y = 0;
 
-        
 
-       
+
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
+
         }
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -80,6 +82,7 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below)
         {
             velocity.y = jumpVelocity;
+
         }
 
 
@@ -128,7 +131,8 @@ public class PlayerMovement : MonoBehaviour {
                 
                 maxed_Up = true;
                 //velocity = Vector3.zero;
-                moveSpd = 15;
+                //moveSpd = 15f;
+                moveSpd = GameManager.gm.moveSpeed;
                 //velocity = new Vector3(moveSpd, velocity.y, 0);
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin2.transform.position.x, transform.position.y, transform.position.z), 10 * Time.deltaTime);
 
@@ -197,5 +201,10 @@ public class PlayerMovement : MonoBehaviour {
     public Vector3 getVelocity()
     {
         return velocity;
+    }
+
+    public Vector3 getGroundedVelocity()
+    {
+        return groundedVelocity;
     }
 }

@@ -17,7 +17,7 @@ public class Parallaxing : MonoBehaviour {
 
     private Transform cam;
     private Vector3 prevCamPos;
-    private Vector3 prevCam;
+    private Vector3 prevCam , prevCamLocal;
 
     void Awake()
     {
@@ -31,6 +31,7 @@ public class Parallaxing : MonoBehaviour {
         origin2 = GameObject.FindGameObjectWithTag("Origin2");
         //The previous frame that had the current frame's camera pos
         prevCamPos = cam.position;
+        prevCamLocal = cam.localPosition;
         prevCam = new Vector3(cam.position.x, cam.position.y, cam.position.z);
         parallaxScales = new float[backgrounds.Length];
 
@@ -73,11 +74,14 @@ public class Parallaxing : MonoBehaviour {
             }
             if (i == 2) //background2
             {
-                speedFactor = speedMultiplier * -1/5;
+                //speed at 15
+                //speedFactor = speedMultiplier * -1/5; 
+                speedFactor = speedMultiplier * 0.05f;
             }
             if (i == 4) //platforms
             {
-                speedFactor = speedMultiplier * 5;
+                speedFactor = speedMultiplier * 0.8f;
+
             }
        
 
@@ -86,6 +90,9 @@ public class Parallaxing : MonoBehaviour {
 
             //the parallax is the opposite of the camera movement b/c prev frame multiplied by the scale
             Vector3 parallax = ((prevCamPos - cam.position) + new Vector3(speedFactor, 0, 0 )) * (parallaxScales[i]);
+
+            
+           
    
 
             //Set a target x position which is the current position plus the parallax
@@ -93,7 +100,8 @@ public class Parallaxing : MonoBehaviour {
 
             if(i == 4)
             {
-                //backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y, backgrounds[i].position.z);
+                backgroundTargetPos = new Vector3(backgrounds[i].localPosition.x + parallax.x/100f, backgrounds[i].localPosition.y, backgrounds[i].localPosition.z);
+                //print(backgrounds[i].localPosition.x);
             }
 
 
@@ -102,7 +110,18 @@ public class Parallaxing : MonoBehaviour {
             //Vector3 backgroundTargetPos = new Vector3(backgroundTargetPosX, backgrounds[i].position.y, backgrounds[i].position.z);
 
             //fade between current pos and the target pos using lerp
-            backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
+            if (i == 4)
+            {
+               // backgrounds[i].localPosition = Vector3.Lerp(backgrounds[i].localPosition, backgroundTargetPos, smoothing * Time.deltaTime);
+                backgrounds[i].localPosition = backgroundTargetPos;
+
+
+            }
+            else
+            {
+                backgrounds[i].position = Vector3.Lerp(backgrounds[i].position, backgroundTargetPos, smoothing * Time.deltaTime);
+            }
+            
         }
 
 
@@ -111,8 +130,11 @@ public class Parallaxing : MonoBehaviour {
 
         //set prevCamPos to the camera's position at the end of the frame
         prevCamPos = cam.position;
+        prevCamLocal = cam.localPosition;
       
 
 
     }
+
+   
 }

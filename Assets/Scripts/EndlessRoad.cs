@@ -28,7 +28,6 @@ public class EndlessRoad : MonoBehaviour
     void Update()
     {
         //startPos = new Vector3(transform.localPosition.x, transform.parent.transform.position.y - 20f, transform.localPosition.z);
-        transform.rotation = rotation.transform.rotation;
 
         if (entered)
         {

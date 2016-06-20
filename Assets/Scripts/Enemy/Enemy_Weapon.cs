@@ -22,10 +22,13 @@ public class Enemy_Weapon : MonoBehaviour
     [SerializeField]
     private float shootRotation;
 
+    private GameObject origin;
+
 
     // Use this for initialization
     void Awake()
     {
+        origin = GameObject.FindGameObjectWithTag("ESM");
         enemy = transform.parent.GetComponent<Enemy>();
 
         nextBullet = 0f;
@@ -50,7 +53,14 @@ public class Enemy_Weapon : MonoBehaviour
             
             nextBullet = Time.time + timeBetweenBullets;
 
-            fireBullets();
+            if (transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy2"))
+            {
+                fireSingleShot();
+            }
+            else
+            {
+                fireBullets();
+            }
 
             /*
             List<GameObject> spray = new List<GameObject>();
@@ -118,10 +128,15 @@ public class Enemy_Weapon : MonoBehaviour
             shootRotation += rotateInterval;
 
         }
-
+        bullet.transform.parent = origin.transform;
         bullet.SetActive(true);
 
-        
+        foreach (Transform child in bullet.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+        }
+
+
         GameObject bullet2 = ObjectPool.current.getPooledObject(projectile);
 
         if (bullet2 == null) return;
@@ -139,8 +154,13 @@ public class Enemy_Weapon : MonoBehaviour
             shootRotation += rotateInterval;
 
         }
-
+        bullet2.transform.parent = origin.transform;
         bullet2.SetActive(true);
+
+        foreach (Transform child in bullet2.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+        }
 
         GameObject bullet3 = ObjectPool.current.getPooledObject(projectile);
 
@@ -159,8 +179,13 @@ public class Enemy_Weapon : MonoBehaviour
             shootRotation += rotateInterval;
 
         }
-
+        bullet3.transform.parent = origin.transform;
         bullet3.SetActive(true);
+
+        foreach (Transform child in bullet3.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+        }
 
         GameObject bullet4 = ObjectPool.current.getPooledObject(projectile);
 
@@ -179,9 +204,33 @@ public class Enemy_Weapon : MonoBehaviour
             shootRotation += rotateInterval;
 
         }
-
+        bullet4.transform.parent = origin.transform;
         bullet4.SetActive(true);
-        
+
+        foreach (Transform child in bullet4.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+        }
+
+    }
+
+    public void fireSingleShot()
+    {
+        GameObject bullet = ObjectPool.current.getPooledObject(projectile);
+
+        if (bullet == null) return;
+
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
+       
+        bullet.transform.parent = origin.transform;
+        bullet.SetActive(true);
+
+        foreach (Transform child in bullet.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+        }
+
     }
 
     public  void Shoot()
@@ -198,6 +247,8 @@ public class Enemy_Weapon : MonoBehaviour
     {
         shootRotation = 0;
     }
+
+
 
     
 

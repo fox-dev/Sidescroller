@@ -21,7 +21,7 @@ public class OriginController : MonoBehaviour
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
-    public GameObject playerModel;
+    public GameObject model, trueModel;
 
     
 
@@ -93,9 +93,9 @@ public class OriginController : MonoBehaviour
         }
 
 
-        if(playerModel != null)
+        if(model != null && trueModel != null)
         {
-            playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, collisions.target, 20 * Time.deltaTime); playerModel.transform.rotation = Quaternion.Lerp(playerModel.transform.rotation, collisions.target, 20 * Time.deltaTime);
+            model.transform.rotation = trueModel.transform.rotation;
         }
         
 

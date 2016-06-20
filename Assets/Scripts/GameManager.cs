@@ -5,12 +5,17 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager gm;
 
+    
+    public float moveSpeed;
+
     void Start()
     {
         if(gm == null)
         {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
         }
+
+        moveSpeed = 0f;
         
 
     }
@@ -32,6 +37,7 @@ public class GameManager : MonoBehaviour {
         }
  
     }
+
 
 
 

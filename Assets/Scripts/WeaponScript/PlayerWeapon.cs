@@ -5,6 +5,7 @@ public class PlayerWeapon : MonoBehaviour {
 
     public float timeBetweenBullets = 0.15f;
     public GameObject projectile;
+    private GameObject origin;
 
     float nextBullet; //when next can be fired
 
@@ -14,7 +15,8 @@ public class PlayerWeapon : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         nextBullet = 0f;
-	}
+        origin = GameObject.FindGameObjectWithTag("Origin");
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -32,6 +34,7 @@ public class PlayerWeapon : MonoBehaviour {
             bullet.transform.position = transform.position;
             bullet.transform.rotation = transform.rotation;
 
+            bullet.transform.parent = origin.transform;
             bullet.SetActive(true);
 
             foreach (Transform child in bullet.transform)

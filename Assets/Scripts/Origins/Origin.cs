@@ -79,6 +79,7 @@ public class Origin : MonoBehaviour {
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
+
         }
 
         
@@ -98,11 +99,29 @@ public class Origin : MonoBehaviour {
             transform.position = clampedPosition;
 
 
-            velocity.x = player.GetComponent<PlayerMovement>().getVelocity().x;
+            velocity = player.GetComponent<PlayerMovement>().getGroundedVelocity();
 
-           
+            if(transform.position.x > player.transform.position.x)
+            {
+                velocity.x-=5;
+                velocity.y = -20f;
+            }
+            else if (transform.position.x < player.transform.position.x)
+            {
+                velocity.y = -20f;
+                velocity.x+=5;
+            }
+            else
+            {
+                velocity.y = -20f;
+                velocity = player.GetComponent<PlayerMovement>().getGroundedVelocity();
+            }
+            moveSpd = player.GetComponent<PlayerMovement>().moveSpd;
 
-
+        }
+        else
+        {
+            moveSpd = GameManager.gm.moveSpeed;
         }
 
         /*
