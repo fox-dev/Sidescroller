@@ -3,10 +3,14 @@ using System.Collections;
 
 public class EnemySpawnManager : MonoBehaviour {
 
+    public static EnemySpawnManager current;
+
     public int maxEnemies = 1;
     public int maxBosses = 1;
-    int currentEnemies = 0;
-    int currentBosses = 0;
+
+    public int totalEnemiesSpawned = 0;
+    public static int currentEnemies = 0;
+    public static int currentBosses = 0;
 
     public GameObject enemy;
     public GameObject boss;
@@ -22,6 +26,20 @@ public class EnemySpawnManager : MonoBehaviour {
 
 
     GameObject player, originMid;
+
+    public bool spawnEnemies, spawnBoss;
+
+    private bool occupied; //for IEnumerator
+
+    public static Enemy bossEnemy;
+
+    void Awake()
+    {
+        current = this;
+        spawnEnemies = true;
+        spawnBoss = false;
+    }
+
 
     // Use this for initialization
     void Start () {
@@ -57,36 +75,85 @@ public class EnemySpawnManager : MonoBehaviour {
 
     void Spawn()
     {
-        if(currentEnemies < maxEnemies)
-        {
-            int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-            GameObject temp = Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
-            temp.GetComponent<EnemyAI>().assignPath(path);
 
-            if (temp.tag != "Boss" && !temp.name.Contains("Boss_Enemy2"))
+        if (spawnEnemies)
+        {
+            if (currentEnemies < maxEnemies)
             {
-                temp.transform.parent = transform;
+                int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+                //GameObject temp = Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
+                GameObject temp = EnemyObjectPool.current.getPooledObject(enemy);
+                temp.transform.position = spawnPoints[spawnPointIndex].position;
+                temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
+                if (temp == null) return;
+
+                temp.GetComponent<EnemyAI>().assignPath(path);
+                temp.SetActive(true);
+
+                /*
+                if (temp.tag != "Boss" && !temp.name.Contains("Boss_Enemy2"))
+                {
+                    temp.transform.parent = transform;
+
+                }
+                */
+                currentEnemies++;
+                totalEnemiesSpawned++;
 
             }
-            currentEnemies++;
-   
         }
 
+        if(spawnBoss)
+        {
+            if (!occupied && spawnBoss)
+            {
+                StartCoroutine(prepareForBoss());
+            }
+            
+        }
+
+    }
+
+
+
+    IEnumerator prepareForBoss()
+    {
+        occupied = true;
+        print("INCOMING BOSS");
+        BossUI.current.bossGuiAnim.SetBool("Normal", false);
+        BossUI.current.bossGuiAnim.SetBool("Warning", true);
+
+   
+        yield return new WaitForSeconds(3);
         if (currentBosses < maxBosses)
         {
             int spawnPointIndex = Random.Range(0, spawnPoints.Length);
             GameObject temp = Instantiate(boss, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
+
+            /*
+            GameObject temp = EnemyObjectPool.current.getPooledObject(boss);
+            temp.transform.position = spawnPoints[spawnPointIndex].position;
+            temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
+            */
+
             temp.GetComponent<EnemyAI>().assignPath(path2);
-            
-           
+            temp.SetActive(true);
+
+
             if (temp.name.Contains("Boss_Enemy2"))
             {
                 temp.transform.parent = transform;
-                
-            }
-            currentBosses++;
-        }
 
+            }
+       
+            BossUI.current.boss = temp.GetComponent<Enemy>();
+            GameManager.gm.state = GameManager.gameState.bossFight;
+            BossUI.current.bossGuiAnim.SetBool("Warning", false);
+            BossUI.current.bossGuiAnim.SetBool("ShowBossHealth", true);
+            currentBosses++;
+            totalEnemiesSpawned++;
+        }
+        spawnBoss = occupied = false;
     }
 
     void OnDrawGizmos()

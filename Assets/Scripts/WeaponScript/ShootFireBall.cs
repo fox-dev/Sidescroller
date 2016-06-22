@@ -165,8 +165,10 @@ public class ShootFireBall : MonoBehaviour {
 
             hitEffect.SetActive(true);
 
+            
             transform.position = Vector3.zero;
             rb.velocity = Vector3.zero;
+            transform.gameObject.SetActive(false);
 
             if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {

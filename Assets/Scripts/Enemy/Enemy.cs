@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
     public class EnemyStats
     {
         public int maxHealth = 100;
+        public int awardPoints = 100;
 
         private bool _alive;
         public bool alive
@@ -44,6 +45,16 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    void OnEnable()
+    {
+        stats.Init();
+
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
+        }
+    }
+
     public void DamageEnemy(int damage)
     {
         stats.curHealth -= damage;
@@ -63,6 +74,7 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
+                stats.alive = stats.curHealth > 0;
                 Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
                 GameManager.KillEnemy(this);
             }

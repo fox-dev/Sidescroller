@@ -39,6 +39,7 @@ public class PlayerWeapon : MonoBehaviour {
 
             foreach (Transform child in bullet.transform)
             {
+                child.gameObject.SetActive(true);
                 child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 100, ForceMode.Impulse);
             }
 

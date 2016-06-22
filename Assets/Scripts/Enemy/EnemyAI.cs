@@ -9,21 +9,19 @@ public class EnemyAI : MonoBehaviour {
     GameObject player, origin;
     public Transform[] path;
 
-    
-    
     int currentPoint = 0;
     float proxyDist = 1.0f;
 
     Vector3 vel;
-    
+
 
     float moveSpd = 0.000001f;
     public float flySpd;
 
     private bool occupied, phase2;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Awake() {
         enemy = this.GetComponent<Enemy>();
         weapon = this.GetComponentInChildren<Enemy_Weapon>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -40,6 +38,8 @@ public class EnemyAI : MonoBehaviour {
         }
 
     }
+
+   
 	
 	// Update is called once per frame
 	void Update () {
@@ -121,11 +121,6 @@ public class EnemyAI : MonoBehaviour {
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin.transform.position.x + 10, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
             }
         }
-       
-
-
-
-
     }
 
     public void assignPath(Transform[] t)
@@ -201,6 +196,12 @@ public class EnemyAI : MonoBehaviour {
             phase2 = false;
         }
 
+    }
+
+    void OnDisable()
+    {
+        path = null;
+        currentPoint = 0;
     }
 
 

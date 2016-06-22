@@ -37,6 +37,10 @@ public class StatusIndicator : MonoBehaviour {
         {
             healthBarRect.gameObject.GetComponent<Image>().color = Color.red;
         }
+        else
+        {
+            healthBarRect.gameObject.GetComponent<Image>().color = Color.green;
+        }
 
         if(healthText != null)
         {
@@ -44,5 +48,7 @@ public class StatusIndicator : MonoBehaviour {
         }
         
     }
+
+   
 
 }

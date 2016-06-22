@@ -53,7 +53,7 @@ public class Enemy_Weapon : MonoBehaviour
             
             nextBullet = Time.time + timeBetweenBullets;
 
-            if (transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy2"))
+            if (transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1"))
             {
                 fireSingleShot();
             }
