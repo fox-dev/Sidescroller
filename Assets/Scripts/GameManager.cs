@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     {
         normalPlay, //Simple spawning of enemies, no bosses
         bossFight, //Currently in bossFight
+        waiting //For any transitions into normal gameplay
     }
 
     public gameState state;
@@ -61,12 +62,7 @@ public class GameManager : MonoBehaviour {
             BossUI.current.bossGuiAnim.SetBool("Normal", true);
             score += enemy.stats.awardPoints;
 
-            EnemySpawnManager.current.totalEnemiesSpawned = 0;
-            EnemySpawnManager.current.spawnEnemies = true;
-
-
-
-
+            GameManager.gm.state = gameState.waiting;
 
         }
         else

@@ -76,7 +76,7 @@ public class EnemySpawnManager : MonoBehaviour {
     void Spawn()
     {
 
-        if (spawnEnemies)
+        if (spawnEnemies && GameManager.gm.state == GameManager.gameState.normalPlay)
         {
             if (currentEnemies < maxEnemies)
             {
@@ -103,13 +103,21 @@ public class EnemySpawnManager : MonoBehaviour {
             }
         }
 
-        if(spawnBoss)
+        if(spawnBoss && GameManager.gm.state != GameManager.gameState.bossFight)
         {
             if (!occupied && spawnBoss)
             {
                 StartCoroutine(prepareForBoss());
             }
             
+        }
+
+        if (GameManager.gm.state == GameManager.gameState.waiting)
+        {
+            if (!occupied)
+            {
+                StartCoroutine(startNextWave());
+            }
         }
 
     }
@@ -154,6 +162,16 @@ public class EnemySpawnManager : MonoBehaviour {
             totalEnemiesSpawned++;
         }
         spawnBoss = occupied = false;
+    }
+
+    IEnumerator startNextWave()
+    {
+        occupied = true;
+        yield return new WaitForSeconds(5f);
+        totalEnemiesSpawned = 0;
+        spawnEnemies = true;
+        GameManager.gm.state = GameManager.gameState.normalPlay;
+        occupied = false;
     }
 
     void OnDrawGizmos()
