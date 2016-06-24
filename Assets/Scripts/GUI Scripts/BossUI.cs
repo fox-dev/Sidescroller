@@ -30,13 +30,14 @@ public class BossUI : MonoBehaviour {
 
         if (GameManager.gm.state == GameManager.gameState.bossFight)
         {
-
+         
             SetHealth(boss.stats.curHealth, boss.stats.maxHealth);
 
         }
         else
         {
-            bossHealth.fillAmount = 1; //refill
+         
+            //bossHealth.fillAmount = 1; //refill
         }
 
     }

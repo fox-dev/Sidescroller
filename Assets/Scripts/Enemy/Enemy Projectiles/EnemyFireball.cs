@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Fireball : MonoBehaviour
+public class EnemyFireball : MonoBehaviour
 {
     public LayerMask collisionMask;
 
@@ -19,6 +19,9 @@ public class Fireball : MonoBehaviour
 
     Quaternion shootDirection;
 
+    [SerializeField]
+    public bool targetPlayer;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -27,12 +30,13 @@ public class Fireball : MonoBehaviour
 
         //Vector2 point = new Vector2(transform.position.x, player.transform.position.y);
         Vector2 point = new Vector2(transform.position.x, transform.position.y - 10);
+        
 
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
 
         //print(transform.position.y + " " + player.transform.position.y);
 
-        print(transform.position);
+        //print(transform.position);
 
 
         ///////////////////
@@ -63,7 +67,13 @@ public class Fireball : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         //Vector2 point = new Vector2(transform.position.x, player.transform.position.y);
+
         Vector2 point = new Vector2(transform.position.x, transform.position.y - 10);
+        if (targetPlayer)
+        {
+            point = new Vector2(player.transform.position.x, player.transform.position.y);
+        }
+       
 
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
 
@@ -84,55 +94,49 @@ public class Fireball : MonoBehaviour
 
 
             transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
-            rb.AddForce(transform.forward * speed, ForceMode.Impulse);
+            //rb.AddForce(transform.forward * speed, ForceMode.Impulse);
 
 
 
         }
-        /*
-        if (this.gameObject.tag == "FireBallUp")
+
+        if (transform.parent.name.Contains("Enemy_Fireballx3"))
         {
+            if (this.gameObject.tag == "FireBallUp")
+            {
 
-            point = new Vector2(transform.position.x, player.transform.position.y);
-            currentPos = new Vector2(transform.position.x, transform.position.y);
+                point = new Vector2(player.transform.position.x, player.transform.position.y);
+                currentPos = new Vector2(transform.position.x, transform.position.y);
 
-            directionUp = (point - currentPos).normalized;
+                directionUp = (point - currentPos).normalized;
 
-            Quaternion lookRotation = Quaternion.LookRotation(directionUp);
-            transform.rotation = lookRotation * Quaternion.Euler(0, 3, 0);
+                Quaternion lookRotation = Quaternion.LookRotation(directionUp);
+                transform.rotation = lookRotation * Quaternion.Euler(3, 0, 0);
 
-            rb.AddForce(transform.forward * speed, ForceMode.Impulse);
+              
 
 
+            }
+
+            if (this.gameObject.tag == "FireBallDown")
+            {
+
+                point = new Vector2(player.transform.position.x, player.transform.position.y);
+                currentPos = new Vector2(transform.position.x, transform.position.y);
+
+                directionUp = (point - currentPos).normalized;
+
+                Quaternion lookRotation = Quaternion.LookRotation(directionUp);
+                transform.rotation = lookRotation * Quaternion.Euler(-3, 0, 0);
+
+                
+
+
+            }
         }
-
-        if (this.gameObject.tag == "FireBallDown")
-        {
-
-            point = new Vector2(transform.position.x, player.transform.position.y);
-            currentPos = new Vector2(transform.position.x, transform.position.y);
-
-            directionUp = (point - currentPos).normalized;
-
-            Quaternion lookRotation = Quaternion.LookRotation(directionUp);
-            transform.rotation = lookRotation * Quaternion.Euler(0, -3, 0);
-
-            rb.AddForce(transform.forward * speed, ForceMode.Impulse);
-
-
-        }
-        */
+        
     }
    
-
-    // Update is called once per frame
-    void Update()
-    {
-       //print(LayerMask.NameToLayer("Player"));
-        //transform.Translate(player.GetComponent<PlayerMovement>().getVelocity() * Time.deltaTime);
-        //GetComponent<Rigidbody>().AddForce(transform.forward * 300 * Time.deltaTime);
-
-    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -141,7 +145,7 @@ public class Fireball : MonoBehaviour
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                Instantiate(Resources.Load("explosion"), other.transform.position, Quaternion.identity);
+                
 
                 //other.transform.gameObject.SetActive(false);
 
@@ -157,16 +161,19 @@ public class Fireball : MonoBehaviour
 
                 rb.velocity = Vector3.zero;
                 transform.position = Vector3.zero;
-                //Destroy(gameObject, 3f);
+                transform.gameObject.SetActive(false);
             }
 
+            /*
             if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
             {
 
                 rb.velocity = Vector3.zero;
                 transform.position = Vector3.zero;
+                transform.gameObject.SetActive(false);
                 // Destroy(gameObject, 3f);
             }
+            */
         }
        
         

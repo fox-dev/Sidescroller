@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Used for the FollowRoad on PlayerOrigin, for the moving platforms
 public class EndlessRoad : MonoBehaviour
 {
 

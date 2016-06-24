@@ -53,8 +53,9 @@ public class Player : MonoBehaviour {
 
     public void DamagePlayer(int damage)
     {
-        if (!blinking)
+        if (!blinking && !transform.GetComponent<PlayerMovement>().jumping)
         {
+            Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
             stats.curHealth -= damage;
             StartCoroutine(blink(blinkDuration, 0.2f));
         }
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour {
        
         while (duration > 0f && stats.curHealth > 0)
         {
-            print(duration);
+           // print(duration);
             duration -= Time.fixedDeltaTime;
 
 

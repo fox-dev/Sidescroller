@@ -58,7 +58,8 @@ public class GameManager : MonoBehaviour {
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentBosses--;
             EnemySpawnManager.bossEnemy = null;
-            BossUI.current.bossGuiAnim.SetBool("ShowBossHealth", false);
+            BossUI.current.bossGuiAnim.enabled = true;
+            BossUI.current.bossGuiAnim.SetBool("BossFightReady", false);
             BossUI.current.bossGuiAnim.SetBool("Normal", true);
             score += enemy.stats.awardPoints;
 

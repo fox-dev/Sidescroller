@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour {
     public bool maxed_Up, maxed_Down = false;
     public bool moveUp = false;
     bool desc;
+
+    public bool jumping;
    
 
 
@@ -69,8 +71,10 @@ public class PlayerMovement : MonoBehaviour {
         groundedVelocity = velocity;
         groundedVelocity.y = 0;
 
+        jumping = !controller.collisions.below; //if in the air, jumping is true
 
 
+        
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;

@@ -19,6 +19,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public Transform[] path;
     public Transform[] path2;
+    public Transform[] path3;
 
     public float speed = 5f;
     public float drawDis = 1f;
@@ -136,7 +137,17 @@ public class EnemySpawnManager : MonoBehaviour {
         if (currentBosses < maxBosses)
         {
             int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-            GameObject temp = Instantiate(boss, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
+
+            GameObject temp;
+
+            if (boss.name.Contains("Boss_Enemy3"))
+            {
+                temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
+            }
+            else
+            {
+                temp = Instantiate(boss, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
+            }
 
             /*
             GameObject temp = EnemyObjectPool.current.getPooledObject(boss);
@@ -144,11 +155,16 @@ public class EnemySpawnManager : MonoBehaviour {
             temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
             */
 
+            
             temp.GetComponent<EnemyAI>().assignPath(path2);
+            if (temp.name.Contains("Boss_Enemy3"))
+            {
+                temp.GetComponent<EnemyAI>().assignPath(path3);
+            }
             temp.SetActive(true);
 
 
-            if (temp.name.Contains("Boss_Enemy2"))
+            if (temp.name.Contains("Boss_Enemy2") || temp.name.Contains("Boss_Enemy3"))
             {
                 temp.transform.parent = transform;
 
@@ -161,6 +177,10 @@ public class EnemySpawnManager : MonoBehaviour {
             currentBosses++;
             totalEnemiesSpawned++;
         }
+        yield return new WaitForSeconds(2f);
+        BossUI.current.bossGuiAnim.enabled = false;
+        BossUI.current.bossGuiAnim.SetBool("ShowBossHealth", false);
+        BossUI.current.bossGuiAnim.SetBool("BossFightReady", true);
         spawnBoss = occupied = false;
     }
 
@@ -193,6 +213,16 @@ public class EnemySpawnManager : MonoBehaviour {
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(path2[x].position, drawDis);
+            }
+        }
+
+        for (int x = 0; x < path3.Length; x++)
+        {
+
+            if (path3[x] != null)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(path3[x].position, drawDis);
             }
         }
     }

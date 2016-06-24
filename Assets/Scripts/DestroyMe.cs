@@ -23,7 +23,7 @@ public class DestroyMe : MonoBehaviour {
             child.GetComponent<Rigidbody>().velocity = Vector3.zero;
             child.GetComponent<ParticleSystem>().Clear();
             child.GetComponent<ParticleSystem>().Play();
-
+            child.gameObject.SetActive(true);
         }
         
        // print(transform.position);

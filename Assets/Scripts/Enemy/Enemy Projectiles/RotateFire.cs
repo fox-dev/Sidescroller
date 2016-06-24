@@ -90,31 +90,11 @@ public class RotateFire : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(directionMid);
             transform.rotation = lookRotation * shootDirection;
 
-         
-
-            //transform.rotation = lookRotation * Quaternion.Euler(0, -179, 0);
-            if(shootDirection == Quaternion.Euler(0, 90, 0))
-            {
-                //rb.AddForce(transform.forward * (speed + 15), ForceMode.Impulse);
-            }
-            else
-            {
-               // rb.AddForce(transform.forward * (speed + 0), ForceMode.Impulse);
-            }
-           
-            //transform.parent.parent = null;
-
 
 
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        //transform.Translate(player.GetComponent<PlayerMovement>().getVelocity() * Time.deltaTime);
-        //GetComponent<Rigidbody>().AddForce(transform.forward * 300 * Time.deltaTime);
-
-    }
+ 
 
     void OnTriggerEnter(Collider other)
     {
@@ -122,7 +102,7 @@ public class RotateFire : MonoBehaviour
         
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Instantiate(Resources.Load("explosion"), other.transform.position, Quaternion.identity);
+            
 
             Player player = other.GetComponent<Player>();
             if(player != null)
@@ -133,22 +113,23 @@ public class RotateFire : MonoBehaviour
             {
                 Debug.Log("Player object does not exist");
             }
-           
-
-            
+          
           
             rb.velocity = Vector3.zero;
             transform.position = Vector3.zero;
+            transform.gameObject.SetActive(false);
             //Destroy(gameObject, 3f);
         }
-        
+        /*
         if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
         {
 
             rb.velocity = Vector3.zero;
             transform.position = Vector3.zero;
+            transform.gameObject.SetActive(false);
             //Destroy(gameObject, 3f);
         }
+        */
         
     }
 
