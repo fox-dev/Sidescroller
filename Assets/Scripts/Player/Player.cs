@@ -31,7 +31,10 @@ public class Player : MonoBehaviour {
 
     public PlayerStats stats = new PlayerStats();
 
+    [SerializeField]
     public GameObject model;
+    [SerializeField]
+    public GameObject weapon;
     public float blinkDuration;
 
     [SerializeField]
@@ -40,6 +43,8 @@ public class Player : MonoBehaviour {
     [Header("Optional: ")]
     [SerializeField]
     private StatusIndicator statusIndicator;
+
+    
 
     void Start()
     {

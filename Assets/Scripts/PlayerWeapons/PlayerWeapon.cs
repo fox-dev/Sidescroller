@@ -9,7 +9,7 @@ public class PlayerWeapon : MonoBehaviour {
 
     float nextBullet; //when next can be fired
 
-    GameObject temp;
+    private bool fire;
 
 
     // Use this for initialization
@@ -21,12 +21,11 @@ public class PlayerWeapon : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if ((Input.GetMouseButton(0) || Input.GetKey("e")) && nextBullet < Time.time)
+      
+        if ((Input.GetMouseButton(0) || Input.GetKey("e") || fire) && nextBullet < Time.time)
         {
          
             nextBullet = Time.time + timeBetweenBullets;
-
-            //temp = Instantiate(projectile, transform.position, Quaternion.Euler(new Vector3(0, 90, 0))) as GameObject;
 
             GameObject bullet = ObjectPool.current.getPooledObject(projectile);
 
@@ -47,10 +46,18 @@ public class PlayerWeapon : MonoBehaviour {
 
 
         }
-        
 
-        //temp.GetComponent<LineRenderer>().SetPosition(0, temp.transform.parent.position);
+    }
 
+    //For onscreen button usage//
+    public void firePressed()
+    {
+        fire = true;
+    }
+
+    public void fireReleased()
+    {
+        fire = false;
     }
 
 

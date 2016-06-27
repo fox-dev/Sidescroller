@@ -169,7 +169,8 @@ public class EnemySpawnManager : MonoBehaviour {
                 temp.transform.parent = transform;
 
             }
-       
+
+            bossEnemy = temp.GetComponent<Enemy>();
             BossUI.current.boss = temp.GetComponent<Enemy>();
             GameManager.gm.state = GameManager.gameState.bossFight;
             BossUI.current.bossGuiAnim.SetBool("Warning", false);

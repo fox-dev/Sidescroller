@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class shootBullet : MonoBehaviour {
+public class Beam : MonoBehaviour {
     GameObject player;
     GameObject crosshair;
 
@@ -32,8 +32,12 @@ public class shootBullet : MonoBehaviour {
 
     void OnEnable()
     {
-        growingWidth2 = 5f;
+        //growingWidth2 = 5f;
+        //growingWidth = 0.025f;
+
         growingWidth = 0.025f;
+        growingWidth2 = 3f;
+
         GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
         GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
 
@@ -50,6 +54,10 @@ public class shootBullet : MonoBehaviour {
         shootRay.direction = (point - currentPos);
  
         gunLine.SetPosition(0, transform.position);
+
+        Vector3 direction = direction = (point - currentPos).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
 
         if (Physics.SphereCast(shootRay, 0.5f, out shootHit, range, shootableMask))
         {
@@ -88,14 +96,25 @@ public class shootBullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //To keep the particleShot effect on the player
+        transform.position = player.transform.position;
 
+        /*
+        //This block of code has laser continuously track and move line-renderer//
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        float z_plane_of_2d_game = 0;
+        Vector3 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+        Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
+        Vector2 currentPos = new Vector2(player.transform.position.x, player.transform.position.y);
+        shootRay.origin = player.transform.position;
+        shootRay.direction = (point - currentPos);
+        //////////////////////////////////////////////////////////////////////
+        */
         if (Physics.SphereCast(shootRay, 0.5f, out shootHit, range, shootableMask))
         {
             //hit an enemy goes here
             gunLine.SetPosition(1, shootHit.point);
             GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
-
-           
 
         }
         else
@@ -105,10 +124,11 @@ public class shootBullet : MonoBehaviour {
 
 
         gunLine.SetPosition(0, player.transform.position);
-      // gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-        
+       // gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+
         ////
 
+        /*
         if (growingWidth <= maxWidth - 1f)
         {
             growingWidth = Mathf.Lerp(growingWidth, maxWidth, Time.deltaTime * 10f);
@@ -119,8 +139,20 @@ public class shootBullet : MonoBehaviour {
             growingWidth2 = Mathf.Lerp(growingWidth2, 0, Time.deltaTime * 10f);
             gunLine.SetWidth(startWidth, growingWidth2);
         }
+        */
 
-	}
+        if (growingWidth <= maxWidth - 1f)
+        {
+            growingWidth = Mathf.Lerp(growingWidth, maxWidth, Time.deltaTime * 10f);
+            gunLine.SetWidth(growingWidth, growingWidth);
+        }
+        else if (growingWidth >= maxWidth - 1f)
+        {
+            growingWidth2 = Mathf.Lerp(growingWidth2, 0, Time.deltaTime * 10f);
+            gunLine.SetWidth(growingWidth2, growingWidth2);
+        }
+
+    }
 
 
 }

@@ -12,9 +12,17 @@ public class Crosshair : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray;
         float z_plane_of_2d_game = 0;
-        Vector3 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+        Vector3 pos_at_z_0 = Vector3.zero;
+        if (Input.touchCount > 0)
+        {
+            ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+        }
+        
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         transform.position = pos_at_z_0;
         if (Input.GetMouseButton(0))
         {
@@ -34,4 +42,9 @@ public class Crosshair : MonoBehaviour {
     {
         return this.transform;
     }
+
+    
+ 
+       
+    
 }

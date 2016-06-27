@@ -57,19 +57,16 @@ public class Laserbeam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
+        //This block of code has laser continuously track and move line-renderer//
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         float z_plane_of_2d_game = 0;
         Vector3 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
         Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
-
         Vector2 currentPos = new Vector2(player.transform.position.x, player.transform.position.y);
-
-
         shootRay.origin = player.transform.position;
         shootRay.direction = (point - currentPos);
-        
+        //////////////////////////////////////////////////////////////////////
+
         shootHit = Physics.SphereCastAll(shootRay, 25f, range, shootableMask);
         
         foreach(RaycastHit hit in shootHit)

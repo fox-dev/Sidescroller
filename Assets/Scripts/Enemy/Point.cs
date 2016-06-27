@@ -42,10 +42,10 @@ public class Point : MonoBehaviour
         targetRot = Quaternion.Euler(0, 0, AngleDeg + moveSpeed);
 
         
-        current = Quaternion.Slerp(current, targetRot, 3f * Time.deltaTime);
+        current = Quaternion.Slerp(current, targetRot, 2f * Time.deltaTime);
         this.transform.rotation = current;
 
-        print(AngleDeg);
+        //print(AngleDeg);
        
 
 

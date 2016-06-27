@@ -154,8 +154,9 @@ public class EnemyAI : MonoBehaviour {
             transform.GetComponentInChildren<Point>().enabled = true;
             ani.SetBool("Attacking", true);
             ani.SetBool("Running", false);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             weapon.setFireRate(0.12f);
+            //weapon.setFireRate(6);
             weapon.Shoot();
         }
         else //currentPoint == 3
