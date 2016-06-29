@@ -66,8 +66,7 @@ public class Enemy : MonoBehaviour {
     {
         
         stats.curHealth -= damage;
-        StartCoroutine(damageFlash());
-       // print(stats.alive + " " + stats.curHealth);
+         // print(stats.alive + " " + stats.curHealth);
         if(stats.curHealth <= 0 && stats.alive)
         {
             if(this.tag == "Boss")
@@ -91,8 +90,10 @@ public class Enemy : MonoBehaviour {
             {
                 renderer.material.color = defaultColor;
             }
-
-
+        }
+        else if(stats.curHealth > 0 && stats.alive)
+        {
+            StartCoroutine(damageFlash());
         }
 
         if (statusIndicator != null)

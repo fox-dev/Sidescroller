@@ -32,15 +32,12 @@ public class OriginMovement : MonoBehaviour {
     public float moveSpd = 0f;
 
     float gravity;
-    float jumpVelocity;
+    
     public Vector3 velocity;
     float velocityXSmoothing;
 
     OriginController controller;
     private Transform myTransform;
-
-    float speed_Up = 30;
-    float speed_Down = 30;
    
     public LayerMask shootableMask;
 
@@ -53,7 +50,7 @@ public class OriginMovement : MonoBehaviour {
 
         //gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         gravity = -300f;
-        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+       
         velocity = player.GetComponent<PlayerMovement>().groundedVelocity;
 
 
@@ -149,32 +146,6 @@ public class OriginMovement : MonoBehaviour {
         velocity.y += gravity * Time.deltaTime;
         
         controller.Move(velocity * Time.deltaTime);
-
-    }
-
-    void VerticalCollisions()
-    {
-
-
-        if (Physics.Raycast(shootRay, out shootHit, 100, shootableMask))
-        {
-            print(shootHit.point);
-            //hit an enemy goes here
-
-
-            if (shootHit.transform.gameObject.layer != LayerMask.NameToLayer("Road"))
-            {
-                shootHit.transform.gameObject.SetActive(false);
-            }
-            print("HITHITHIT");
-
-            Debug.DrawLine(new Vector3(transform.position.x, transform.position.y + 1.015f, 0) , new Vector3(shootHit.point.x, shootHit.point.y, shootHit.point.z), Color.red);
-        }
-        else
-        {
-            Debug.DrawLine(new Vector3(transform.position.x, transform.position.y + 1.015f, 0), new Vector3(shootHit.point.x, shootHit.point.y, shootHit.point.z), Color.red);
-        }
-
 
     }
 

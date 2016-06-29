@@ -273,7 +273,7 @@ public class EnemyAI : MonoBehaviour {
         ani.SetBool("fire", true);
         
 
-        Vector3 dir = path[currentPoint].position - transform.position;
+       // Vector3 dir = path[currentPoint].position - transform.position;
 
         yield return new WaitForSeconds(10f);
         weapon.Shoot();
