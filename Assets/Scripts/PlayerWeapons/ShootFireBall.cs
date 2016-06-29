@@ -3,7 +3,11 @@ using System.Collections;
 
 public class ShootFireBall : MonoBehaviour {
 
-    public int damage;
+    
+    public static int damage = 25;
+
+    [SerializeField]
+    private int viewDamage = damage;
 
     public GameObject particle;
 
@@ -28,6 +32,7 @@ public class ShootFireBall : MonoBehaviour {
     }               
     void OnEnable()
     {
+        viewDamage = damage;
         player = GameObject.FindGameObjectWithTag("Player");
         crosshair = GameObject.FindGameObjectWithTag("Crosshair");
         originMid = GameObject.FindGameObjectWithTag("OriginMid");

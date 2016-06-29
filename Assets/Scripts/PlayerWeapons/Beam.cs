@@ -8,7 +8,11 @@ public class Beam : MonoBehaviour {
     public GameObject particle;
 
     public float range = 10f;
-    public int damage = 50;
+
+    public static int damage = 30;
+    [SerializeField]
+    private int viewDamage = damage;
+
     public float maxWidth = 7f;
     public float startWidth = 0.025f;
     public float growingWidth = 0.025f;
@@ -32,6 +36,7 @@ public class Beam : MonoBehaviour {
 
     void OnEnable()
     {
+        viewDamage = damage;
         //growingWidth2 = 5f;
         //growingWidth = 0.025f;
 

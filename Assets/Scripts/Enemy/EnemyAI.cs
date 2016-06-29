@@ -7,6 +7,7 @@ public class EnemyAI : MonoBehaviour {
     Enemy_Weapon weapon;
 
     GameObject player, origin;
+    private Transform myTransform;
     public Transform[] path; 
 
     int currentPoint = 0;
@@ -26,6 +27,9 @@ public class EnemyAI : MonoBehaviour {
         weapon = this.GetComponentInChildren<Enemy_Weapon>();
         player = GameObject.FindGameObjectWithTag("Player");
         origin = GameObject.FindGameObjectWithTag("Origin");
+       
+
+        myTransform = transform;
 
         if (player == null)
         {
@@ -35,6 +39,11 @@ public class EnemyAI : MonoBehaviour {
         if (origin == null)
         {
             print("Origin object not found");
+        }
+
+        if (gameObject.name.Contains("Boss_Enemy1"))
+        {
+            vel = origin.GetComponent<OriginMovement>().velocity;
         }
 
     }
@@ -47,8 +56,8 @@ public class EnemyAI : MonoBehaviour {
 
         if (gameObject.tag == "Fly_By")
         {
-            Vector3 dir = path[currentPoint].position - transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
             if (dir.magnitude <= proxyDist)
             {
                 currentPoint++;
@@ -64,8 +73,8 @@ public class EnemyAI : MonoBehaviour {
 
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy3"))
         {
-            Vector3 dir = path[currentPoint].position - transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
 
             if (dir.magnitude <= proxyDist && !occupied && !phase2)
             {
@@ -77,8 +86,8 @@ public class EnemyAI : MonoBehaviour {
 
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy2"))
         {
-            Vector3 dir = path[currentPoint].position - transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
 
             if (dir.magnitude <= proxyDist && !occupied && !phase2)
             {
@@ -109,9 +118,9 @@ public class EnemyAI : MonoBehaviour {
         }
         else if(enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy1"))
         {
-            vel = origin.GetComponent<Origin>().getVelocity();
+            
             vel = new Vector3(vel.x, 0, 0);
-            transform.Translate(vel * Time.deltaTime);
+            myTransform.Translate(vel * Time.deltaTime);
 
             
             moveSpd = Mathf.Lerp(moveSpd, 100f, Time.deltaTime);
@@ -119,20 +128,20 @@ public class EnemyAI : MonoBehaviour {
             if (player.GetComponent<PlayerMovement>().maxed_Up)
             {
                 //print("HERERERERE1");
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin.transform.position.x + 68, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin.transform.position.x + 68, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
 
             }
 
-            else if (player.transform.position.x >= transform.position.x && !player.GetComponent<PlayerMovement>().maxed_Up)
+            else if (player.transform.position.x >= myTransform.position.x && !player.GetComponent<PlayerMovement>().maxed_Up)
             {
                 //print("HERERERERE2");
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x + 20, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(player.transform.position.x + 20, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
 
             }
             else
             {
                 //print("HERERERERE3");
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin.transform.position.x + 10, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin.transform.position.x + 10, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
             }
         }
         
@@ -165,7 +174,7 @@ public class EnemyAI : MonoBehaviour {
             ani.SetBool("Focusing", true);
             ani.SetBool("Running", false);
             yield return new WaitForSeconds(0.5f);
-            weapon.setFireRate(0.05f);
+            weapon.setFireRate(0.01f);
             weapon.switchToAltFire(); //Switch to true
             weapon.Shoot(); //Start firing
         }

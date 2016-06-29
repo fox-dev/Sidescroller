@@ -66,11 +66,11 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            print("Currently invulnerable");
+            //print("Currently invulnerable");
         }
         
 
-        print(stats.alive + " " + stats.curHealth);
+        //print(stats.alive + " " + stats.curHealth);
 
         if (stats.curHealth <= 0 && stats.alive)
         {

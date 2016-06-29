@@ -14,12 +14,16 @@ public class Point : MonoBehaviour
 
     Quaternion current;
 
+    private Transform myTransform;
+
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         targetRot = Quaternion.Euler(0, 0, 0);
         current = this.transform.rotation;
+
+        myTransform = transform;
 
 
     }
@@ -43,7 +47,7 @@ public class Point : MonoBehaviour
 
         
         current = Quaternion.Slerp(current, targetRot, 2f * Time.deltaTime);
-        this.transform.rotation = current;
+        myTransform.rotation = current;
 
         //print(AngleDeg);
        

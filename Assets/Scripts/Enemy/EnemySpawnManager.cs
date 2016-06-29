@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemySpawnManager : MonoBehaviour {
 
     public static EnemySpawnManager current;
+    private Transform myTransform;
 
     public int maxEnemies = 1;
     public int maxBosses = 1;
@@ -39,6 +40,7 @@ public class EnemySpawnManager : MonoBehaviour {
         current = this;
         spawnEnemies = true;
         spawnBoss = false;
+        myTransform = transform;
     }
 
 
@@ -68,7 +70,7 @@ public class EnemySpawnManager : MonoBehaviour {
         //transform.Translate(originMid.GetComponent<Origin>().getVelocity() * Time.deltaTime);
 
         //Since position is not being tracked by raycasting, like the Player is, this line is needed to maintain the Y-position;
-        transform.position = new Vector3(originMid.transform.position.x, originMid.transform.position.y, 0);
+        myTransform.position = new Vector3(originMid.transform.position.x, originMid.transform.position.y, 0);
 
 
 
@@ -113,7 +115,7 @@ public class EnemySpawnManager : MonoBehaviour {
             
         }
 
-        if (GameManager.gm.state == GameManager.gameState.waiting)
+        if (GameManager.gm.state == GameManager.gameState.setup)
         {
             if (!occupied)
             {
@@ -191,7 +193,6 @@ public class EnemySpawnManager : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         totalEnemiesSpawned = 0;
         spawnEnemies = true;
-        GameManager.gm.state = GameManager.gameState.normalPlay;
         occupied = false;
     }
 

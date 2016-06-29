@@ -22,29 +22,35 @@ public class PlayerWeapon : MonoBehaviour {
 	void Update () {
 
       
-        if ((Input.GetMouseButton(0) || Input.GetKey("e") || fire) && nextBullet < Time.time)
+        if ( ( Input.GetKey("e") || fire) && nextBullet < Time.time)
         {
          
             nextBullet = Time.time + timeBetweenBullets;
 
-            GameObject bullet = ObjectPool.current.getPooledObject(projectile);
+            Rigidbody bullet = ObjectPool.current.getPooledObjectRigidBody(projectile);
 
             if (bullet == null) return;
+
             bullet.transform.position = transform.position;
             bullet.transform.rotation = transform.rotation;
 
             bullet.transform.parent = origin.transform;
-            bullet.SetActive(true);
+            bullet.gameObject.SetActive(true);
 
             foreach (Transform child in bullet.transform)
             {
+              
                 child.gameObject.SetActive(true);
                 child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 100, ForceMode.Impulse);
+               
             }
+        }
 
-
-
-
+        if (Input.GetKey("a")){
+            projectile = GameManager.gm.weaponList[0];
+        }
+        if (Input.GetKey("s")){
+            projectile = GameManager.gm.weaponList[1];
         }
 
     }

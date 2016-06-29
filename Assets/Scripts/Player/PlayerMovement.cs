@@ -13,10 +13,11 @@ public class PlayerMovement : MonoBehaviour
 
     float gravity;
     float jumpVelocity;
-    Vector3 velocity, groundedVelocity;
+    public Vector3 velocity, groundedVelocity;
     float velocityXSmoothing;
 
     PlayerController controller;
+    private Transform myTransform;
 
 
     public float speed_Up = 40f;
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     public bool jumping = false;
 
     private bool moveForward = false;
+    private bool jump = false;
 
 
 
@@ -37,38 +39,13 @@ public class PlayerMovement : MonoBehaviour
     {
         desc = false;
         controller = GetComponent<PlayerController>();
+        myTransform = transform;
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
     }
 
-    /*
-	// Update is called once per frame
-	void Update () {
-
-        if (Input.GetKey("w"))
-        {
-            transform.Translate((Vector3.forward) * moveSpd * Time.deltaTime);
-        }
-        if (Input.GetKey("a"))
-        {
-            transform.Translate((Vector3.left) * moveSpd * Time.deltaTime);
-        }
-        if (Input.GetKey("s"))
-        {
-            transform.Translate((Vector3.back) * moveSpd * Time.deltaTime);
-        }
-        if (Input.GetKey("d"))
-        {
-            transform.Translate((Vector3.right) * moveSpd * Time.deltaTime);
-        }
-
-        // transform.Translate((Vector3.left) * moveSpd * Time.deltaTime);
-
-    }
-
-    */
 
     void Update()
     {
@@ -87,8 +64,9 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below)
+        if ((jump || Input.GetKeyDown(KeyCode.Space)) && controller.collisions.below)
         {
+            jump = false;
             velocity.y = jumpVelocity;
 
         }
@@ -106,19 +84,19 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        Vector3 clampedPosition = transform.position;
-        clampedPosition.x = Mathf.Clamp(transform.position.x, origin.transform.position.x, origin2.transform.position.x);
+        Vector3 clampedPosition = myTransform.position;
+        clampedPosition.x = Mathf.Clamp(myTransform.position.x, origin.transform.position.x, origin2.transform.position.x);
         if (origin.GetComponent<OriginController>().collisions.climbingSlope || origin2.GetComponent<OriginController>().collisions.climbingSlope)
         {
-            clampedPosition.y = Mathf.Clamp(transform.position.y, origin.transform.position.y, Mathf.Infinity); //for climbing slopes, to prevent falling through terrain
+            clampedPosition.y = Mathf.Clamp(myTransform.position.y, origin.transform.position.y, Mathf.Infinity); //for climbing slopes, to prevent falling through terrain
         }
 
-        transform.position = clampedPosition;
+        myTransform.position = clampedPosition;
 
 
 
-        Vector3 dir1 = origin.transform.position - transform.position;
-        Vector3 dir2 = origin2.transform.position - transform.position;
+        Vector3 dir1 = origin.transform.position - myTransform.position;
+        Vector3 dir2 = origin2.transform.position - myTransform.position;
 
         if (Input.GetKey("d") || moveForward)
         {
@@ -134,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
             }
 
-            if (transform.position.x >= origin2.transform.position.x)
+            if (myTransform.position.x >= origin2.transform.position.x)
             {
 
                 maxed_Up = true;
@@ -142,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
                 //moveSpd = 15f;
                 moveSpd = GameManager.gm.moveSpeed;
                 //velocity = new Vector3(moveSpd, velocity.y, 0);
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin2.transform.position.x, transform.position.y, transform.position.z), 10 * Time.deltaTime);
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin2.transform.position.x, myTransform.position.y, myTransform.position.z), 10 * Time.deltaTime);
 
             }
 
@@ -164,14 +142,14 @@ public class PlayerMovement : MonoBehaviour
 
             }
 
-            if (transform.position.x <= origin.transform.position.x)
+            if (myTransform.position.x <= origin.transform.position.x)
             {
 
                 maxed_Down = true;
 
 
                 velocity = new Vector3(moveSpd, velocity.y, 0);
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(origin.transform.position.x, transform.position.y, transform.position.z), 100 * Time.deltaTime);
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin.transform.position.x, myTransform.position.y, myTransform.position.z), 100 * Time.deltaTime);
             }
 
 
@@ -226,4 +204,16 @@ public class PlayerMovement : MonoBehaviour
     {
         moveForward = false;
     }
+
+    public void jumpPressed()
+    {
+        jump = true;
+        
+    }
+
+    public void jumpReleased()
+    {
+        jump = false;
+    }
+    ///////////////////////////
 }

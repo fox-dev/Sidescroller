@@ -12,7 +12,7 @@ public class ObjectPool : MonoBehaviour {
     public List<GameObject> listOfObjects;
     public float[] pooledAmounts;
 
-    List<GameObject> objectsForPool;
+    List<Rigidbody> objectsForPool;
     void Awake()
     {
         current = this;
@@ -23,7 +23,7 @@ public class ObjectPool : MonoBehaviour {
 
     void Start()
     {
-        objectsForPool = new List<GameObject>();
+        objectsForPool = new List<Rigidbody>();
         for(int i = 0; i < listOfObjects.Count; i++)
         {
             objectForPool = listOfObjects[i];
@@ -31,7 +31,7 @@ public class ObjectPool : MonoBehaviour {
             {
                 GameObject obj = Instantiate(objectForPool) as GameObject;
                 obj.SetActive(false);
-                objectsForPool.Add(obj);
+                objectsForPool.Add(obj.GetComponent<Rigidbody>());
             }
         }
         
@@ -42,7 +42,26 @@ public class ObjectPool : MonoBehaviour {
     {
         for (int x = 0; x < objectsForPool.Count; x++)
         {
-            if ((objectsForPool[x].name.Contains(o.name)) && !objectsForPool[x].activeInHierarchy)
+            if ((objectsForPool[x].name.Contains(o.name)) && !objectsForPool[x].gameObject.activeInHierarchy)
+            {
+                return objectsForPool[x].gameObject;
+            }
+        }
+        if (growth)
+        {
+            GameObject obj = Instantiate(o) as GameObject;
+            obj.SetActive(false);
+            objectsForPool.Add(obj.GetComponent<Rigidbody>());
+            return obj;
+        }
+        return null;
+    }
+
+    public Rigidbody getPooledObjectRigidBody(GameObject o)
+    {
+        for (int x = 0; x < objectsForPool.Count; x++)
+        {
+            if ((objectsForPool[x].name.Contains(o.name)) && !objectsForPool[x].gameObject.activeInHierarchy)
             {
                 return objectsForPool[x];
             }
@@ -51,8 +70,8 @@ public class ObjectPool : MonoBehaviour {
         {
             GameObject obj = Instantiate(o) as GameObject;
             obj.SetActive(false);
-            objectsForPool.Add(obj);
-            return obj;
+            objectsForPool.Add(obj.GetComponent<Rigidbody>());
+            return obj.GetComponent<Rigidbody>();
         }
         return null;
     }

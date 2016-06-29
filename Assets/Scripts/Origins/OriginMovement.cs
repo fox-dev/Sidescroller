@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Origin : MonoBehaviour {
+public class OriginMovement : MonoBehaviour {
 
     public GameObject player;
     public GameObject origin, origin2;
     Rigidbody rb;
 
     public LayerMask collisionMask;
-
-    public float displacement;
 
     public int horizontalRayCount = 4;
     public int verticalRayCount = 4;
@@ -23,7 +21,6 @@ public class Origin : MonoBehaviour {
     Vector2 currentPos;
     Vector2 targetPos;
 
-
     Ray shootRay;
     RaycastHit shootHit;
 
@@ -36,13 +33,12 @@ public class Origin : MonoBehaviour {
 
     float gravity;
     float jumpVelocity;
-    Vector3 velocity;
+    public Vector3 velocity;
     float velocityXSmoothing;
 
     OriginController controller;
+    private Transform myTransform;
 
-   
-    float max_displacement = 50;
     float speed_Up = 30;
     float speed_Down = 30;
    
@@ -53,11 +49,12 @@ public class Origin : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
 
         controller = GetComponent<OriginController>();
+        myTransform = transform;
 
         //gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         gravity = -300f;
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-        print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
+        velocity = player.GetComponent<PlayerMovement>().groundedVelocity;
 
 
     }
@@ -86,27 +83,27 @@ public class Origin : MonoBehaviour {
 
        
 
-        if (transform.tag == "PlayerOrigin")
+        if (myTransform.tag == "PlayerOrigin")
         {
 
-            Vector3 clampedPosition = transform.position;
-            clampedPosition.x = Mathf.Clamp(transform.position.x, origin.transform.position.x, origin2.transform.position.x);
+            Vector3 clampedPosition = myTransform.position;
+            clampedPosition.x = Mathf.Clamp(myTransform.position.x, origin.transform.position.x, origin2.transform.position.x);
             if (origin.GetComponent<OriginController>().collisions.climbingSlope || origin2.GetComponent<OriginController>().collisions.climbingSlope)
             {
-                clampedPosition.y = Mathf.Clamp(transform.position.y, origin.transform.position.y, Mathf.Infinity); //for climbing slopes, to prevent falling through terrain
+                clampedPosition.y = Mathf.Clamp(myTransform.position.y, origin.transform.position.y, Mathf.Infinity); //for climbing slopes, to prevent falling through terrain
             }
 
-            transform.position = clampedPosition;
+            myTransform.position = clampedPosition;
 
 
-            velocity = player.GetComponent<PlayerMovement>().getGroundedVelocity();
+            //velocity = player.GetComponent<PlayerMovement>().getGroundedVelocity();
 
-            if(transform.position.x > player.transform.position.x)
+            if(myTransform.position.x > player.transform.position.x)
             {
                 velocity.x-=5;
                 velocity.y = -20f;
             }
-            else if (transform.position.x < player.transform.position.x)
+            else if (myTransform.position.x < player.transform.position.x)
             {
                 velocity.y = -20f;
                 velocity.x+=5;
@@ -124,16 +121,7 @@ public class Origin : MonoBehaviour {
             moveSpd = GameManager.gm.moveSpeed;
         }
 
-        /*
 
-        currentPos = new Vector2(transform.position.x, transform.position.y);
-        targetPos = new Vector2(transform.position.x, transform.position.y - 10);
-        shootRay.origin = new Vector3(transform.position.x, transform.position.y + 1.015f, 0);
-        shootRay.direction = (targetPos - currentPos);
-
-        VerticalCollisions();
-
-    */
 
         if (controller.collisions.below)
         {

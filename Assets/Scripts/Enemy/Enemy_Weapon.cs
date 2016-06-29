@@ -6,6 +6,7 @@ public class Enemy_Weapon : MonoBehaviour
 {
     Enemy enemy;
     public float timeBetweenBullets = 0.15f;
+
     public GameObject projectile;
 
     [Header("Altfre Optional, used for Certain Enemies")]
@@ -246,7 +247,7 @@ public class Enemy_Weapon : MonoBehaviour
             child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
         }
 
-
+        /*
 
         GameObject bullet2 = ObjectPool.current.getPooledObject(altFire);
 
@@ -331,6 +332,7 @@ public class Enemy_Weapon : MonoBehaviour
         {
             child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
         }
+        */
 
     }
 
