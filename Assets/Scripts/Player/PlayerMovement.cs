@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        
 
         if ((jump || Input.GetKeyDown(KeyCode.Space)) && controller.collisions.below)
         {
@@ -93,10 +93,6 @@ public class PlayerMovement : MonoBehaviour
 
         myTransform.position = clampedPosition;
 
-
-
-        Vector3 dir1 = origin.transform.position - myTransform.position;
-        Vector3 dir2 = origin2.transform.position - myTransform.position;
 
         if (Input.GetKey("d") || moveForward)
         {

@@ -8,15 +8,15 @@ public class EndlessRoad : MonoBehaviour
     bool entered;
     Vector3 targetPos;
     Vector3 startPos;
-    GameObject player, origin;
 
+
+    private Transform myTransform;
     public GameObject rotation;
 
     // Use this for initialization
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        origin = GameObject.FindGameObjectWithTag("OriginMid");
+        myTransform = transform;
         entered = false;
         startPos = new Vector3(transform.localPosition.x, transform.localPosition.y - 30f, transform.localPosition.z);
         targetPos = new Vector3(transform.localPosition.x, transform.localPosition.y + 10.2f, transform.localPosition.z);
@@ -33,14 +33,14 @@ public class EndlessRoad : MonoBehaviour
         if (entered)
         {
 
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, targetPos.y, transform.localPosition.z), 300 * Time.deltaTime);
+            myTransform.localPosition = Vector3.MoveTowards(myTransform.localPosition, new Vector3(transform.localPosition.x, targetPos.y, transform.localPosition.z), 300 * Time.deltaTime);
 
         }
 
         else
         {
 
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, startPos.y, transform.localPosition.z), 75 * Time.deltaTime);
+            myTransform.localPosition = Vector3.MoveTowards(myTransform.localPosition, new Vector3(transform.localPosition.x, startPos.y, transform.localPosition.z), 75 * Time.deltaTime);
         }
 
     }

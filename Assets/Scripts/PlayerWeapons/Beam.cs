@@ -60,7 +60,7 @@ public class Beam : MonoBehaviour {
  
         gunLine.SetPosition(0, transform.position);
 
-        Vector3 direction = direction = (point - currentPos).normalized;
+        Vector3 direction = (point - currentPos).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
 
@@ -119,7 +119,7 @@ public class Beam : MonoBehaviour {
         {
             //hit an enemy goes here
             gunLine.SetPosition(1, shootHit.point);
-            GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
+         
 
         }
         else

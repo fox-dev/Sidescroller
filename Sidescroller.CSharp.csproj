@@ -122,7 +122,7 @@
     <Compile Include="Assets\Scripts\Enemy\StatusIndicator.cs" />
     <Compile Include="Assets\Scripts\EnemyObjectPool.cs" />
     <Compile Include="Assets\Scripts\Environment\EndlessRoad.cs" />
-    <Compile Include="Assets\Scripts\Environment\Follow.cs" />
+    <Compile Include="Assets\Scripts\Environment\FollowObject.cs" />
     <Compile Include="Assets\Scripts\Environment\Parallaxing.cs" />
     <Compile Include="Assets\Scripts\Environment\Platform.cs" />
     <Compile Include="Assets\Scripts\Environment\RepeatTheRoad.cs" />
@@ -162,7 +162,6 @@
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
     <None Include="Assets\FinalCurved.shader" />
     <None Include="Assets\Glow.shader" />
-    <None Include="Assets\Scripts\MobileBloom.shader" />
     <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

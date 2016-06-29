@@ -3,14 +3,13 @@ using System.Collections;
 
 public class BackgroundInView : MonoBehaviour {
 
-    private Transform cam;
     private GameObject origin;
     public GameObject lastBuilding;
 
 	// Use this for initialization
 	void Start () {
         origin = GameObject.FindGameObjectWithTag("Origin");
-        cam = Camera.main.transform;
+
 	}
 	
 	// Update is called once per frame

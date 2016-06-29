@@ -4,7 +4,7 @@ using System.Collections;
 public class BossExplosion : MonoBehaviour
 {
 
-    private GameObject boss;
+  
 
     public float range = 10f;
     public int damage = 50;
@@ -30,7 +30,7 @@ public class BossExplosion : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        boss = GameObject.FindGameObjectWithTag("Boss");
+       
 
         Vector3 pos_at_z_0 = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
         Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
@@ -40,18 +40,18 @@ public class BossExplosion : MonoBehaviour
 
 
 
-        Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
+   
 
 
 
         shootRay.origin = transform.position;
-        //shootRay.direction = (point - currentPos);
+   
         shootRay.direction = shootDirection * Vector3.forward;
 
 
 
 
-        gunLine.SetPosition(0, transform.position);
+        gunLine.SetPosition(0, transform.position); 
 
 
    
@@ -103,17 +103,17 @@ public class BossExplosion : MonoBehaviour
 
         //Vector3 pos_at_z_0 = crosshair.transform.position;
         Vector3 pos_at_z_0 = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
-        Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
+        
         ////////////////
 
         gunLine = GetComponent<LineRenderer>();
 
-        Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
+   
 
 
 
         shootRay.origin = transform.position;
-        //shootRay.direction = (point - currentPos);
+    
         shootRay.direction = shootDirection * Vector3.forward;
 
         gunLine.SetPosition(0, transform.position);
@@ -157,7 +157,7 @@ public class BossExplosion : MonoBehaviour
         Vector3 pos_at_z_0 = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
         Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
 
-        Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
+     
 
 
         shootRay.origin = transform.position;

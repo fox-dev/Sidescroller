@@ -5,7 +5,7 @@ public class OriginMovement : MonoBehaviour {
 
     public GameObject player;
     public GameObject origin, origin2;
-    Rigidbody rb;
+
 
     public LayerMask collisionMask;
 
@@ -16,7 +16,6 @@ public class OriginMovement : MonoBehaviour {
     float verticalRaySpacing;
 
     const float skinWidth = .015f;
-    BoxCollider collider;
 
     Vector2 currentPos;
     Vector2 targetPos;
@@ -43,7 +42,7 @@ public class OriginMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+   
 
         controller = GetComponent<OriginController>();
         myTransform = transform;

@@ -9,6 +9,7 @@ public class EnemyFireball : MonoBehaviour
 
     public int damage;
 
+
     public float speed;
 
     GameObject player;

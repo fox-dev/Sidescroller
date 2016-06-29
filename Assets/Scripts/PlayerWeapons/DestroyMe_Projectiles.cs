@@ -17,7 +17,7 @@ public class DestroyMe_Projectiles : MonoBehaviour
 
     void OnEnable()
     {
-        Renderer rend = GetComponent<Renderer>();
+        //Renderer rend = GetComponent<Renderer>();
 
         //rend.material.color = new Color(248, 251, 22);
         // print(transform.position);

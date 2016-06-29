@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyLaserBlast : MonoBehaviour
 {
     GameObject player;
-    GameObject crosshair;
+   
 
     public GameObject particle;
 
@@ -30,7 +30,6 @@ public class EnemyLaserBlast : MonoBehaviour
     private bool shrink = false;
     private bool damageEnabled = false;
 
-    Quaternion init;
 
 
     Quaternion lookRotation;
@@ -39,12 +38,12 @@ public class EnemyLaserBlast : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        crosshair = GameObject.FindGameObjectWithTag("Crosshair");
+        
     }
 
     void OnEnable()
     {
-        init = transform.rotation;
+        
 
         growingWidth = 0.025f;
         growingWidth2 = 3f;

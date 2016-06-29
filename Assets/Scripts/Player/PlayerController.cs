@@ -4,7 +4,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public LayerMask collisionMask; 
+    public LayerMask collisionMask;
+    BoxCollider col;
 
     const float skinWidth = .015f;
     public int horizontalRayCount = 4;
@@ -16,7 +17,6 @@ public class PlayerController : MonoBehaviour {
     float horizontalRaySpacing;
     float verticalRaySpacing;
 
-    BoxCollider collider;
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        collider = GetComponent<BoxCollider>();
+        col = GetComponent<BoxCollider>();
         collisions.Start();
         CalculateRaySpacing();
 
@@ -287,7 +287,7 @@ public class PlayerController : MonoBehaviour {
 
     void UpdateRaycastOrigins()
     {
-        BoxCollider bounds = collider;
+        BoxCollider bounds = col;
         bounds.bounds.Expand(skinWidth * -2);
         
 
@@ -299,7 +299,7 @@ public class PlayerController : MonoBehaviour {
 
     void CalculateRaySpacing()
     {
-        BoxCollider bounds = collider;
+        BoxCollider bounds = col;
         bounds.bounds.Expand(skinWidth * -2);
 
         horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);

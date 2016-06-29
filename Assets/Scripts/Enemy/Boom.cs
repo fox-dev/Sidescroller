@@ -5,7 +5,7 @@ public class Boom : MonoBehaviour {
 
   
     public float normal;
-    private GameObject light;
+    private GameObject lightSource;
 
 
     public GameObject projectile;
@@ -25,7 +25,7 @@ public class Boom : MonoBehaviour {
     void Start()
     {
         normal = 0f;
-        light = GameObject.FindGameObjectWithTag("Light");
+        lightSource = GameObject.FindGameObjectWithTag("Light");
 
         nextBullet = 0f;
         shootRotation = 0;
@@ -50,7 +50,7 @@ public class Boom : MonoBehaviour {
     void Update()
     {
         
-        light.GetComponent<Light>().intensity = Mathf.Lerp(light.GetComponent<Light>().intensity, 0, 2 * Time.deltaTime) ;
+        lightSource.GetComponent<Light>().intensity = Mathf.Lerp(lightSource.GetComponent<Light>().intensity, 0, 2 * Time.deltaTime) ;
         if (nextBullet < Time.time && numShots < maxShots) 
         {
             nextBullet = Time.time + timeBetweenBullets;

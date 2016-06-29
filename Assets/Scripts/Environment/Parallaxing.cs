@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Parallaxing : MonoBehaviour {
 
-    GameObject origin, origin2;
     public Transform[] backgrounds;
     private float[] parallaxScales;
     public float smoothing = 1f;
@@ -17,7 +16,7 @@ public class Parallaxing : MonoBehaviour {
 
     private Transform cam;
     private Vector3 prevCamPos;
-    private Vector3 prevCam , prevCamLocal;
+   
 
     void Awake()
     {
@@ -27,12 +26,11 @@ public class Parallaxing : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        origin = GameObject.FindGameObjectWithTag("Origin");
-        origin2 = GameObject.FindGameObjectWithTag("Origin2");
+      
         //The previous frame that had the current frame's camera pos
         prevCamPos = cam.position;
-        prevCamLocal = cam.localPosition;
-        prevCam = new Vector3(cam.position.x, cam.position.y, cam.position.z);
+   
+        
         parallaxScales = new float[backgrounds.Length];
 
         //assign corresponding parallaxScales
@@ -130,7 +128,7 @@ public class Parallaxing : MonoBehaviour {
 
         //set prevCamPos to the camera's position at the end of the frame
         prevCamPos = cam.position;
-        prevCamLocal = cam.localPosition;
+    
       
 
 

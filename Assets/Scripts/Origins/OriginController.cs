@@ -17,7 +17,7 @@ public class OriginController : MonoBehaviour
     float horizontalRaySpacing;
     float verticalRaySpacing;
 
-    BoxCollider collider;
+    BoxCollider col;
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
@@ -68,7 +68,7 @@ public class OriginController : MonoBehaviour
     void Start()
     {
 
-        collider = GetComponent<BoxCollider>();
+        col = GetComponent<BoxCollider>();
         collisions.Start();
         CalculateRaySpacing();
 
@@ -293,7 +293,7 @@ public class OriginController : MonoBehaviour
 
     void UpdateRaycastOrigins()
     {
-        BoxCollider bounds = collider;
+        BoxCollider bounds = col;
         bounds.bounds.Expand(skinWidth * -2);
 
 
@@ -305,7 +305,7 @@ public class OriginController : MonoBehaviour
 
     void CalculateRaySpacing()
     {
-        BoxCollider bounds = collider;
+        BoxCollider bounds = col;
         bounds.bounds.Expand(skinWidth * -2);
 
         horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);

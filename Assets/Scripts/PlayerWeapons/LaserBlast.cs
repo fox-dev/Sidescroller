@@ -70,7 +70,7 @@ public class LaserBlast : MonoBehaviour
 
         gunLine.SetPosition(0, transform.position);
 
-        Vector3 direction = direction = (point - currentPos).normalized;
+        Vector3 direction = (point - currentPos).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
 
