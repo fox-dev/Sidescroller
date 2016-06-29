@@ -110,6 +110,7 @@
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
     <None Include="Assets\FinalCurved.shader" />
     <None Include="Assets\Glow.shader" />
+    <None Include="Assets\Scripts\MobileBloom.shader" />
     <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

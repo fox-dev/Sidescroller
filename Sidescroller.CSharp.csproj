@@ -129,13 +129,17 @@
     <Compile Include="Assets\Scripts\ExitBounds.cs" />
     <Compile Include="Assets\Scripts\Explosion.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\BossUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PlayerWeaponUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ScoreUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\SideGradesPanel.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\UpgradeGUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\WeaponsPanel.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\ObstacleBounds.cs" />
-    <Compile Include="Assets\Scripts\Origins\Origin.cs" />
     <Compile Include="Assets\Scripts\Origins\OriginController.cs" />
+    <Compile Include="Assets\Scripts\Origins\OriginMovement.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
@@ -158,6 +162,7 @@
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
     <None Include="Assets\FinalCurved.shader" />
     <None Include="Assets\Glow.shader" />
+    <None Include="Assets\Scripts\MobileBloom.shader" />
     <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

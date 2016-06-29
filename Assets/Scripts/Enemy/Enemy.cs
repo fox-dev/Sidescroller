@@ -54,19 +54,12 @@ public class Enemy : MonoBehaviour {
     void OnEnable()
     {
         stats.Init();
-        if(GameManager.gm != null)
-        {
-            foreach (Renderer renderer in renderers)
-            {
-                renderer.material.color = defaultColor;
-            }
 
-            if (statusIndicator != null)
-            {
-                statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
-            }
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
         }
-        
+
     }
 
     public void DamageEnemy(int damage)
@@ -94,7 +87,11 @@ public class Enemy : MonoBehaviour {
                 Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
                 GameManager.KillEnemy(this);
             }
-             
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.material.color = defaultColor;
+            }
+
 
         }
 

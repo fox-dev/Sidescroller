@@ -5,7 +5,9 @@ public class Boom : MonoBehaviour {
 
   
     public float normal;
-    
+    private GameObject light;
+
+
     public GameObject projectile;
     public int rotateInterval;
 
@@ -23,7 +25,8 @@ public class Boom : MonoBehaviour {
     void Start()
     {
         normal = 0f;
-       
+        light = GameObject.FindGameObjectWithTag("Light");
+
         nextBullet = 0f;
         shootRotation = 0;
         direction = Quaternion.Euler(shootRotation, 90, 0); //For fireball, rotate along Y-Axis
@@ -47,7 +50,7 @@ public class Boom : MonoBehaviour {
     void Update()
     {
         
-        GetComponent<Light>().GetComponent<Light>().intensity = Mathf.Lerp(GetComponent<Light>().GetComponent<Light>().intensity, 0, 2 * Time.deltaTime) ;
+        light.GetComponent<Light>().intensity = Mathf.Lerp(light.GetComponent<Light>().intensity, 0, 2 * Time.deltaTime) ;
         if (nextBullet < Time.time && numShots < maxShots) 
         {
             nextBullet = Time.time + timeBetweenBullets;

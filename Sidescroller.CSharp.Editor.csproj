@@ -82,6 +82,9 @@
     <Reference Include="UnityEditor.Graphs">
       <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
@@ -140,6 +143,7 @@
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
     <None Include="Assets\FinalCurved.shader" />
     <None Include="Assets\Glow.shader" />
+    <None Include="Assets\Scripts\MobileBloom.shader" />
     <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
