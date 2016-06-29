@@ -40,7 +40,7 @@ public class Crosshair : MonoBehaviour {
         
   
 
-       /*
+       
      
         if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
         {
@@ -50,7 +50,7 @@ public class Crosshair : MonoBehaviour {
 
             myTransform.position = pos_at_z_0;
         }
-        */
+        
         
     }
 

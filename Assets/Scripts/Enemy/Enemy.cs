@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
+    Renderer[] renderers;
+    Color defaultColor;
 
-	[System.Serializable]
+    [System.Serializable]
     public class EnemyStats
     {
         public int maxHealth = 100;
@@ -26,6 +28,7 @@ public class Enemy : MonoBehaviour {
         {
             curHealth = maxHealth;
             alive = true;
+
         }
     }
 
@@ -38,8 +41,11 @@ public class Enemy : MonoBehaviour {
     void Start()
     {
         stats.Init();
+        
+        renderers = GetComponentsInChildren<Renderer>();
+        defaultColor = renderers[0].material.color;
 
-        if(statusIndicator != null)
+        if (statusIndicator != null)
         {
             statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
         }
@@ -48,16 +54,26 @@ public class Enemy : MonoBehaviour {
     void OnEnable()
     {
         stats.Init();
-
-        if (statusIndicator != null)
+        if(GameManager.gm != null)
         {
-            statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.material.color = defaultColor;
+            }
+
+            if (statusIndicator != null)
+            {
+                statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
+            }
         }
+        
     }
 
     public void DamageEnemy(int damage)
     {
+        
         stats.curHealth -= damage;
+        StartCoroutine(damageFlash());
        // print(stats.alive + " " + stats.curHealth);
         if(stats.curHealth <= 0 && stats.alive)
         {
@@ -95,6 +111,19 @@ public class Enemy : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         Instantiate(Resources.Load("explosion2"), transform.position, Quaternion.identity);
         GameManager.KillEnemy(this);
+    }
+
+    IEnumerator damageFlash()
+    {
+        foreach(Renderer renderer in renderers)
+        {
+            renderer.material.color = Color.red;
+        }
+        yield return new WaitForSeconds(0.1f);
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.color = defaultColor;
+        }
     }
 
 

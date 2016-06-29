@@ -16,16 +16,16 @@ public class UpgradeGUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        offScreenPos = panels[1].position;
-        onScreenPos = panels[0].position;
+        offScreenPos = panels[1].localPosition;
+        onScreenPos = panels[0].localPosition;
         activePanel = panels[0];
         inactivePanel = panels[1];
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        activePanel.position = Vector3.Lerp(activePanel.position, onScreenPos, 10f * Time.deltaTime);
-        inactivePanel.position = Vector3.Lerp(inactivePanel.position, offScreenPos, 10f * Time.deltaTime);
+	void FixedUpdate () {
+        activePanel.localPosition = Vector3.Lerp(activePanel.localPosition, onScreenPos, 10f * Time.deltaTime);
+        inactivePanel.localPosition = Vector3.Lerp(inactivePanel.localPosition, offScreenPos, 10f * Time.deltaTime);
     }
 
     public void close()

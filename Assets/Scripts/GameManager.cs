@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
         Application.targetFrameRate = 60;
+
         if(gm == null)
         {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();

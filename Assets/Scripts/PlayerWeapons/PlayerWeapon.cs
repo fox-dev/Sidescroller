@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 
 public class PlayerWeapon : MonoBehaviour {
@@ -46,12 +47,18 @@ public class PlayerWeapon : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey("a")){
-            projectile = GameManager.gm.weaponList[0];
+        if(gameObject.tag != "Buddy")
+        {
+            if (Input.GetKey("a"))
+            {
+                projectile = GameManager.gm.weaponList[0];
+            }
+            if (Input.GetKey("s"))
+            {
+                projectile = GameManager.gm.weaponList[1];
+            }
         }
-        if (Input.GetKey("s")){
-            projectile = GameManager.gm.weaponList[1];
-        }
+        
 
     }
 
