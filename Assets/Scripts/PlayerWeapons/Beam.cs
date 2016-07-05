@@ -115,6 +115,7 @@ public class Beam : MonoBehaviour {
         shootRay.direction = (point - currentPos);
         //////////////////////////////////////////////////////////////////////
         */
+        /*
         if (Physics.SphereCast(shootRay, 0.5f, out shootHit, range, shootableMask))
         {
             //hit an enemy goes here
@@ -126,7 +127,7 @@ public class Beam : MonoBehaviour {
         {
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
         }
-
+        */
 
         gunLine.SetPosition(0, player.transform.position);
        // gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);

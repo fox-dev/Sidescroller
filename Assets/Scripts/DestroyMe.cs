@@ -16,15 +16,20 @@ public class DestroyMe : MonoBehaviour {
     void OnEnable()
     {
         Transform thisTransform = transform;
-        foreach(Transform child in thisTransform)
+
+        if(!thisTransform.name.Contains("Homing"))
         {
-            child.position = transform.position;
-            child.rotation = transform.rotation;
-            child.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            child.GetComponent<ParticleSystem>().Clear();
-            child.GetComponent<ParticleSystem>().Play();
-            child.gameObject.SetActive(true);
+            foreach (Transform child in thisTransform)
+            {
+                child.position = transform.position;
+                child.rotation = transform.rotation;
+                child.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                child.GetComponent<ParticleSystem>().Clear();
+                child.GetComponent<ParticleSystem>().Play();
+                child.gameObject.SetActive(true);
+            }
         }
+       
         
        // print(transform.position);
         StartCoroutine(disable());

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
         setup,//Setup phase (upgrades, etc)
         ready, //state lasts 5 seconds before moving to normalPlay
         normalPlay, //Simple spawning of enemies, no bosses
+        prepareForBoss, //state lasts a bit before transitioning to bossFight
         bossFight, //Currently in bossFight
         waiting //For any transitions into normal gameplay
     }
@@ -50,15 +51,7 @@ public class GameManager : MonoBehaviour {
         {
             state = gameState.normalPlay;
         }
-        if (EnemySpawnManager.current.totalEnemiesSpawned == 10)
-        {
-            EnemySpawnManager.current.spawnEnemies = false;
-            
-        }
-        if(EnemySpawnManager.current.totalEnemiesSpawned == 10 && EnemySpawnManager.currentEnemies == 0)
-        {
-            EnemySpawnManager.current.spawnBoss = true;
-        }
+      
 
         if(state == gameState.ready)
         {
@@ -107,14 +100,16 @@ public class GameManager : MonoBehaviour {
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
         occupied = true;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
         state = gameState.normalPlay;
         occupied = false;
     }
 
     public IEnumerator waitState() //Transitioning after BossFight state into Setup;
     {
+        
         occupied = true;
+        EnemySpawnManager.current.reinit();
         yield return new WaitForSeconds(5f);
         state = gameState.setup;
         occupied = false;

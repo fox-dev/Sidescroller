@@ -18,7 +18,7 @@ public class Crosshair : MonoBehaviour {
 	// Update is called once per frame
     void FixedUpdate()
     {
-        crosshair.transform.rotation = Quaternion.Euler(0, 0, z++);
+        crosshair.transform.rotation = Quaternion.Euler(0, 0, z+=3);
     }
 	void Update () {
         Ray ray;
@@ -37,11 +37,12 @@ public class Crosshair : MonoBehaviour {
 
             }
         }
-        
-  
 
-       
-     
+
+
+
+
+        /*
         if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -50,8 +51,17 @@ public class Crosshair : MonoBehaviour {
 
             myTransform.position = pos_at_z_0;
         }
-        
-        
+        */
+        if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            z_plane_of_2d_game = 0;
+            pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+
+            myTransform.position = pos_at_z_0;
+        }
+
+
     }
 
     bool IsPointerOverGameObject(int fingerId)

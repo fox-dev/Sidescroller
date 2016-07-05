@@ -147,6 +147,7 @@
     <Compile Include="Assets\Scripts\PlayerWeapons\Buddy.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\Crosshair.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\DestroyMe_Projectiles.cs" />
+    <Compile Include="Assets\Scripts\PlayerWeapons\HomingMissile.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\LaserBlast.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\Laserbeam.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\PlayerWeapon.cs" />

@@ -69,17 +69,7 @@ public class Boom : MonoBehaviour {
             numShots++;
 
             bullet.SetActive(true);
-
-
-
         }
     }
 
-
-    IEnumerator explode()
-    {
-        yield return new WaitForSeconds(1f);
-       
-
-    }
 }

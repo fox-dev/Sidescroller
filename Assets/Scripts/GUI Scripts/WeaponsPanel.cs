@@ -9,9 +9,11 @@ public class WeaponsPanel : MonoBehaviour {
     private Text fireBallText;
     [SerializeField]
     private Text beamText;
+    [SerializeField]
+    private Text homingMissileText;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
@@ -19,6 +21,7 @@ public class WeaponsPanel : MonoBehaviour {
 	void Update () {
         fireBallText.text = "DAMAGE: " + ShootFireBall.damage.ToString();
         beamText.text = "DAMAGE: " + Beam.damage.ToString();
+        homingMissileText.text = "DAMAGE: " + HomingMissile.damage.ToString();
 
     }
 
@@ -30,5 +33,10 @@ public class WeaponsPanel : MonoBehaviour {
     public void upgradeBeamDamage()
     {
         Beam.damage += 10;
+    }
+
+    public void upgradeHomingMissile()
+    {
+        HomingMissile.damage += 10;
     }
 }

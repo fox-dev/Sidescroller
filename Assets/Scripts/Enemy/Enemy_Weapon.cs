@@ -58,6 +58,31 @@ public class Enemy_Weapon : MonoBehaviour
         shootRotation = 0;
         direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
     }
+    
+    void OnEnable()
+    {
+        enemy = transform.parent.GetComponent<Enemy>();
+        if (enemy == null) //immediate parent may not be the enemy object and therefore null
+        {
+            enemy = transform.parent.parent.parent.GetComponent<Enemy>();
+        }
+
+        nextBullet = 0f;
+        if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
+        {
+
+            InvokeRepeating("Shoot", shootInterval, shootInterval);
+        }
+        else if (transform.root.gameObject.tag != "Boss" || transform.root.gameObject.name.Contains("Boss_Enemy1") || transform.root.gameObject.name.Contains("Boss_Enemy1"))
+        {
+
+            InvokeRepeating("Shoot", shootInterval, shootInterval);
+        }
+
+
+        shootRotation = 0;
+        direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
+    }
 
     // Update is called once per frame
     void Update()
@@ -71,6 +96,7 @@ public class Enemy_Weapon : MonoBehaviour
 
             if ((transform.parent.gameObject.tag != "Boss"  || transform.parent.gameObject.name.Contains("Boss_Enemy3")) && !alternateFire)
             {
+               
                 fireSingleShot();
             }
             else if(!alternateFire)

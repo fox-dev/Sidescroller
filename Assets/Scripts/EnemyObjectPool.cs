@@ -17,13 +17,6 @@ public class EnemyObjectPool : MonoBehaviour
     void Awake()
     {
         current = this;
-    }
-
-
-    ///////
-
-    void Start()
-    {
         objectsForPool = new List<GameObject>();
         for (int i = 0; i < listOfObjects.Count; i++)
         {
@@ -36,9 +29,10 @@ public class EnemyObjectPool : MonoBehaviour
                 objectsForPool.Add(obj);
             }
         }
-
-
     }
+
+
+    //////
 
     public GameObject getPooledObject(GameObject o)
     {

@@ -38,13 +38,17 @@ public class PlayerWeapon : MonoBehaviour {
             bullet.transform.parent = origin.transform;
             bullet.gameObject.SetActive(true);
 
-            foreach (Transform child in bullet.transform)
+            if (!bullet.name.Contains("Homing"))
             {
-              
-                child.gameObject.SetActive(true);
-                child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 100, ForceMode.Impulse);
-               
+                foreach (Transform child in bullet.transform)
+                {
+
+                    child.gameObject.SetActive(true);
+                    child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 100, ForceMode.Impulse);
+
+                }
             }
+            
         }
 
         if(gameObject.tag != "Buddy")

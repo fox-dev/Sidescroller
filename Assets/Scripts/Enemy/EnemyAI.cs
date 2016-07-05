@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour {
     public float flySpd;
 
     private bool occupied, phase2;
+    private CharacterController controller;
 
     // Use this for initialization
     void Awake() {
@@ -27,6 +28,7 @@ public class EnemyAI : MonoBehaviour {
         weapon = this.GetComponentInChildren<Enemy_Weapon>();
         player = GameObject.FindGameObjectWithTag("Player");
         origin = GameObject.FindGameObjectWithTag("Origin");
+        controller = GetComponent<CharacterController>();
        
 
         myTransform = transform;
@@ -56,8 +58,20 @@ public class EnemyAI : MonoBehaviour {
 
         if (gameObject.tag == "Fly_By")
         {
+            /*
             Vector3 dir = path[currentPoint].position - myTransform.position;
             myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            */
+
+            // find the target position relative to the player:
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            // calculate movement at the desired speed:
+            Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+            // limit movement to never pass the target position:
+            if (movement.magnitude > dir.magnitude) movement = dir;
+            // move the character:
+            controller.Move(movement);
+
             if (dir.magnitude <= proxyDist)
             {
                 currentPoint++;
@@ -68,7 +82,32 @@ public class EnemyAI : MonoBehaviour {
                 currentPoint = 0;
             }
 
+        }
+        else if (gameObject.tag == "Fly_Pass")
+        {
+            /*
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            */
 
+            // find the target position relative to the player:
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            // calculate movement at the desired speed:
+            Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+            // limit movement to never pass the target position:
+            if (movement.magnitude > dir.magnitude) movement = dir;
+            // move the character:
+            controller.Move(movement);
+
+            if (dir.magnitude <= proxyDist)
+            {
+                currentPoint++;
+            }
+
+            if (currentPoint >= path.Length)
+            {
+                currentPoint = 0;
+            }
         }
 
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy3"))
@@ -78,7 +117,7 @@ public class EnemyAI : MonoBehaviour {
 
             if (dir.magnitude <= proxyDist && !occupied && !phase2)
             {
-                print("IM HERE");
+               
                 StartCoroutine(FocusFire());
             }
 
@@ -116,13 +155,13 @@ public class EnemyAI : MonoBehaviour {
 
 
         }
-        else if(enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy1"))
+        else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy1"))
         {
-            
+
             vel = new Vector3(vel.x, 0, 0);
             myTransform.Translate(vel * Time.deltaTime);
 
-            
+
             moveSpd = Mathf.Lerp(moveSpd, 100f, Time.deltaTime);
             //transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 20, player.transform.position.z);
             if (player.GetComponent<PlayerMovement>().maxed_Up)
@@ -292,6 +331,8 @@ public class EnemyAI : MonoBehaviour {
         path = null;
         currentPoint = 0;
     }
+
+
 
 
 }

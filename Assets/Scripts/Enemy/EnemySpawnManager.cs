@@ -6,14 +6,14 @@ public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager current;
     private Transform myTransform;
 
-    public int maxEnemies = 1;
+    public int maxEnemies = 1; //Equal to the maxEnemies of the current wave
     public int maxBosses = 1;
 
     public int totalEnemiesSpawned = 0;
     public static int currentEnemies = 0;
     public static int currentBosses = 0;
 
-    public GameObject enemy;
+    public GameObject[] enemyTypes;
     public GameObject boss;
     public float spawnTime = 3f;
     public Transform[] spawnPoints;
@@ -21,6 +21,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public Transform[] path;
     public Transform[] path2;
     public Transform[] path3;
+    public Transform[] path4;
 
     public float speed = 5f;
     public float drawDis = 1f;
@@ -31,9 +32,58 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public bool spawnEnemies, spawnBoss;
 
+    [SerializeField]
     private bool occupied; //for IEnumerator
 
     public static Enemy bossEnemy;
+
+
+    [System.Serializable]
+    public class Wave
+    {
+        public int maxEnemies; //max number of enemies
+        public GameObject[] enemies; //array of enemies for the wave;
+        public float rate; //spawnRate;
+        int chosenEnemy;
+        public void init()
+        {
+
+            int distributionMethod = Random.Range(1, 3);
+            Debug.Log("METHOD " + distributionMethod);
+           
+            if(distributionMethod == 1)
+            {
+                chosenEnemy = Random.Range(0, current.enemyTypes.Length);
+                Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);
+
+                maxEnemies = Random.Range(10, 20);
+                enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
+                for (int x = 0; x < enemies.Length; x++)
+                {
+
+                    enemies[x] = current.enemyTypes[chosenEnemy];
+                }
+            }
+            else
+            {
+                
+                Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);
+
+                maxEnemies = Random.Range(10, 20);
+                enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
+                for (int x = 0; x < enemies.Length; x++)
+                {
+                    chosenEnemy = Random.Range(0, current.enemyTypes.Length);
+                    enemies[x] = current.enemyTypes[chosenEnemy];
+                }
+            }
+        }
+        
+    }
+
+    public Wave[] waves;
+    [SerializeField]
+    private int currentWave = 0;
 
     void Awake()
     {
@@ -41,12 +91,15 @@ public class EnemySpawnManager : MonoBehaviour {
         spawnEnemies = true;
         spawnBoss = false;
         myTransform = transform;
+
+        waves = new Wave[3];
+       
     }
 
 
     // Use this for initialization
     void Start () {
-
+        
         player = GameObject.FindGameObjectWithTag("Player");
         originMid = GameObject.FindGameObjectWithTag("OriginMid");
 
@@ -60,12 +113,19 @@ public class EnemySpawnManager : MonoBehaviour {
             print("Origin object not found");
         }
 
+
+        for (int x = 0; x < waves.Length; x++)
+        {
+            waves[x] = new Wave();
+            waves[x].init();
+        }
+
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+      
         //Change position/velocity of origin using the same process that moves the player, not using rigidbody
         //transform.Translate(originMid.GetComponent<Origin>().getVelocity() * Time.deltaTime);
 
@@ -78,19 +138,36 @@ public class EnemySpawnManager : MonoBehaviour {
 
     void Spawn()
     {
+        if (GameManager.gm.state == GameManager.gameState.setup)
+        {
+            if (!occupied)
+            {
+                StartCoroutine(startFirstWave());
+            }
+        }
 
         if (spawnEnemies && GameManager.gm.state == GameManager.gameState.normalPlay)
         {
-            if (currentEnemies < maxEnemies)
+            
+           
+            if (totalEnemiesSpawned < waves[currentWave].maxEnemies && (currentWave < waves.Length)) //replace with currentWave
             {
                 int spawnPointIndex = Random.Range(0, spawnPoints.Length);
                 //GameObject temp = Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
-                GameObject temp = EnemyObjectPool.current.getPooledObject(enemy);
+                GameObject temp = EnemyObjectPool.current.getPooledObject(waves[currentWave].enemies[totalEnemiesSpawned]); //iterate through enemy types of the wave
                 temp.transform.position = spawnPoints[spawnPointIndex].position;
                 temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
                 if (temp == null) return;
 
-                temp.GetComponent<EnemyAI>().assignPath(path);
+                if(temp.tag == "Fly_By")
+                {
+                    temp.GetComponent<EnemyAI>().assignPath(path);
+                }
+                else if(temp.tag == "Fly_Pass")
+                {
+                    temp.GetComponent<EnemyAI>().assignPath(path4);
+                }
+                
                 temp.SetActive(true);
 
                 /*
@@ -104,24 +181,37 @@ public class EnemySpawnManager : MonoBehaviour {
                 totalEnemiesSpawned++;
 
             }
+            else
+            {
+                spawnEnemies = false;
+            }
         }
 
-        if(spawnBoss && GameManager.gm.state != GameManager.gameState.bossFight)
+        if(currentWave < waves.Length)
         {
-            if (!occupied && spawnBoss)
+            if (currentEnemies == 0 && totalEnemiesSpawned == waves[currentWave].maxEnemies) //all enemies of current wave destroyed
+            {
+                if (!occupied)
+                {
+                    StartCoroutine(startNextWave());
+                }
+            }
+        }
+       
+
+
+        if (spawnBoss && GameManager.gm.state == GameManager.gameState.prepareForBoss)
+        {
+            if (!occupied && spawnBoss) 
             {
                 StartCoroutine(prepareForBoss());
             }
             
         }
 
-        if (GameManager.gm.state == GameManager.gameState.setup)
-        {
-            if (!occupied)
-            {
-                StartCoroutine(startNextWave());
-            }
-        }
+     
+
+       
 
     }
 
@@ -144,7 +234,10 @@ public class EnemySpawnManager : MonoBehaviour {
 
             if (boss.name.Contains("Boss_Enemy3"))
             {
-                temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
+                //temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
+                temp = EnemyObjectPool.current.getPooledObject(boss); //iterate through enemy types of the wave
+                temp.transform.position = spawnPoints[spawnPointIndex].position;
+                temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
             }
             else
             {
@@ -187,13 +280,46 @@ public class EnemySpawnManager : MonoBehaviour {
         spawnBoss = occupied = false;
     }
 
-    IEnumerator startNextWave()
+    IEnumerator startFirstWave()
     {
+        
+        currentWave = 0;
         occupied = true;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0f);
         totalEnemiesSpawned = 0;
         spawnEnemies = true;
         occupied = false;
+    }
+    IEnumerator startNextWave()
+    {
+        occupied = true;
+   
+        currentWave++;
+        if (currentWave >= waves.Length) //It is the last wave and all enemies have been destroyed
+        {
+            GameManager.gm.state = GameManager.gameState.prepareForBoss;
+            EnemySpawnManager.current.spawnBoss = true;
+        }
+        else
+        {
+            totalEnemiesSpawned = 0;
+            spawnEnemies = true;
+            
+        }
+        yield return new WaitForSeconds(0f);
+        occupied = false;
+
+    }
+
+    public void reinit() //should be called after every boss fight by the GameManager during state transitions
+    {
+        int waveCount = Random.Range(2, 5);
+        waves = new Wave[waveCount];
+        for (int x = 0; x < waves.Length; x++)
+        {
+            waves[x] = new Wave();
+            waves[x].init();
+        }
     }
 
     void OnDrawGizmos()
@@ -227,5 +353,26 @@ public class EnemySpawnManager : MonoBehaviour {
                 Gizmos.DrawSphere(path3[x].position, drawDis);
             }
         }
+
+        for (int x = 0; x < path4.Length; x++)
+        {
+
+            if (path4[x] != null)
+            {
+                Gizmos.color = Color.white;
+                Gizmos.DrawSphere(path4[x].position, drawDis);
+            }
+        }
+
+        for (int x = 0; x < spawnPoints.Length; x++)
+        {
+
+            if (spawnPoints[x] != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(spawnPoints[x].position, drawDis);
+            }
+        }
+        
     }
 }
