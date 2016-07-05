@@ -35,14 +35,16 @@ public class Enemy_Weapon : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        
+
         origin = GameObject.FindGameObjectWithTag("ESM");
         enemy = transform.parent.GetComponent<Enemy>();
-        if(enemy == null) //immediate parent may not be the enemy object and therefore null
+        reinit(); // reinitialize starting variables
+
+        if (enemy == null) //immediate parent may not be the enemy object and therefore null
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
-        }
-
-        nextBullet = 0f;
+        }      
         if((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
             
@@ -54,20 +56,24 @@ public class Enemy_Weapon : MonoBehaviour
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
 
+        
+    }
 
-        shootRotation = 0;
-        direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
+    void OnDisable()
+    {
+        reinit();
+        CancelInvoke();
     }
     
     void OnEnable()
     {
         enemy = transform.parent.GetComponent<Enemy>();
+        reinit();
+
         if (enemy == null) //immediate parent may not be the enemy object and therefore null
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
         }
-
-        nextBullet = 0f;
         if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
 
@@ -79,9 +85,6 @@ public class Enemy_Weapon : MonoBehaviour
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
 
-
-        shootRotation = 0;
-        direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
     }
 
     // Update is called once per frame
@@ -381,6 +384,14 @@ public class Enemy_Weapon : MonoBehaviour
             
         }
 
+    }
+
+    public void reinit()
+    {
+        fire = alternateFire = false;
+        nextBullet = 0f;
+        shootRotation = 0;
+        direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
     }
 
     public void Shoot()

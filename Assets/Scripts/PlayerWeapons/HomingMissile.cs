@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HomingMissile : MonoBehaviour {
 
 
-    public static int damage = 25;
+    public static int damage = 400;
 
     [SerializeField]
     private int viewDamage = damage;
@@ -62,11 +62,31 @@ public class HomingMissile : MonoBehaviour {
                     {
                         singleTarget = index;
                         dist = curDist;
+                        //Codeblock specific for enemies not on the 0-z axis//
+                        if (singleTarget.name.Contains("Boss_Enemy3"))
+                        {
+                            foreach (Transform child in singleTarget.transform)
+                            {
+                                foreach(Transform child2 in child)
+                                {
+                                    if (child2.name.Contains("Boss3_head"))
+                                    {
+                                        singleTarget = child2.gameObject;
+                                    }
+                                }
+
+                            }
+                        }
+                        //////////////////////////////////////////////////////
                     }
                     
                 }
             }
+
+           
         }
+
+        
         
 
         rb = GetComponent<Rigidbody>();
@@ -76,15 +96,28 @@ public class HomingMissile : MonoBehaviour {
     void Update () {
         if(singleTarget != null && singleTarget.activeSelf)                    
         {
+
+
+            if (singleTarget.name.Contains("Boss3_head"))
+            {
+                Vector3 directionMid = (new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0) - myTransform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(directionMid);
+                transform.rotation = lookRotation;
+                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
+            }
+            else
+            {
+                Vector3 directionMid = (singleTarget.transform.position - myTransform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(directionMid);
+                transform.rotation = lookRotation;
+                myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
+            }
             
-            Vector3 directionMid = (singleTarget.transform.position - myTransform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(directionMid);
-            transform.rotation = lookRotation;
-            myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
         }
         else if( singleTarget != null && !singleTarget.activeSelf)
         {
-          
+
+            singleTarget = null;
             myTransform.position += transform.forward * Time.deltaTime * 40;
            // myTransform.position = Vector3.MoveTowards(myTransform.position, Vector3.right, 40 * Time.deltaTime);
 

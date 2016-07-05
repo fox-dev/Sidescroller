@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BossExplosion : MonoBehaviour
+public class ExplosionRay : MonoBehaviour
 {
 
   
@@ -30,7 +30,6 @@ public class BossExplosion : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-       
 
         Vector3 pos_at_z_0 = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
         Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
@@ -38,51 +37,20 @@ public class BossExplosion : MonoBehaviour
 
         gunLine = GetComponent<LineRenderer>();
 
-
-
-   
-
-
-
         shootRay.origin = transform.position;
    
         shootRay.direction = shootDirection * Vector3.forward;
 
-
-
-
         gunLine.SetPosition(0, transform.position); 
 
 
-   
-
-        if (Physics.SphereCast(shootRay, 1f, out shootHit, range, shootableMask))
+        if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
         {
             //hit an enemy goes here
             Instantiate(Resources.Load("HitParticles"), shootHit.point, Quaternion.FromToRotation(Vector3.up, shootHit.normal));
             gunLine.SetPosition(1, shootHit.point);
-            if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                print(shootHit.transform.gameObject.name);
-                Enemy enemy = shootHit.collider.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.DamageEnemy(damage);
-                    Debug.Log("We hit " + shootHit.collider.name + " and did" + damage + " damage.");
-
-                }
-
-            }
-            if (shootHit.transform.gameObject.layer != LayerMask.NameToLayer("Road"))
-            {
-                //do nothing
-            }
-
         }
-        else
-        {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-        }
+       
 
 
 
@@ -108,10 +76,6 @@ public class BossExplosion : MonoBehaviour
 
         gunLine = GetComponent<LineRenderer>();
 
-   
-
-
-
         shootRay.origin = transform.position;
     
         shootRay.direction = shootDirection * Vector3.forward;
@@ -122,28 +86,7 @@ public class BossExplosion : MonoBehaviour
         {
             //hit an enemy goes here
             gunLine.SetPosition(1, shootHit.point);
-            Instantiate(Resources.Load("HitParticles"), shootHit.point, Quaternion.FromToRotation(Vector3.up, shootHit.normal));
-            if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                Enemy enemy = shootHit.collider.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.DamageEnemy(damage);
-                    Debug.Log("We hit " + shootHit.collider.name + " and did " + damage + " damage.");
-                }
-            }
-            if (shootHit.transform.gameObject.layer != LayerMask.NameToLayer("Road"))
-            {
-                //do nothing.
-            }
-
         }
-        else
-        {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-        }
-
-
 
     }
 
@@ -167,19 +110,10 @@ public class BossExplosion : MonoBehaviour
 
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
         {
-            //hit an enemy goes here
             gunLine.SetPosition(1, shootHit.point);
-            //shootHit.transform.gameObject.SetActive(false);
-            print("HITHITHIT");
-
+      
         }
-        else
-        {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 
-
-        }
-        
         gunLine.SetPosition(0, transform.position);
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 

@@ -22,6 +22,8 @@ public class EnemyAI : MonoBehaviour {
     private bool occupied, phase2;
     private CharacterController controller;
 
+  
+
     // Use this for initialization
     void Awake() {
         enemy = this.GetComponent<Enemy>();
@@ -330,6 +332,7 @@ public class EnemyAI : MonoBehaviour {
     {
         path = null;
         currentPoint = 0;
+        occupied = false;
     }
 
 

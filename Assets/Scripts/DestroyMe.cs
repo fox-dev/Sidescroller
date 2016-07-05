@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+//Script is used mainly for Projectiles; This determines the aliveTime of each projectile
 public class DestroyMe : MonoBehaviour {
 
     public float aliveTime;

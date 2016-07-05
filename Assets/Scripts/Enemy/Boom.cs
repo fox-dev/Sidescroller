@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Boom : MonoBehaviour {
 
-  
-    public float normal;
     private GameObject lightSource;
 
 
@@ -24,7 +22,6 @@ public class Boom : MonoBehaviour {
 
     void Start()
     {
-        normal = 0f;
         lightSource = GameObject.FindGameObjectWithTag("Light");
 
         nextBullet = 0f;
@@ -47,6 +44,12 @@ public class Boom : MonoBehaviour {
 
     }
 
+    void OnDisable()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+
     void Update()
     {
         
@@ -63,7 +66,7 @@ public class Boom : MonoBehaviour {
             bullet.transform.rotation = transform.rotation;
 
             direction = Quaternion.Euler(shootRotation, 90, 0);
-            bullet.GetComponent<BossExplosion>().assignShootDirection(direction);
+            bullet.GetComponent<ExplosionRay>().assignShootDirection(direction);
             shootRotation += rotateInterval;
 
             numShots++;

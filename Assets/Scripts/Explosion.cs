@@ -8,7 +8,7 @@ public class Explosion : MonoBehaviour {
     Color c;
     
 
-    float startValue, goToValue;
+    float startValue, goToValue; //Values for the white image sprite opacity
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +29,11 @@ public class Explosion : MonoBehaviour {
         
 
         Destroy(this.gameObject, 3.5f); //destroy after 5 seconds.
+    }
+
+    void OnDisable()
+    {
+
     }
 
     void Update()

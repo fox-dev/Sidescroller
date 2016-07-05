@@ -38,20 +38,34 @@ public class Crosshair : MonoBehaviour {
             }
         }
 
-
-
-
-
-        /*
-        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.touchCount > 1)
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            z_plane_of_2d_game = 0;
-            pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+            if (!IsPointerOverUIObject(canvas, Input.GetTouch(1).position))
+            {
+                ray = Camera.main.ScreenPointToRay(Input.GetTouch(1).position);
+                z_plane_of_2d_game = 0;
+                pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+                myTransform.position = pos_at_z_0;
 
-            myTransform.position = pos_at_z_0;
+            }
         }
-        */
+
+        if (Input.touchCount > 2)
+        {
+            if (!IsPointerOverUIObject(canvas, Input.GetTouch(2).position))
+            {
+                ray = Camera.main.ScreenPointToRay(Input.GetTouch(2).position);
+                z_plane_of_2d_game = 0;
+                pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+                myTransform.position = pos_at_z_0;
+
+            }
+        }
+
+
+
+
+        
         if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -60,6 +74,7 @@ public class Crosshair : MonoBehaviour {
 
             myTransform.position = pos_at_z_0;
         }
+        
 
 
     }
