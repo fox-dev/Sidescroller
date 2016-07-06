@@ -35,32 +35,8 @@ public class ShootFireBall : MonoBehaviour {
         viewDamage = damage;
         player = GameObject.FindGameObjectWithTag("Player");
         crosshair = GameObject.FindGameObjectWithTag("Crosshair");
-        originMid = GameObject.FindGameObjectWithTag("OriginMid");
 
 
-        //Velocity comepsation for given speed of 15
-        if (crosshair.transform.position.x > originMid.transform.position.x)
-        {
-            velocityCompensation = 10;
-        }
-        else if (crosshair.transform.position.x <= originMid.transform.position.x)
-        {
-            velocityCompensation = 5;
-        }
-
-        if(player.transform.position.x > originMid.transform.position.x)
-        {
-            velocityCompensation = 5;
-        }
-        else if((originMid.transform.position.x - player.transform.position.x) <= 10)
-        {
-            velocityCompensation = 5;
-        }
-
-        if ((crosshair.transform.position.y - player.transform.position.y) < 7)
-        {
-            velocityCompensation = 0;
-        }
 
         velocityCompensation = 0;
         //  print(velocityCompensation);

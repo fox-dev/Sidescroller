@@ -35,6 +35,9 @@ public class Player : MonoBehaviour {
     public GameObject model;
     [SerializeField]
     public GameObject weapon;
+
+    public PlayerWeapon wep;
+
     public float blinkDuration;
 
     [SerializeField]
@@ -49,6 +52,7 @@ public class Player : MonoBehaviour {
     void Start()
     {
         stats.Init();
+        wep = weapon.GetComponent<PlayerWeapon>();
 
         if (statusIndicator != null)
         {

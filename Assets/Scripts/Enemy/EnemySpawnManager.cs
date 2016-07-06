@@ -92,7 +92,7 @@ public class EnemySpawnManager : MonoBehaviour {
         spawnBoss = false;
         myTransform = transform;
 
-        waves = new Wave[1];
+        waves = new Wave[3];
        
     }
 
@@ -101,7 +101,7 @@ public class EnemySpawnManager : MonoBehaviour {
     void Start () {
         
         player = GameObject.FindGameObjectWithTag("Player");
-        originMid = GameObject.FindGameObjectWithTag("OriginMid");
+        originMid = GameObject.FindGameObjectWithTag("Origin");
 
         if (player == null)
         {
@@ -130,7 +130,7 @@ public class EnemySpawnManager : MonoBehaviour {
         //transform.Translate(originMid.GetComponent<Origin>().getVelocity() * Time.deltaTime);
 
         //Since position is not being tracked by raycasting, like the Player is, this line is needed to maintain the Y-position;
-        myTransform.position = new Vector3(originMid.transform.position.x, originMid.transform.position.y, 0);
+        myTransform.position = new Vector3(originMid.transform.position.x + 30, originMid.transform.position.y, 0);
 
 
 
@@ -313,7 +313,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void reinit() //should be called after every boss fight by the GameManager during state transitions
     {
-        int waveCount = Random.Range(1, 2);
+        int waveCount = Random.Range(3, 6);
         waves = new Wave[waveCount];
         for (int x = 0; x < waves.Length; x++)
         {
