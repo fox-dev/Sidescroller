@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Enemy class object to keep track of enemy's health and damage done to it;
+[RequireComponent(typeof(EnemyAI))]
 public class Enemy : MonoBehaviour {
     Renderer[] renderers;
     Color defaultColor;
@@ -66,8 +68,16 @@ public class Enemy : MonoBehaviour {
     {
         
         stats.curHealth -= damage;
-         // print(stats.alive + " " + stats.curHealth);
-        if(stats.curHealth <= 0 && stats.alive)
+
+        //Add damage done to this enemy to the gameStats of the GameManager
+        if (stats.alive)
+        {
+            GameManager.gm.gameStats.addTotalDamageDone(damage);
+        }
+        
+
+        // print(stats.alive + " " + stats.curHealth);
+        if (stats.curHealth <= 0 && stats.alive)
         {
             if(this.tag == "Boss")
             {

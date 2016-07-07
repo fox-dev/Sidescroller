@@ -3,24 +3,61 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public static GameManager gm;
+    [System.Serializable]
+    public class GameStats //Keep track of player's stats for ranking/grade
+    {
+        public int roundScore; //points accumulated during the round
+        public int enemiesDestroyed; //number of enemies destroyed;
+        public int enemiesMissed; //Number of enemies not killed/escaped
+        public int totalDamageDone; //Amount of damage the player has done
+        public int timesHit; //number of times the player was hit
+        public int totalDamageTaken; //Amount of damage the player has taken
 
-    [SerializeField]
-    public GameObject[] weaponList;
-   
-
-    [SerializeField]
-    public static float score;
+        public void init()
+        {
+            roundScore = timesHit = enemiesDestroyed = enemiesMissed = totalDamageDone = 0; //initialize all stats to 0
+        }
 
 
-    public float moveSpeed;
-    private bool occupied = false; //for IENumerator;
+        /////Increment methods/functions//////
+        public void addRoundScore(int amount)
+        {
+            roundScore += amount;
+        }
 
+        public void addTimesHit()
+        {
+            timesHit += 1;
+        }
 
+        public void addEnemiesDestroyed()
+        {
+            enemiesDestroyed += 1;
+        }
+
+        public void addEnemiesMissed()
+        {
+            enemiesMissed += 1;
+        }
+
+        public void addTotalDamageDone(int amount)
+        {
+            totalDamageDone += amount;
+        }
+
+        public void addTotalDamageTaken(int amount)
+        {
+            totalDamageTaken += amount;
+        }
+        /////////////////////////////////////
+    }
+
+    //Enum for Game States
     public enum gameState
     {
         test, //Testing purposes
         setup,//Setup phase (upgrades, etc)
+        results, //Results phase to show round results
         ready, //state lasts 5 seconds before moving to normalPlay
         normalPlay, //Simple spawning of enemies, no bosses
         prepareForBoss, //state lasts a bit before transitioning to bossFight
@@ -28,8 +65,21 @@ public class GameManager : MonoBehaviour {
         waiting //For any transitions into normal gameplay
     }
 
+    public static GameManager gm; //Static variable single instance of GameManager reference
+
+    [SerializeField]
+    public GameObject[] weaponList; //List of all possible weapons in the game, used for upgrading and equipping weapons; 
+
+    [SerializeField]
+    public static float score;
+
     public gameState state;
-    
+
+    public GameStats gameStats = new GameStats();
+
+    public float moveSpeed; //adjust value to change moveSpeed of origin objects
+    private bool occupied = false; //Used for ienumerator calls in Update method
+
 
     void Start()
     {
@@ -40,9 +90,11 @@ public class GameManager : MonoBehaviour {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
         }
 
-        state = gameState.setup;
+        state = gameState.test;
 
         score = 0;
+
+        gameStats.init();
     }
 
     void Update()
@@ -84,6 +136,11 @@ public class GameManager : MonoBehaviour {
             BossUI.current.bossGuiAnim.SetBool("Normal", true);
             score += enemy.stats.awardPoints;
 
+            //Increment appropriate stats in gameStates//
+            gm.gameStats.addRoundScore(enemy.stats.awardPoints);
+            gm.gameStats.addEnemiesDestroyed();
+            /////////////////////////////////////////////
+
             GameManager.gm.state = gameState.waiting;
 
         }
@@ -93,13 +150,19 @@ public class GameManager : MonoBehaviour {
             EnemySpawnManager.currentEnemies--;
             score += enemy.stats.awardPoints;
 
+            //Increment appropriate stats in gameStates//
+            gm.gameStats.addRoundScore(enemy.stats.awardPoints);
+            gm.gameStats.addEnemiesDestroyed();
+            /////////////////////////////////////////////
         }
- 
+
     }
 
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
+
         occupied = true;
+        gameStats.init();
         yield return new WaitForSeconds(1f);
         state = gameState.normalPlay;
         occupied = false;
@@ -111,7 +174,7 @@ public class GameManager : MonoBehaviour {
         occupied = true;
         EnemySpawnManager.current.reinit();
         yield return new WaitForSeconds(5f);
-        state = gameState.setup;
+        state = gameState.results;
         occupied = false;
     }
 

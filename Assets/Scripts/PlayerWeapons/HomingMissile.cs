@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HomingMissile : MonoBehaviour {
 
 
-    public static int damage = 25;
+    public static int damage = 400;
 
     [SerializeField]
     private int viewDamage = damage;

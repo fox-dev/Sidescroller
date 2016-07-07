@@ -65,7 +65,7 @@ public class Crosshair : MonoBehaviour {
 
 
 
-        /*
+        
         if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,7 +74,7 @@ public class Crosshair : MonoBehaviour {
 
             myTransform.position = pos_at_z_0;
         }
-        */
+        
         
 
 

@@ -131,6 +131,8 @@
     <Compile Include="Assets\Scripts\GUI Scripts\BossUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PlayerWeaponUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\ResultsGUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\ResultsPanel.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ScoreUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\SideGradesPanel.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\UpgradeGUI.cs" />

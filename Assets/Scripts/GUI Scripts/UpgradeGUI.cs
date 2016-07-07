@@ -22,7 +22,6 @@ public class UpgradeGUI : MonoBehaviour {
         inactivePanel = panels[1];
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
         activePanel.localPosition = Vector3.Lerp(activePanel.localPosition, onScreenPos, 10f * Time.deltaTime);
         inactivePanel.localPosition = Vector3.Lerp(inactivePanel.localPosition, offScreenPos, 10f * Time.deltaTime);

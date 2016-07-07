@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Enemy))]
 public class EnemyAI : MonoBehaviour {
 
     Enemy enemy;

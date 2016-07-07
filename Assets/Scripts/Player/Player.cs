@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Enemy class object to keep track of enemy's health and damage done to it, and which weapon is equipped;
 public class Player : MonoBehaviour {
 
 
@@ -65,7 +66,12 @@ public class Player : MonoBehaviour {
         if (!blinking && !transform.GetComponent<PlayerMovement>().jumping)
         {
             Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
+
             stats.curHealth -= damage;
+            //Add damage done to player to the gameStats of the GameManager
+            GameManager.gm.gameStats.addTotalDamageTaken(damage);
+            GameManager.gm.gameStats.addTimesHit();
+
             StartCoroutine(blink(blinkDuration, 0.2f));
         }
         else
