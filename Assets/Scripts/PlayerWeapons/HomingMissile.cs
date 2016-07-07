@@ -92,6 +92,13 @@ public class HomingMissile : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
     }
 
+	void OnDisable()
+	{
+		rb.velocity = Vector3.zero;
+
+	}
+
+
     // Update is called once per frame
     void Update () {
         if(singleTarget != null && singleTarget.activeSelf)                    
@@ -103,14 +110,16 @@ public class HomingMissile : MonoBehaviour {
                 Vector3 directionMid = (new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0) - myTransform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
-                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
-            }
+                //myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
+				rb.AddForce(transform.forward * 40);
+			}
             else
             {
                 Vector3 directionMid = (singleTarget.transform.position - myTransform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
-                myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
+                //myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
+				rb.AddForce(transform.forward * 40);
             }
             
         }
