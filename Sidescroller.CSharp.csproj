@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scripts\BackgroundInView.cs" />
     <Compile Include="Assets\Scripts\BoundaryHandler.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
+    <Compile Include="Assets\Scripts\Currency.cs" />
     <Compile Include="Assets\Scripts\DestroyMe.cs" />
     <Compile Include="Assets\Scripts\Enemy\Boom.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy Projectiles\DirectionEnemyFireball.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Assets\Scripts\ExitBounds.cs" />
     <Compile Include="Assets\Scripts\Explosion.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\BossUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\CurrencyUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PlayerWeaponUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ResultsGUI.cs" />

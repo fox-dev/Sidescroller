@@ -50,11 +50,13 @@ public class Enemy_Weapon : MonoBehaviour
             
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
+        /*
         else if (transform.root.gameObject.tag != "Boss" || transform.root.gameObject.name.Contains("Boss_Enemy1") || transform.root.gameObject.name.Contains("Boss_Enemy1"))
         {
 
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
+        */
 
         
     }
@@ -76,14 +78,17 @@ public class Enemy_Weapon : MonoBehaviour
         }
         if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
-
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
+
+       /*
         else if (transform.root.gameObject.tag != "Boss" || transform.root.gameObject.name.Contains("Boss_Enemy1") || transform.root.gameObject.name.Contains("Boss_Enemy1"))
         {
-
+            
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
+        */
+        
 
     }
 
@@ -97,20 +102,28 @@ public class Enemy_Weapon : MonoBehaviour
             
             nextBullet = Time.time + timeBetweenBullets;
 
-            if ((transform.parent.gameObject.tag != "Boss"  || transform.parent.gameObject.name.Contains("Boss_Enemy3")) && !alternateFire)
+            if ((transform.parent.gameObject.tag != "Boss"  || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy3")) && !alternateFire)
             {
-               
-                fireSingleShot();
+                if (transform.parent.gameObject.name.Contains("Boss_Enemy1"))
+                {
+                    fireBullet();
+                }
+                else
+                {
+                    fireSingleShot(); //Normal enemies and Boss3
+                }
+                
             }
             else if(!alternateFire)
             {
-                fireBullets();
-                //fireSingleShot();
+                fireBullet(); //Boss2
+
             }
             else if(alternateFire)
             {
                 fireAltFire();
             }
+            
 
           
             //////////////////////
@@ -128,6 +141,37 @@ public class Enemy_Weapon : MonoBehaviour
 
     }
 
+
+    void fireBullet()
+    {
+        GameObject bullet = ObjectPool.current.getPooledObject(projectile);
+
+        if (bullet == null) return;
+
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
+        if (gameObject.transform.parent.gameObject.tag != "Fly_By")
+        {
+            foreach (Transform child in bullet.transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+            direction = Quaternion.Euler(0, shootRotation, 0);
+            // bullet.transform.parent = gameObject.transform;
+
+            //bullet.GetComponent<Fireball>().assignShootDirection(direction);
+            bullet.GetComponentInChildren<RotateFire>().assignShootDirection(direction);
+            shootRotation += rotateInterval;
+
+        }
+        bullet.transform.parent = origin.transform;
+        bullet.SetActive(true);
+
+        foreach (Transform child in bullet.transform)
+        {
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 20, ForceMode.Impulse);
+        }
+    }
     void fireBullets()
     {
         GameObject bullet = ObjectPool.current.getPooledObject(projectile);
@@ -273,7 +317,7 @@ public class Enemy_Weapon : MonoBehaviour
 
         foreach (Transform child in bullet.transform)
         {
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 20, ForceMode.Impulse);
         }
 
         /*
@@ -380,7 +424,7 @@ public class Enemy_Weapon : MonoBehaviour
         foreach (Transform child in bullet.transform)
         {
             child.gameObject.SetActive(true);
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 35, ForceMode.Impulse);
+            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 15, ForceMode.Impulse);
             
         }
 

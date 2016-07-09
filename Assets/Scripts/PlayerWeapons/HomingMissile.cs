@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HomingMissile : MonoBehaviour {
 
 
-    public static int damage = 400;
+    public static int damage = 30;
 
     [SerializeField]
     private int viewDamage = damage;
@@ -24,17 +24,25 @@ public class HomingMissile : MonoBehaviour {
     Rigidbody rb;
 
     private Transform myTransform;
+    private bool guide;
 
 
+    void OnDisable()
+    {
+        rb.velocity = Vector3.zero;
+        guide = false;
 
+    }
     void OnEnable()
     {
-       
+        
 
         myTransform = transform;
         viewDamage = damage;
         player = GameObject.FindGameObjectWithTag("Player");
         crosshair = GameObject.FindGameObjectWithTag("Crosshair");
+
+        rb = GetComponent<Rigidbody>();
 
         Vector3 directionMid = (crosshair.transform.position - myTransform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(directionMid);
@@ -45,9 +53,9 @@ public class HomingMissile : MonoBehaviour {
         targets = FindGameObjectsWithLayer();
 
         float dist = Mathf.Infinity;
-        Vector3 pos = player.transform.position;
+        Vector3 pos = crosshair.transform.position;
 
-      
+        
         if(targets != null)
         {
             foreach (GameObject index in targets)
@@ -83,34 +91,59 @@ public class HomingMissile : MonoBehaviour {
                 }
             }
 
+
            
         }
+        //rb.AddForce(myTransform.forward * -50, ForceMode.Impulse);
 
         
         
 
-        rb = GetComponent<Rigidbody>();
+        
     }
+    void FixedUpdate()
+    {
+     
+        if (rb.velocity.magnitude <= 30f)
+        {
+           rb.AddForce(transform.forward * 30);
 
+        }
+        else if(singleTarget != null)
+        {
+            guide = true;
+            //rb.velocity = Vector3.zero;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 30 * Time.deltaTime);
+        }
+        else
+        {
+            guide = true;
+            //rb.velocity = Vector3.zero;
+            myTransform.position += transform.forward * Time.deltaTime * 30;
+        }
+     
+        
+    }
     // Update is called once per frame
     void Update () {
         if(singleTarget != null && singleTarget.activeSelf)                    
         {
-
 
             if (singleTarget.name.Contains("Boss3_head"))
             {
                 Vector3 directionMid = (new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0) - myTransform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
-                myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
+                //myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
+                //rb.AddForce(transform.forward * 20);
             }
             else
             {
                 Vector3 directionMid = (singleTarget.transform.position - myTransform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
-                myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
+                //myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
+                //rb.AddForce(transform.forward * 20);
             }
             
         }
@@ -119,13 +152,15 @@ public class HomingMissile : MonoBehaviour {
 
             singleTarget = null;
             myTransform.position += transform.forward * Time.deltaTime * 40;
-           // myTransform.position = Vector3.MoveTowards(myTransform.position, Vector3.right, 40 * Time.deltaTime);
+            // myTransform.position = Vector3.MoveTowards(myTransform.position, Vector3.right, 40 * Time.deltaTime);
+            //rb.AddForce(transform.forward * 20);
 
         }
         else
         {
-           
-            myTransform.position += transform.forward * Time.deltaTime * 40;
+            
+            //myTransform.position += transform.forward * Time.deltaTime * 40;
+            //rb.AddForce(transform.forward * 20);
         }
 
 

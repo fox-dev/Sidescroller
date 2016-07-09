@@ -14,7 +14,10 @@ public class EnemySpawnManager : MonoBehaviour {
     public static int currentBosses = 0;
 
     public GameObject[] enemyTypes;
+    public GameObject[] bossList;
+
     public GameObject boss;
+
     public float spawnTime = 3f;
     public Transform[] spawnPoints;
 
@@ -35,7 +38,7 @@ public class EnemySpawnManager : MonoBehaviour {
     [SerializeField]
     private bool occupied; //for IEnumerator
 
-    public static Enemy bossEnemy;
+    public static Enemy bossEnemy; //The only active boss;
 
 
     [System.Serializable]
@@ -224,7 +227,9 @@ public class EnemySpawnManager : MonoBehaviour {
         BossUI.current.bossGuiAnim.SetBool("Normal", false);
         BossUI.current.bossGuiAnim.SetBool("Warning", true);
 
-   
+        int bossSelection = Random.Range(0, bossList.Length);
+        boss = bossList[bossSelection];
+
         yield return new WaitForSeconds(3);
         if (currentBosses < maxBosses)
         {
@@ -233,6 +238,20 @@ public class EnemySpawnManager : MonoBehaviour {
             GameObject temp;
 
             if (boss.name.Contains("Boss_Enemy3"))
+            {
+                //temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
+                temp = EnemyObjectPool.current.getPooledObject(boss); //iterate through enemy types of the wave
+                temp.transform.position = spawnPoints[spawnPointIndex].position;
+                temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
+            }
+            else if (boss.name.Contains("Boss_Enemy1"))
+            {
+                //temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
+                temp = EnemyObjectPool.current.getPooledObject(boss); //iterate through enemy types of the wave
+                temp.transform.position = spawnPoints[spawnPointIndex].position;
+                temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
+            }
+            else if (boss.name.Contains("Boss_Enemy2"))
             {
                 //temp = Instantiate(boss, new Vector3(spawnPoints[spawnPointIndex].position.x, spawnPoints[spawnPointIndex].position.y, boss.transform.position.z), spawnPoints[spawnPointIndex].rotation) as GameObject;
                 temp = EnemyObjectPool.current.getPooledObject(boss); //iterate through enemy types of the wave

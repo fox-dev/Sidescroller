@@ -53,6 +53,8 @@ public class EnemyAI : MonoBehaviour {
 
     }
 
+  
+
    
 	
 	// Update is called once per frame
@@ -133,11 +135,13 @@ public class EnemyAI : MonoBehaviour {
 
             if (dir.magnitude <= proxyDist && !occupied && !phase2)
             {
+                print("STARTING");
                 StartCoroutine(hoverFire());
             }
 
             if (dir.magnitude <= proxyDist && !occupied && phase2)
             {
+                print("STARTING");
                 StartCoroutine(spreadFire());
             }
 
@@ -334,6 +338,8 @@ public class EnemyAI : MonoBehaviour {
         path = null;
         currentPoint = 0;
         occupied = false;
+        phase2 = false;
+       
     }
 
 

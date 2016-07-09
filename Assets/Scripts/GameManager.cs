@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
+    public GameObject particle;
 
     [System.Serializable]
     public class GameStats //Keep track of player's stats for ranking/grade
@@ -73,6 +74,9 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     public static float score;
 
+    [SerializeField]
+    public static float currency;
+
     public gameState state;
 
     public GameStats gameStats = new GameStats();
@@ -93,6 +97,7 @@ public class GameManager : MonoBehaviour {
         state = gameState.test;
 
         score = 0;
+        currency = 0;
 
         gameStats.init();
     }
@@ -122,10 +127,22 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static void CollectCurrency(Currency item)
+    {
+        item.gameObject.SetActive(false);
+        currency += item.amount;
+    }
+
     public static void KillEnemy(Enemy enemy)
     {
-       
-        if(enemy.tag == "Boss")
+        GameObject hitEffect = ObjectPool.current.getPooledObject(gm.particle);
+
+        if (hitEffect == null) return;
+        hitEffect.transform.position = enemy.transform.position;
+
+        hitEffect.SetActive(true);
+        
+        if (enemy.tag == "Boss")
         {
 
             enemy.gameObject.SetActive(false);
