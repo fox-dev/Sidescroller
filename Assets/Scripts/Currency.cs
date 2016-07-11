@@ -11,7 +11,7 @@ public class Currency : MonoBehaviour {
 
     [SerializeField]
     public int amount;
-
+   
     [SerializeField]
     private float flySpeed;
 
@@ -61,7 +61,7 @@ public class Currency : MonoBehaviour {
     {
         if(other.tag == "Player")
         {
-            Debug.Log("ENTERED PLAYER");
+            
             GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
 
             if (hitEffect == null) return;

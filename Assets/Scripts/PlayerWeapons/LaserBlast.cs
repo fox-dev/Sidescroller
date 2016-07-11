@@ -4,9 +4,12 @@ using System.Collections;
 public class LaserBlast : MonoBehaviour
 {
     GameObject player;
+    private PlayerWeapon playerWeapon; //to tell the weapon to stop decrementing super gauge and start recharging;
     GameObject crosshair;
 
     public GameObject particle;
+
+    private Transform myTransform;
 
     public float range = 10f;
     public int damage = 50;
@@ -19,6 +22,7 @@ public class LaserBlast : MonoBehaviour
 
     Ray shootRay;
     RaycastHit shootHit;
+    RaycastHit[] shootHitPath;
 
     public LayerMask shootableMask;
     LineRenderer gunLine;
@@ -30,6 +34,9 @@ public class LaserBlast : MonoBehaviour
     private bool shrink = false;
     private bool damageEnabled = false;
 
+    ParticleSystem.ShapeModule shapeModule;
+    ParticleSystem ps; 
+
 
 
 
@@ -37,7 +44,11 @@ public class LaserBlast : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerWeapon = player.GetComponent<Player>().wep;
         crosshair = GameObject.FindGameObjectWithTag("Crosshair");
+        shapeModule = GetComponent<ParticleSystem>().shape;
+        ps = GetComponent<ParticleSystem>();
+        myTransform = transform;
     }
 
     void OnEnable()
@@ -98,6 +109,10 @@ public class LaserBlast : MonoBehaviour
                     Debug.Log("We hit " + shootHit.collider.name + " and did " + damage + " damage.");
                 }
             }
+            else if(shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+            {
+                shootHit.transform.gameObject.SetActive(false);
+            }
 
 
             Debug.Log("We hit " + shootHit.collider.name + " and did" + damage + " damage.");
@@ -116,45 +131,67 @@ public class LaserBlast : MonoBehaviour
     void Update()
     {
         //To keep the particleShot effect on the player
-        transform.position = player.transform.position;
+        myTransform.position = player.transform.position;
 
-        
+        //Keep particle effect facting crosshair
+        Vector3 directionMid = (crosshair.transform.position - myTransform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionMid);
+        myTransform.rotation = lookRotation;
+
+
         //This block of code has laser continuously track and move line-renderer//
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        float z_plane_of_2d_game = 0;
-        Vector3 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+        Vector3 pos_at_z_0 = crosshair.transform.position;
         Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
         Vector2 currentPos = new Vector2(player.transform.position.x, player.transform.position.y);
         shootRay.origin = player.transform.position;
         shootRay.direction = (point - currentPos);
         //////////////////////////////////////////////////////////////////////
-        
-        if (Physics.SphereCast(shootRay, 12.5f, out shootHit, range, shootableMask) && damageEnabled)
+
+        shootHitPath = Physics.SphereCastAll(shootRay, 17.5f, range, shootableMask);
+
+        foreach (RaycastHit hit in shootHitPath)
         {
-            //hit an enemy goes here
-            //gunLine.SetPosition(1, shootHit.point);
-            Enemy enemy = shootHit.collider.GetComponent<Enemy>();
-            if (enemy != null)
+
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy") && damageEnabled) //damage enemies
             {
-                enemy.DamageEnemy(damage);
-                Debug.Log("We hit " + shootHit.collider.name + " and did " + damage + " damage.");
                 
+                Enemy enemy = hit.collider.GetComponent<Enemy>();
+                
+                if (enemy != null && enemy.gameObject.activeSelf) 
+                {
+                    Vector3 screenPoint = Camera.main.WorldToViewportPoint(enemy.transform.position);
+                    bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+
+                    if (onScreen)
+                    {
+                        enemy.DamageEnemy(damage);
+
+                        GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
+                        if (hitEffect == null) return;
+                        hitEffect.transform.position = hit.point;
+                        hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+
+                        hitEffect.SetActive(true);
+                    }
+
+                }
+            }
+            else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Projectile") && damageEnabled) //destroy enemy projectiles
+            {
+                hit.transform.gameObject.SetActive(false);
+
+                GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
+                if (hitEffect == null) return;
+                hitEffect.transform.position = hit.point;
+                hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+
+                hitEffect.SetActive(true);
             }
 
-            GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
-            if (hitEffect == null) return;
-            hitEffect.transform.position = shootHit.point;
-            hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, shootHit.normal);
-
-            hitEffect.SetActive(true);
-
 
         }
-        else
-        {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-        }
 
+      
 
         gunLine.SetPosition(0, player.transform.position);
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
@@ -166,22 +203,34 @@ public class LaserBlast : MonoBehaviour
             gunLine.SetWidth(growingWidth, growingWidth);
             if (!occupied && (growingWidth <= maxWidth - 1f))
             {
+                shapeModule.radius = 0.5f;
+                ps.startLifetime = 3f;
                 StartCoroutine(prepareBlast());
+               
             }
         }
+        
 
         if (growingWidth <= maxWidth - 1f && grow)
         {
-            growingWidth = Mathf.Lerp(growingWidth, maxWidth, Time.deltaTime * 1.5f);
+            shapeModule.radius = 3f;
+            ps.startLifetime = 70f;
+            CameraScript.camera.ShakeCam(0.3f, 2.3f);
+            growingWidth = Mathf.Lerp(growingWidth, maxWidth, Time.deltaTime * 3.5f);
             gunLine.SetWidth(growingWidth, growingWidth);
-            if(growingWidth >= maxWidth - 1f)
+            if(growingWidth >= maxWidth - 1f && !occupied)
             {
-                shrink = true;
+                //shrink = true;
+                StartCoroutine(extendBlast());
             }
         }
 
         if (shrink)
         {
+            playerWeapon.firing = false;
+            shapeModule.radius = 0.5f;
+            ps.startLifetime = 1f;
+            damageEnabled = false;
             grow = false;
             //print("BIG");
             growingWidth = Mathf.Lerp(growingWidth, 0, Time.deltaTime * 10f);
@@ -193,12 +242,24 @@ public class LaserBlast : MonoBehaviour
     IEnumerator prepareBlast()
     {
         occupied = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         damageEnabled = true;
         grow = true;
+        //Start decrementing player super gauge
+        playerWeapon.charge = false;
         initialFire = true;
         occupied = false;
         
+    }
+
+    IEnumerator extendBlast()
+    {
+        occupied = true;
+        yield return new WaitForSeconds(2f);
+        shrink = true;
+        //Start recharging player super gauge
+        playerWeapon.charge = true;
+        occupied = false;
     }
 
 

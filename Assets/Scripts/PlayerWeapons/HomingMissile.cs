@@ -95,45 +95,31 @@ public class HomingMissile : MonoBehaviour {
            
         }
         //rb.AddForce(myTransform.forward * -50, ForceMode.Impulse);
-
-        
-        
-
-        
     }
+
     void FixedUpdate()
     {
-     
-        if (rb.velocity.magnitude <= 30f)
-        {
-           rb.AddForce(transform.forward * 30);
 
-<<<<<<< HEAD
+        if (rb.velocity.magnitude <= 60f && !guide)
+        {
+            rb.AddForce(transform.forward * 60);
+
+
         }
-        else if(singleTarget != null)
+        else if (singleTarget != null)
         {
             guide = true;
-            //rb.velocity = Vector3.zero;
             myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 30 * Time.deltaTime);
         }
         else
         {
             guide = true;
-            //rb.velocity = Vector3.zero;
             myTransform.position += transform.forward * Time.deltaTime * 30;
         }
-     
-        
     }
-=======
-	void OnDisable()
-	{
-		rb.velocity = Vector3.zero;
-
-	}
 
 
->>>>>>> origin/master
+
     // Update is called once per frame
     void Update () {
         if(singleTarget != null && singleTarget.activeSelf)                    
@@ -145,25 +131,25 @@ public class HomingMissile : MonoBehaviour {
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
                 //myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(singleTarget.transform.position.x, singleTarget.transform.position.y, 0), 40 * Time.deltaTime);
-<<<<<<< HEAD
+
                 //rb.AddForce(transform.forward * 20);
-            }
-=======
-				rb.AddForce(transform.forward * 40);
+            
+
+		
 			}
->>>>>>> origin/master
+
             else
             {
                 Vector3 directionMid = (singleTarget.transform.position - myTransform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(directionMid);
                 transform.rotation = lookRotation;
                 //myTransform.position = Vector3.MoveTowards(myTransform.position, singleTarget.transform.position, 40 * Time.deltaTime);
-<<<<<<< HEAD
+
                 //rb.AddForce(transform.forward * 20);
-=======
-				rb.AddForce(transform.forward * 40);
->>>>>>> origin/master
+
+
             }
+
             
         }
         else if( singleTarget != null && !singleTarget.activeSelf)

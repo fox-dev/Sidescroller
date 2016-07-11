@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     public GameObject model;
     [SerializeField]
-    public GameObject weapon;
+    private GameObject weapon;
 
     public PlayerWeapon wep;
 

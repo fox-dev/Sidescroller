@@ -180,7 +180,10 @@ public class GameManager : MonoBehaviour {
 
         occupied = true;
         gameStats.init();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        GetReadyGUI.current.getReadyGUIAnim.SetBool("GetReady", true);
+        yield return new WaitForSeconds(2f);
+        GetReadyGUI.current.getReadyGUIAnim.SetBool("GetReady", false);
         state = gameState.normalPlay;
         occupied = false;
     }

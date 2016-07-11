@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
+[RequireComponent(typeof(Animator))]
+//BossUI is given parameters when boss is spawned in EnemySpawnManager
 public class BossUI : MonoBehaviour {
 
     public static BossUI current;
@@ -31,7 +33,7 @@ public class BossUI : MonoBehaviour {
         if (GameManager.gm.state == GameManager.gameState.bossFight)
         {
          
-            SetHealth(boss.stats.curHealth, boss.stats.maxHealth);
+            SetHealth(boss.stats.curHealth, boss.stats.maxHealth); //health set once enemy is queued in Enemy Spawn Manager, during gameState.PrepareForBoss
 
         }
         else

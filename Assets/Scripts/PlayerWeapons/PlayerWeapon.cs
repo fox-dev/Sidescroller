@@ -5,24 +5,36 @@ using System.Collections;
 public class PlayerWeapon : MonoBehaviour {
 
     public float timeBetweenBullets = 0.15f;
-    public GameObject projectile;
+    public GameObject projectile; //Main weapon
+    public GameObject superWeapon; //Special
     private GameObject origin;
 
     float nextBullet; //when next can be fired
 
     private bool fire;
 
+    public float currentCharge, maxCharge; //charge amount, when full super can be used
+    public bool charge; //to charge or not to charge
+    public bool firing;
+    public bool readyToFire;
+
+    private bool occupied; //for couritine call to make sure it is only called once;
+
 
     // Use this for initialization
     void Awake () {
+        currentCharge = 0;
+        maxCharge = 100;
+        charge = true;
+        firing = false;
+        readyToFire = false;
+
         nextBullet = 0f;
         origin = GameObject.FindGameObjectWithTag("Origin");
     }
 	
 	// Update is called once per frame
 	void Update () {
-
-      
         if ( ( Input.GetKey("e") || fire) && nextBullet < Time.time)
         {
          
@@ -51,6 +63,27 @@ public class PlayerWeapon : MonoBehaviour {
             
         }
 
+        if(currentCharge < maxCharge && charge && (GameManager.gm.state != GameManager.gameState.setup || GameManager.gm.state != GameManager.gameState.results || GameManager.gm.state != GameManager.gameState.waiting))
+        {
+            currentCharge += (5*Time.deltaTime); 
+        }
+        else if(firing)
+        {
+            if(currentCharge >= 0)
+            {
+                currentCharge -= (38f * Time.deltaTime);
+            }
+
+            if(currentCharge < 0)
+            {
+                currentCharge = 0;
+            }
+        }
+
+        readyToFire = currentCharge >= maxCharge;
+
+       
+        /*
         if(gameObject.tag != "Buddy")
         {
             if (Input.GetKey("a"))
@@ -62,9 +95,29 @@ public class PlayerWeapon : MonoBehaviour {
                 projectile = GameManager.gm.weaponList[1];
             }
         }
-        
+        */
+
 
     }
+    public void fireSuper()
+    {
+        firing = true;
+
+        ChargeMeterGUI.current.button.interactable = false;
+
+        Rigidbody bullet = ObjectPool.current.getPooledObjectRigidBody(superWeapon);
+
+        if (bullet == null) return;
+
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
+
+        bullet.transform.parent = origin.transform;
+        bullet.gameObject.SetActive(true);
+        
+    }
+
+   
 
     //For onscreen button usage//
     public void firePressed()
