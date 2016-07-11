@@ -95,7 +95,7 @@ public class EnemySpawnManager : MonoBehaviour {
         spawnBoss = false;
         myTransform = transform;
 
-        waves = new Wave[3];
+        waves = new Wave[1];
        
     }
 
@@ -332,7 +332,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void reinit() //should be called after every boss fight by the GameManager during state transitions
     {
-        int waveCount = Random.Range(3,5);
+        int waveCount = Random.Range(1,2);
         waves = new Wave[waveCount];
         for (int x = 0; x < waves.Length; x++)
         {

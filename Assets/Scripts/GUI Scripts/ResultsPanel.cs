@@ -19,7 +19,7 @@ public class ResultsPanel : MonoBehaviour {
 
     //Increment speed
     [SerializeField]
-    private float incrementSpeed = 0f;
+    private float incrementSpeed = 10f;
     private float inc = 0f;
 
     // Use this for initialization
@@ -29,10 +29,7 @@ public class ResultsPanel : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        incrementSpeed += Time.deltaTime;
-
-        inc = incrementSpeed/0.5f;
-
+      
         incrementScore();
         incrementEnemiesDestroyed();
         incrementEnemiesMissed();
@@ -53,45 +50,43 @@ public class ResultsPanel : MonoBehaviour {
     public void incrementScore()
     {
         scoreText.text = "SCORE : " + Mathf.RoundToInt(scoreValue);
-        scoreValue = Mathf.Lerp(scoreValue, GameManager.gm.gameStats.roundScore, inc);
-        incrementSpeed = 0f;
-
+        scoreValue = Mathf.Lerp(scoreValue, GameManager.gm.gameStats.roundScore, incrementSpeed * Time.deltaTime);
 
     }
 
     public void incrementEnemiesDestroyed()
     {
         enemiesDestroyedText.text = "ENEMIES DOWNED : " + Mathf.RoundToInt(enemiesDestroyedValue);
-        enemiesDestroyedValue = Mathf.Lerp(enemiesDestroyedValue, GameManager.gm.gameStats.enemiesDestroyed, inc);
-        incrementSpeed = 0f;
+        enemiesDestroyedValue = Mathf.Lerp(enemiesDestroyedValue, GameManager.gm.gameStats.enemiesDestroyed, incrementSpeed * Time.deltaTime);
+
     }
 
     public void incrementEnemiesMissed()
     {
         enemiesMissedText.text = "ENEMIESED MISSED : " + Mathf.RoundToInt(enemiesMissedValue);
-        enemiesMissedValue = Mathf.Lerp(enemiesMissedValue, GameManager.gm.gameStats.enemiesMissed, inc);
-        incrementSpeed = 0f;
+        enemiesMissedValue = Mathf.Lerp(enemiesMissedValue, GameManager.gm.gameStats.enemiesMissed, incrementSpeed * Time.deltaTime);
+   
     }
 
     public void incrementDamageDone()
     {
         damageDoneText.text = "TOTAL DAMAGE DONE : " + Mathf.RoundToInt(damageDoneValue);
-        damageDoneValue = Mathf.Lerp(damageDoneValue, GameManager.gm.gameStats.totalDamageDone, inc);
-        incrementSpeed = 0f;
+        damageDoneValue = Mathf.Lerp(damageDoneValue, GameManager.gm.gameStats.totalDamageDone, incrementSpeed * Time.deltaTime);
+
     }
 
     public void incrementTimesHit()
     {
         timesHitText.text = "HITS TAKEN : " + Mathf.RoundToInt(timesHitValue);
-        timesHitValue = Mathf.Lerp(timesHitValue, GameManager.gm.gameStats.timesHit, inc);
-        incrementSpeed = 0f;
+        timesHitValue = Mathf.Lerp(timesHitValue, GameManager.gm.gameStats.timesHit, incrementSpeed * Time.deltaTime);
+
     }
 
     public void incrementDamageTaken()
     {
         damageTakenText.text = "TOTAL DAMAGE TAKEN : " + Mathf.RoundToInt(damageTakenValue);
-        damageTakenValue = Mathf.Lerp(damageTakenValue, GameManager.gm.gameStats.totalDamageTaken, inc);
-        incrementSpeed = 0f;
+        damageTakenValue = Mathf.Lerp(damageTakenValue, GameManager.gm.gameStats.totalDamageTaken, incrementSpeed * Time.deltaTime);
+
     }
     /////////////////
 
