@@ -14,6 +14,9 @@ public class UpgradeGUI : MonoBehaviour {
 
     private int _panelIndex = 0;
 
+    private bool occupied = false; // for coroutine
+    private float speed = 5f;
+
 	// Use this for initialization
 	void Start () {
         offScreenPos = panels[1].localPosition;
@@ -22,11 +25,6 @@ public class UpgradeGUI : MonoBehaviour {
         inactivePanel = panels[1];
 	}
 	
-	void FixedUpdate () {
-        activePanel.localPosition = Vector3.Lerp(activePanel.localPosition, onScreenPos, 10f * Time.deltaTime);
-        inactivePanel.localPosition = Vector3.Lerp(inactivePanel.localPosition, offScreenPos, 10f * Time.deltaTime);
-    }
-
     public void close()
     {
         //Close is already handled by the MainUIController in UIOverlay
@@ -36,25 +34,51 @@ public class UpgradeGUI : MonoBehaviour {
 
     public void nextPanel()
     {
-        _panelIndex++;
-        if(_panelIndex >= panels.Length)
+        if (!occupied)
         {
-            _panelIndex = 0;
+            _panelIndex++;
+            if (_panelIndex >= panels.Length)
+            {
+                _panelIndex = 0;
+            }
+            inactivePanel = activePanel;
+            activePanel = panels[_panelIndex];
+
+            StartCoroutine(slidePanels());
         }
-        inactivePanel = activePanel;
-        activePanel = panels[_panelIndex];
         
     }
 
     public void prevPanel()
     {
-        _panelIndex--;
-        if (_panelIndex < 0)
+        if (!occupied)
         {
-            _panelIndex = panels.Length - 1;
-        }
-        inactivePanel = activePanel;
-        activePanel = panels[_panelIndex];
+            _panelIndex--;
+            if (_panelIndex < 0)
+            {
+                _panelIndex = panels.Length - 1;
+            }
+            inactivePanel = activePanel;
+            activePanel = panels[_panelIndex];
 
+            StartCoroutine(slidePanels());
+        }
+        
+
+    }
+
+    IEnumerator slidePanels()
+    {
+        occupied = true;
+        float timeToStart = Time.time;
+        while(activePanel.localPosition != onScreenPos && inactivePanel.localPosition != offScreenPos)
+        {
+            activePanel.localPosition = Vector3.Lerp(activePanel.localPosition, onScreenPos,  speed * (Time.time - timeToStart));
+            inactivePanel.localPosition = Vector3.Lerp(inactivePanel.localPosition, offScreenPos, speed * (Time.time - timeToStart));
+
+            yield return null;
+        }
+        occupied = false;
+        
     }
 }

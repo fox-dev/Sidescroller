@@ -7,15 +7,18 @@ public class ScoreUI : MonoBehaviour {
 
     private Text scoreText;
 
+    public static ScoreUI current;
+
 	// Use this for initialization
 	void Start () {
+        current = this;
         scoreText = GetComponent<Text>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        scoreText.text = "Score: " + GameManager.score.ToString();
 
-        scoreText.text = "Score: " +  GameManager.score.ToString();
-	
-	}
+    }
+
+    public void UpdateText()
+    {
+        scoreText.text = "Score: " + GameManager.score.ToString();
+    }
 }

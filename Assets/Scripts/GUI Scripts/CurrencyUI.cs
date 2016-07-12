@@ -8,17 +8,20 @@ public class CurrencyUI : MonoBehaviour
 
     private Text currencyText;
 
+    public static CurrencyUI current;
+
     // Use this for initialization
     void Start()
     {
+        current = this;
         currencyText = GetComponent<Text>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
         currencyText.text = "Currency: " + GameManager.currency.ToString();
 
+    }
+
+
+    public void UpdateText()
+    {
+        currencyText.text = "Currency: " + GameManager.currency.ToString();
     }
 }

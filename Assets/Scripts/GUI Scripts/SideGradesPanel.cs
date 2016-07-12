@@ -24,17 +24,19 @@ public class SideGradesPanel : MonoBehaviour {
         }
 
     }
-	
-	// Update is called once per frame0.
-	void Update () {
-	
-	}
 
     public void purcahseBuddy()
     {
-        buddy.SetActive(true);
-        buddy_purcahseButton.interactable = false;
-        buddy_purchaseText.text = "PURCHASED";
+        int cost = 1000;
+
+        if(GameManager.currency >= cost)
+        {
+            GameManager.SubtractCurrency(cost);
+            buddy.SetActive(true);
+            buddy_purcahseButton.interactable = false;
+            buddy_purchaseText.text = "PURCHASED";
+        }
+        
     }
 
     

@@ -6,11 +6,6 @@ public class MainUIController : MonoBehaviour {
 
     public RectTransform playerGUI, BossGUI, upgradeGUI, resultsGUI, GetReadyGUI;
 
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {

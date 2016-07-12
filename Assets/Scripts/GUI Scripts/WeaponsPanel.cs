@@ -14,29 +14,49 @@ public class WeaponsPanel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
         fireBallText.text = "DAMAGE: " + ShootFireBall.damage.ToString();
         beamText.text = "DAMAGE: " + Beam.damage.ToString();
         homingMissileText.text = "DAMAGE: " + HomingMissile.damage.ToString();
-
     }
 
     public void upgradeFireBallDamage()
     {
-        ShootFireBall.damage += 10;
+        int cost = 100;
+
+        if (GameManager.currency >= cost)
+        {
+            GameManager.SubtractCurrency(cost);
+            ShootFireBall.damage += 10;
+            fireBallText.text = "DAMAGE: " + ShootFireBall.damage.ToString();
+        }
+            
+
     }
 
     public void upgradeBeamDamage()
     {
-        Beam.damage += 10;
+        int cost = 100;
+
+        if (GameManager.currency >= cost)
+        {
+            GameManager.SubtractCurrency(cost);
+            Beam.damage += 10;
+            beamText.text = "DAMAGE: " + Beam.damage.ToString();
+        }
+  
     }
 
     public void upgradeHomingMissile()
     {
-        HomingMissile.damage += 10;
+        int cost = 100;
+
+        if (GameManager.currency >= cost)
+        {
+            GameManager.SubtractCurrency(cost);
+            HomingMissile.damage += 10;
+            homingMissileText.text = "DAMAGE: " + HomingMissile.damage.ToString();
+        }
+            
     }
 }

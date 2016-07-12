@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
+
+    public bool debug;
+
     public GameObject particle;
 
     [System.Serializable]
@@ -85,20 +88,18 @@ public class GameManager : MonoBehaviour {
     private bool occupied = false; //Used for ienumerator calls in Update method
 
 
-    void Start()
+    void Awake()
     {
         Application.targetFrameRate = 60;
-
-        if(gm == null)
-        {
-            gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-        }
+   
+        gm = this;
 
         state = gameState.test;
 
         score = 0;
-        currency = 0;
+        currency = 10000;
 
+        
         gameStats.init();
     }
 
@@ -131,6 +132,21 @@ public class GameManager : MonoBehaviour {
     {
         item.gameObject.SetActive(false);
         currency += item.amount;
+
+        //Update UI currency text
+        CurrencyUI.current.UpdateText();
+    }
+
+    public static void SubtractCurrency(int amount)
+    {
+        if (!gm.debug)
+        {
+            currency -= amount;
+        }
+
+         //Update UI currency text
+        CurrencyUI.current.UpdateText();
+
     }
 
     public static void KillEnemy(Enemy enemy)
@@ -153,6 +169,9 @@ public class GameManager : MonoBehaviour {
             BossUI.current.bossGuiAnim.SetBool("Normal", true);
             score += enemy.stats.awardPoints;
 
+            //Update UI score text
+            ScoreUI.current.UpdateText();
+
             //Increment appropriate stats in gameStates//
             gm.gameStats.addRoundScore(enemy.stats.awardPoints);
             gm.gameStats.addEnemiesDestroyed();
@@ -166,6 +185,9 @@ public class GameManager : MonoBehaviour {
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentEnemies--;
             score += enemy.stats.awardPoints;
+
+            //Update UI score text
+            ScoreUI.current.UpdateText();
 
             //Increment appropriate stats in gameStates//
             gm.gameStats.addRoundScore(enemy.stats.awardPoints);
