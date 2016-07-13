@@ -6,12 +6,14 @@ public class BackgroundInView : MonoBehaviour {
     private GameObject origin;
     public GameObject lastBuilding;
 
+    public float locScale = 1;
+
 	// Use this for initialization
 	void Start () {
         origin = GameObject.FindGameObjectWithTag("Origin");
 
 	}
-	
+	AAAAAAAA
 	// Update is called once per frame
 	void Update () {
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
@@ -34,7 +36,7 @@ public class BackgroundInView : MonoBehaviour {
             }
             else
             {
-                transform.position = new Vector3(transform.position.x + 263, transform.position.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x + 280 * locScale, transform.position.y, transform.position.z);
             }
         }
 	

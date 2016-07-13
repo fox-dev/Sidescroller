@@ -10,6 +10,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public int maxBosses = 1;
 
     public int totalEnemiesSpawned = 0;
+    public int maxEnemiesAllowed = 6;
     public static int currentEnemies = 0;
     public static int currentBosses = 0;
 
@@ -141,6 +142,11 @@ public class EnemySpawnManager : MonoBehaviour {
 
     void Spawn()
     {
+        if(currentEnemies == maxEnemiesAllowed)
+        {
+            StartCoroutine(tooManyEnemies());
+        }
+
         if (GameManager.gm.state == GameManager.gameState.setup)
         {
             if (!occupied)
@@ -215,6 +221,19 @@ public class EnemySpawnManager : MonoBehaviour {
      
 
        
+
+    }
+
+    IEnumerator tooManyEnemies()
+    {
+
+        while(currentEnemies == maxEnemiesAllowed)
+        {
+            spawnEnemies = false;
+            yield return null;
+        }
+
+        spawnEnemies = true;
 
     }
 

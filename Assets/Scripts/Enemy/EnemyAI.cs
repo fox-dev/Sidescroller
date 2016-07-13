@@ -23,6 +23,8 @@ public class EnemyAI : MonoBehaviour {
     private bool occupied, phase2;
     private CharacterController controller;
 
+    private Vector3 startPos;
+
   
 
     // Use this for initialization
@@ -85,6 +87,7 @@ public class EnemyAI : MonoBehaviour {
             if (currentPoint >= path.Length)
             {
                 currentPoint = 0;
+                myTransform.position = startPos;
             }
 
         }
@@ -112,6 +115,7 @@ public class EnemyAI : MonoBehaviour {
             if (currentPoint >= path.Length)
             {
                 currentPoint = 0;
+                myTransform.position = startPos;
             }
         }
 
@@ -331,6 +335,11 @@ public class EnemyAI : MonoBehaviour {
             phase2 = false;
         }
 
+    }
+
+    void OnEnable()
+    {
+        startPos = myTransform.position;
     }
 
     void OnDisable()

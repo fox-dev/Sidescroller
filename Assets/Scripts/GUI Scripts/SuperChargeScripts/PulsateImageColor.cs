@@ -14,7 +14,7 @@ public class PulsateImageColor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        thisImage = GetComponent<Image>();
         c = thisImage.color;
         glow = false;
     }
