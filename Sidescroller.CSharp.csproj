@@ -140,6 +140,7 @@
     <Compile Include="Assets\Scripts\GUI Scripts\SideGradesPanel.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\SuperChargeScripts\ChargeMeterGUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\SuperChargeScripts\PulsateImageColor.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\TitleScreenUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\UpgradeGUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\WeaponSelectUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\WeaponsPanel.cs" />

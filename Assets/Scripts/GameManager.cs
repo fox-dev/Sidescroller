@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour {
     public enum gameState
     {
         test, //Testing purposes
+        menu, //Menu state for main menu
         setup,//Setup phase (upgrades, etc)
         results, //Results phase to show round results
         ready, //state lasts 5 seconds before moving to normalPlay

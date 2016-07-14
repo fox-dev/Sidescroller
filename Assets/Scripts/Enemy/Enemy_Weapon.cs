@@ -172,123 +172,7 @@ public class Enemy_Weapon : MonoBehaviour
             child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 20, ForceMode.Impulse);
         }
     }
-    void fireBullets()
-    {
-        GameObject bullet = ObjectPool.current.getPooledObject(projectile);
-
-        if (bullet == null) return;
-
-        bullet.transform.position = transform.position;
-        bullet.transform.rotation = transform.rotation;
-        if (gameObject.transform.parent.gameObject.tag != "Fly_By")
-        {
-            foreach (Transform child in bullet.transform)
-            {
-                child.gameObject.SetActive(true);
-            }
-            direction = Quaternion.Euler(0, shootRotation, 0);
-            // bullet.transform.parent = gameObject.transform;
-
-            //bullet.GetComponent<Fireball>().assignShootDirection(direction);
-            bullet.GetComponentInChildren<RotateFire>().assignShootDirection(direction);
-            shootRotation += rotateInterval;
-
-        }
-        bullet.transform.parent = origin.transform;
-        bullet.SetActive(true);
-
-        foreach (Transform child in bullet.transform)
-        {
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
-        }
-
-       
-
-        GameObject bullet2 = ObjectPool.current.getPooledObject(projectile);
-
-        if (bullet2 == null) return;
-
-        bullet2.transform.position = transform.position;
-        bullet2.transform.rotation = transform.rotation;
-        if (gameObject.transform.parent.gameObject.tag != "Fly_By")
-        {
-            foreach (Transform child in bullet2.transform)
-            {
-                child.gameObject.SetActive(true);
-            }
-            direction = Quaternion.Euler(0, shootRotation, 0);
-            // bullet.transform.parent = gameObject.transform;
-
-            //bullet.GetComponent<Fireball>().assignShootDirection(direction);
-            bullet2.GetComponentInChildren<RotateFire>().assignShootDirection(direction);
-            shootRotation += rotateInterval;
-
-        }
-        bullet2.transform.parent = origin.transform;
-        bullet2.SetActive(true);
-
-        foreach (Transform child in bullet2.transform)
-        {
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
-        }
-
-        GameObject bullet3 = ObjectPool.current.getPooledObject(projectile);
-
-        if (bullet3 == null) return;
-
-        bullet3.transform.position = transform.position;
-        bullet3.transform.rotation = transform.rotation;
-        if (gameObject.transform.parent.gameObject.tag != "Fly_By")
-        {
-            foreach (Transform child in bullet3.transform)
-            {
-                child.gameObject.SetActive(true);
-            }
-            direction = Quaternion.Euler(0, shootRotation, 0);
-            // bullet.transform.parent = gameObject.transform;
-
-            //bullet.GetComponent<Fireball>().assignShootDirection(direction);
-            bullet3.GetComponentInChildren<RotateFire>().assignShootDirection(direction);
-            shootRotation += rotateInterval;
-
-        }
-        bullet3.transform.parent = origin.transform;
-        bullet3.SetActive(true);
-
-        foreach (Transform child in bullet3.transform)
-        {
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
-        }
-
-        GameObject bullet4 = ObjectPool.current.getPooledObject(projectile);
-
-        if (bullet4 == null) return;
-
-        bullet4.transform.position = transform.position;
-        bullet4.transform.rotation = transform.rotation;
-        if (gameObject.transform.parent.gameObject.tag != "Fly_By")
-        {
-            foreach (Transform child in bullet4.transform)
-            {
-                child.gameObject.SetActive(true);
-            }
-            direction = Quaternion.Euler(0, shootRotation, 0);
-            // bullet.transform.parent = gameObject.transform;
-
-            //bullet.GetComponent<Fireball>().assignShootDirection(direction);
-            bullet4.GetComponentInChildren<RotateFire>().assignShootDirection(direction);
-            shootRotation += rotateInterval;
-
-        }
-        bullet4.transform.parent = origin.transform;
-        bullet4.SetActive(true);
-
-        foreach (Transform child in bullet4.transform)
-        {
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 25, ForceMode.Impulse);
-        }
-
-    } //Used by Boss2
+   
 
     void fireAltFire() //Used by Boss3
     {
@@ -421,12 +305,27 @@ public class Enemy_Weapon : MonoBehaviour
         bullet.transform.parent = origin.transform;
         bullet.SetActive(true);
 
-        foreach (Transform child in bullet.transform)
+
+        if (enemy.name.Contains("Boss_Enemy3"))
         {
-            child.gameObject.SetActive(true);
-            child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 15, ForceMode.Impulse);
-            
+            foreach (Transform child in bullet.transform)
+            {
+                child.gameObject.SetActive(true);
+                child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 35, ForceMode.Impulse);
+
+            }
+
         }
+        else
+        {
+            foreach (Transform child in bullet.transform)
+            {
+                child.gameObject.SetActive(true);
+                child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 15, ForceMode.Impulse);
+
+            }
+        }
+        
 
     }
 

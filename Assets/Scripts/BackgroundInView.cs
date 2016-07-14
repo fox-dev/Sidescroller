@@ -13,7 +13,6 @@ public class BackgroundInView : MonoBehaviour {
         origin = GameObject.FindGameObjectWithTag("Origin");
 
 	}
-	AAAAAAAA
 	// Update is called once per frame
 	void Update () {
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
