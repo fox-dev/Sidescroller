@@ -29,7 +29,7 @@ public class Enemy_Weapon : MonoBehaviour
     [SerializeField]
     private float shootRotation;
 
-    private GameObject origin;
+    private GameObject origin; //Object to child projectiles to
 
 
     // Use this for initialization

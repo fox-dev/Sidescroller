@@ -28,7 +28,7 @@ public class Explosion : MonoBehaviour {
         }
         
 
-        Destroy(this.gameObject, 3.5f); //destroy after 5 seconds.
+        //Destroy(this.gameObject, 8.5f); //destroy after 5 seconds.
     }
 
     void OnDisable()
@@ -63,6 +63,7 @@ public class Explosion : MonoBehaviour {
     {
         
         goToValue = 10f;
+
         yield return new WaitForSeconds(0.1f);
 
         goToValue = 0f;
@@ -70,7 +71,7 @@ public class Explosion : MonoBehaviour {
         flashed.GetComponent<SpriteRenderer>().color = c;
         GameObject light = GameObject.FindGameObjectWithTag("Light");
         light = GameObject.FindGameObjectWithTag("Light");
-        light.GetComponent<Light>().intensity = 0.8f;
+        light.GetComponent<Light>().intensity = 1f;
         
 
     }

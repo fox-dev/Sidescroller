@@ -27,6 +27,19 @@ public class EnemySpawnManager : MonoBehaviour {
     public Transform[] path3;
     public Transform[] path4;
 
+    //MirrorBoss//
+    public Transform[] path5;
+
+    [SerializeField]
+    private Transform[] reverse_Path;
+    [SerializeField]
+    private Transform[] reverse_Path2;
+    [SerializeField]
+    private Transform[] reverse_Path3;
+    [SerializeField]
+    private Transform[] reverse_Path4;
+
+
     public float speed = 5f;
     public float drawDis = 1f;
     public int currentPoint = 0;
@@ -93,11 +106,26 @@ public class EnemySpawnManager : MonoBehaviour {
     {
         current = this;
         spawnEnemies = true;
+
         spawnBoss = false;
         myTransform = transform;
 
         waves = new Wave[1];
-       
+
+
+        //Create copies of normal path arrays;
+        reverse_Path = (Transform[]) path.Clone();
+        reverse_Path2 = (Transform[])path2.Clone();
+        reverse_Path3 = (Transform[])path3.Clone();
+        reverse_Path4 = (Transform[])path4.Clone();
+        //Create reverse copies of the path arrays;
+        System.Array.Reverse(reverse_Path);
+        System.Array.Reverse(reverse_Path2);
+        System.Array.Reverse(reverse_Path3);
+        System.Array.Reverse(reverse_Path4);
+
+
+
     }
 
 
@@ -123,7 +151,7 @@ public class EnemySpawnManager : MonoBehaviour {
             waves[x] = new Wave();
             waves[x].init();
         }
-
+        
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
 	
@@ -170,11 +198,27 @@ public class EnemySpawnManager : MonoBehaviour {
 
                 if(temp.tag == "Fly_By")
                 {
-                    temp.GetComponent<EnemyAI>().assignPath(path);
+                    if(spawnPointIndex == 0)
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(path);
+                    }
+                    else
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(reverse_Path);
+                    }
+                    
                 }
                 else if(temp.tag == "Fly_Pass")
                 {
-                    temp.GetComponent<EnemyAI>().assignPath(path4);
+                    if(spawnPointIndex == 0)
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(path4);
+                    }
+                    else
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(reverse_Path4);
+                    }
+                    
                 }
                 
                 temp.SetActive(true);
@@ -216,11 +260,7 @@ public class EnemySpawnManager : MonoBehaviour {
                 StartCoroutine(prepareForBoss());
             }
             
-        }
-
-     
-
-       
+        } 
 
     }
 
@@ -252,7 +292,8 @@ public class EnemySpawnManager : MonoBehaviour {
         yield return new WaitForSeconds(3);
         if (currentBosses < maxBosses)
         {
-            int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            //int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            int spawnPointIndex = Random.Range(0, 1);
 
             GameObject temp;
 
@@ -401,6 +442,16 @@ public class EnemySpawnManager : MonoBehaviour {
                 Gizmos.DrawSphere(path4[x].position, drawDis);
             }
         }
+        for (int x = 0; x < path5.Length; x++)
+        {
+
+            if (path5[x] != null)
+            {
+                Gizmos.color = Color.black;
+                Gizmos.DrawSphere(path5[x].position, drawDis);
+            }
+        }
+
 
         for (int x = 0; x < spawnPoints.Length; x++)
         {
@@ -413,4 +464,6 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         
     }
+
+
 }

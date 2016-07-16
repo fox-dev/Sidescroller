@@ -194,7 +194,35 @@ public class EnemyAI : MonoBehaviour {
                 myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin.transform.position.x + 10, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
             }
         }
-        
+        else if (gameObject.name.Contains("MirrorBoss"))
+        {
+            /*
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            */
+
+            // find the target position relative to the player:
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            // calculate movement at the desired speed:
+            Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+            // limit movement to never pass the target position:
+            if (movement.magnitude > dir.magnitude) movement = dir;
+            // move the character:
+            controller.Move(movement);
+
+            if (dir.magnitude <= proxyDist)
+            {
+                currentPoint++;
+            }
+
+            if (currentPoint >= path.Length)
+            {
+                currentPoint = 0;
+             
+            }
+
+        }
+
     }
 
     public void assignPath(Transform[] t)
