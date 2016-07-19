@@ -4,8 +4,11 @@ using System.Collections;
 [RequireComponent(typeof(Enemy))]
 public class EnemyAI : MonoBehaviour {
 
-    Enemy enemy;
-    Enemy_Weapon weapon;
+    [SerializeField]
+    private Enemy enemy;
+    [SerializeField]
+    private Enemy_Weapon weapon;
+
 
     GameObject player, origin;
     private Transform myTransform;
@@ -30,7 +33,9 @@ public class EnemyAI : MonoBehaviour {
     // Use this for initialization
     void Awake() {
         enemy = this.GetComponent<Enemy>();
+
         weapon = this.GetComponentInChildren<Enemy_Weapon>();
+   
         player = GameObject.FindGameObjectWithTag("Player");
         origin = GameObject.FindGameObjectWithTag("Origin");
         controller = GetComponent<CharacterController>();
@@ -210,15 +215,9 @@ public class EnemyAI : MonoBehaviour {
             // move the character:
             controller.Move(movement);
 
-            if (dir.magnitude <= proxyDist)
+            if(dir.magnitude <= proxyDist && !occupied)
             {
-                currentPoint++;
-            }
-
-            if (currentPoint >= path.Length)
-            {
-                currentPoint = 0;
-             
+                StartCoroutine(fireAtCrosshair());
             }
 
         }
@@ -229,6 +228,7 @@ public class EnemyAI : MonoBehaviour {
     {
         path = t;
     }
+
     IEnumerator FocusFire() //Boss3
     {
 
@@ -364,6 +364,55 @@ public class EnemyAI : MonoBehaviour {
         }
 
     }
+
+    IEnumerator fireAtCrosshair() //MirrorBoss
+    {
+        occupied = true;
+
+        if (currentPoint == 0 || currentPoint == 2)
+        {
+            //ON
+            weapon.switchToAltFire();
+            weapon.Shoot();
+        }
+        else
+        {
+            weapon.Shoot();
+        }
+        
+
+
+        yield return new WaitForSeconds(5);
+
+        if (currentPoint == 0 || currentPoint == 2)
+        {
+            //OFF
+            weapon.switchToAltFire();
+            weapon.Shoot();
+            weapon.resetFireLaser();
+        }
+        else
+        {
+            weapon.Shoot();
+        }
+           
+
+        Vector3 dir = path[currentPoint].position - transform.position;
+
+        if (dir.magnitude <= proxyDist)
+        {
+            currentPoint++;
+        }
+
+        if (currentPoint >= path.Length)
+        {
+            currentPoint = 0;
+
+        }
+
+        occupied = false;
+    }
+    
 
     void OnEnable()
     {

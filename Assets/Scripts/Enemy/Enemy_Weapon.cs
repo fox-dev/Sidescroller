@@ -31,14 +31,26 @@ public class Enemy_Weapon : MonoBehaviour
 
     private GameObject origin; //Object to child projectiles to
 
+    ///////SPECIFICALLY FOR MIRRORBOSS/////
+    private Quaternion currentRot, targetRot;
+    private GameObject crosshair;
+    private Transform myTransform;
+    private GameObject player;
+    private bool fireLaser = true;
+    private bool tracking = true;
+    private bool occupied = false; //IENUMERATOR
+
 
     // Use this for initialization
     void Awake()
     {
-        
 
+        myTransform = transform;
         origin = GameObject.FindGameObjectWithTag("ESM");
         enemy = transform.parent.GetComponent<Enemy>();
+        crosshair = GameObject.FindGameObjectWithTag("EnemyCrosshair");
+        player = GameObject.FindGameObjectWithTag("Player");
+
         reinit(); // reinitialize starting variables
 
         if (enemy == null) //immediate parent may not be the enemy object and therefore null
@@ -47,18 +59,8 @@ public class Enemy_Weapon : MonoBehaviour
         }      
         if((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
-            
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
-        /*
-        else if (transform.root.gameObject.tag != "Boss" || transform.root.gameObject.name.Contains("Boss_Enemy1") || transform.root.gameObject.name.Contains("Boss_Enemy1"))
-        {
-
-            InvokeRepeating("Shoot", shootInterval, shootInterval);
-        }
-        */
-
-        
     }
 
     void OnDisable()
@@ -76,18 +78,11 @@ public class Enemy_Weapon : MonoBehaviour
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
         }
-        if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
+        if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && (!enemy.name.Contains("Boss_Enemy3") && !enemy.name.Contains("MirrorBoss")))
         {
+            print("im here");
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }
-
-       /*
-        else if (transform.root.gameObject.tag != "Boss" || transform.root.gameObject.name.Contains("Boss_Enemy1") || transform.root.gameObject.name.Contains("Boss_Enemy1"))
-        {
-            
-            InvokeRepeating("Shoot", shootInterval, shootInterval);
-        }
-        */
         
 
     }
@@ -95,6 +90,20 @@ public class Enemy_Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(crosshair != null && enemy.name.Contains("MirrorBoss") && tracking)
+        {
+            crosshair.transform.position = Vector3.MoveTowards(crosshair.transform.position, player.transform.position, 25 * Time.deltaTime);
+
+            float AngleRad = Mathf.Atan2(crosshair.transform.position.y - transform.position.y, crosshair.transform.position.x - transform.position.x);
+
+            float AngleDeg = (180 / Mathf.PI) * AngleRad;
+
+            targetRot = Quaternion.Euler(0, 0, AngleDeg + 90);
+
+            myTransform.rotation = targetRot;
+        }
+
+
 
         if (nextBullet < Time.time && fire && enemy.stats.alive)
         {
@@ -102,15 +111,16 @@ public class Enemy_Weapon : MonoBehaviour
             
             nextBullet = Time.time + timeBetweenBullets;
 
-            if ((transform.parent.gameObject.tag != "Boss"  || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy3")) && !alternateFire)
+            if ((transform.parent.gameObject.tag != "Boss"  || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy3") || transform.parent.gameObject.name.Contains("MirrorBoss")) && !alternateFire)
             {
+                
                 if (transform.parent.gameObject.name.Contains("Boss_Enemy1"))
                 {
                     fireBullet();
                 }
                 else
                 {
-                    fireSingleShot(); //Normal enemies and Boss3
+                    fireSingleShot(); //Normal enemies and Boss3 and MirrorBoss
                 }
                 
             }
@@ -121,7 +131,19 @@ public class Enemy_Weapon : MonoBehaviour
             }
             else if(alternateFire)
             {
-                fireAltFire();
+                if (enemy.name.Contains("MirrorBoss"))
+                {
+                    if (fireLaser)
+                    {
+                        fireLaserBlastAltFire();
+                    }
+                    
+                }
+                else
+                {
+                    fireAltFire();
+                }
+               
             }
             
 
@@ -142,7 +164,7 @@ public class Enemy_Weapon : MonoBehaviour
     }
 
 
-    void fireBullet()
+    void fireBullet() //Boss enemy1
     {
         GameObject bullet = ObjectPool.current.getPooledObject(projectile);
 
@@ -174,7 +196,7 @@ public class Enemy_Weapon : MonoBehaviour
     }
    
 
-    void fireAltFire() //Used by Boss3
+    public void fireAltFire() //Used by Boss3
     {
         GameObject bullet = ObjectPool.current.getPooledObject(altFire);
 
@@ -293,6 +315,32 @@ public class Enemy_Weapon : MonoBehaviour
 
     }
 
+    public void fireLaserBlastAltFire() //Used by mirrorBoss
+    {
+        fireLaser = false;
+        if (!occupied)
+        {
+            StartCoroutine(stopCrosshair());
+        }
+        
+        GameObject bullet = ObjectPool.current.getPooledObject(altFire);
+
+        if (bullet == null) return;
+
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
+
+        bullet.transform.parent = origin.transform;
+        bullet.SetActive(true);
+    }
+
+    public void resetFireLaser()
+    {
+        fireLaser = true;
+        tracking = true;
+    }
+
+
     public void fireSingleShot() //Used by Boss1,and normal enemy units
     {
         GameObject bullet = ObjectPool.current.getPooledObject(projectile);
@@ -315,6 +363,15 @@ public class Enemy_Weapon : MonoBehaviour
 
             }
 
+        }
+        else if (enemy.name.Contains("MirrorBoss"))
+        {
+            foreach (Transform child in bullet.transform)
+            {
+                child.gameObject.SetActive(true);
+                child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 50, ForceMode.Impulse);
+
+            }
         }
         else
         {
@@ -347,22 +404,20 @@ public class Enemy_Weapon : MonoBehaviour
         alternateFire = !alternateFire;
     }
 
-    public Quaternion getShootDirection()
-    {
-        return direction;
-    }
-
-    public void resetShootRotation()
-    {
-        shootRotation = 0;
-    }
-
     public void setFireRate(float f)
     {
         timeBetweenBullets = f;
     }
 
+    IEnumerator stopCrosshair()
+    {
+        occupied = true;
 
+        yield return new WaitForSeconds(1f);
+
+        tracking = false;
+        occupied = false;
+    }
 
     
 

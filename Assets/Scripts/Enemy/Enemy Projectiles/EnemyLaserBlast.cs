@@ -18,7 +18,7 @@ public class EnemyLaserBlast : MonoBehaviour
     public float growingWidth2 = 7f;
 
     Ray shootRay;
-    RaycastHit shootHit;
+    RaycastHit shootHit; 
 
     public LayerMask shootableMask;
     LineRenderer gunLine;
@@ -74,7 +74,6 @@ public class EnemyLaserBlast : MonoBehaviour
         }
         else
         {
-            print("WE'RE HERE");
             shootRay.origin = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
             shootRay.direction = (transform.forward);
 
@@ -84,6 +83,8 @@ public class EnemyLaserBlast : MonoBehaviour
 
        
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+
+        
 
         
 
@@ -104,10 +105,6 @@ public class EnemyLaserBlast : MonoBehaviour
         transform.position = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
         gunLine.SetPosition(0, EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position);
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-
-
-
-        print(shootRay.origin + shootRay.direction * range);
 
         if (growingWidth <= maxWidth - 1f && !grow && !initialFire)
         {
@@ -132,10 +129,26 @@ public class EnemyLaserBlast : MonoBehaviour
         if (shrink)
         {
             grow = false;
+            damageEnabled = false;
             growingWidth = Mathf.Lerp(growingWidth, 0, Time.deltaTime * 10f);
             gunLine.SetWidth(growingWidth, growingWidth);
         }
-        
+
+        if (Physics.SphereCast(shootRay, 6f, out shootHit, range, shootableMask) && damageEnabled)
+        {
+            if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                Player player = shootHit.collider.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.DamagePlayer(damage);
+                }
+                else
+                {
+                    Debug.Log("Player object does not exist");
+                }
+            }
+        }
 
     }
 

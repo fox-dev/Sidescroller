@@ -39,11 +39,12 @@ public class MirrorBoss : MonoBehaviour {
 
         myTransform = transform;
         enemy = transform.parent.GetComponent<Enemy>();
+        crosshair = GameObject.FindGameObjectWithTag("EnemyCrosshair");
 
         player = GameObject.FindGameObjectWithTag("Player");
         origin = GameObject.FindGameObjectWithTag("ESM");
 
-        InvokeRepeating("Shoot", shootInterval, shootInterval);
+       // InvokeRepeating("Shoot", shootInterval, shootInterval);
 
         currentRot = this.transform.rotation;
 
