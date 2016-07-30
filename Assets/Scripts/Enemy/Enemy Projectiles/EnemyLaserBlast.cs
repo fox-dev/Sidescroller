@@ -32,12 +32,15 @@ public class EnemyLaserBlast : MonoBehaviour
 
 
 
-    Quaternion lookRotation;
-
+    private Quaternion lookRotation;
+    private Quaternion currentRotation;
+    private Transform myTransform;
     // Use this for initialization
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        myTransform = transform;
+        currentRotation = new Quaternion();
         
     }
 
@@ -96,15 +99,23 @@ public class EnemyLaserBlast : MonoBehaviour
     void Update()
     {
 
-
-        transform.rotation = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.rotation;
-        lookRotation = Quaternion.LookRotation(-transform.right) * Quaternion.Euler(90, 0, 0);
-        transform.rotation = lookRotation;
-        shootRay.origin = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
-        shootRay.direction = (transform.forward);
-        transform.position = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
-        gunLine.SetPosition(0, EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position);
-        gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        if (EnemySpawnManager.bossEnemy != null)
+        {
+            myTransform.rotation = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.rotation;
+            lookRotation = Quaternion.LookRotation(-myTransform.right) * Quaternion.Euler(90, 0, 0);
+            myTransform.rotation = lookRotation;
+            shootRay.origin = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
+            shootRay.direction = (myTransform.forward);
+            transform.position = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
+            gunLine.SetPosition(0, EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position);
+            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
+        }
+        
+        
 
         if (growingWidth <= maxWidth - 1f && !grow && !initialFire)
         {
