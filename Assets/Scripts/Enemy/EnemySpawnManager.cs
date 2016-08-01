@@ -71,7 +71,7 @@ public class EnemySpawnManager : MonoBehaviour {
         public void init()
         {
 
-			int distributionMethod = Random.Range(1, 3);
+			int distributionMethod = 2; //Random.Range(1, 3);
             Debug.Log("METHOD " + distributionMethod);
            
             if(distributionMethod == 1)													// Chooses from the the flypass and flyby enemies
@@ -87,7 +87,7 @@ public class EnemySpawnManager : MonoBehaviour {
                     enemies[x] = current.enemyTypes[chosenEnemy];
                 }
 			} else if (distributionMethod == 2) {										// includes the kamikaze type
-				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
+				chosenEnemy = 2; //Random.Range(0, current.enemyTypes.Length);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
 				maxEnemies = Random.Range (10, 20);
@@ -255,10 +255,11 @@ public class EnemySpawnManager : MonoBehaviour {
 					}
                     
 				} else if (temp.tag == "Kamikaze") {
-					temp.GetComponent<EnemyAI> ().assignPath (kamikazepath [objectCount]);
-					objectCount++;
-					if (objectCount == EnemySpawnManager.current.waves [currentWave].maxEnemies) {
+					if (objectCount == 5) {
 						objectCount = 0;
+					} else {
+						temp.GetComponent<EnemyAI> ().assignPath (kamikazepath [objectCount]);
+						objectCount++;
 					}
 					print (objectCount);
 				}

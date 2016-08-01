@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
     float moveSpd = 0.000001f;
     public float flySpd;
 
-    private bool occupied, phase2, tracking;
+    private bool occupied, phase2, tracking, chargeNow;
     private CharacterController controller;
 
     private Vector3 startPos;
@@ -134,22 +134,34 @@ public class EnemyAI : MonoBehaviour {
             myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
             */
 
+
 			// find the target position relative to the player:
-			Vector3 dir = path[currentPoint].position - myTransform.position;
+			Vector3 dir = path [currentPoint].position - myTransform.position;
 			// calculate movement at the desired speed:
 			Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
-			// limit movement to never pass the target position:
-			if (movement.magnitude > dir.magnitude) movement = dir;
-			// move the character:
-			controller.Move(movement);
 
-			if (dir.magnitude <= proxyDist && currentPoint < path.Length - 1)
+			if (!tracking) 
 			{
-				currentPoint++;
-				print (currentPoint);
+				
+				// limit movement to never pass the target position:
+				if (movement.magnitude > dir.magnitude)
+					movement = dir;
+				// move the character:
+				controller.Move (movement);
+
+				if (dir.magnitude <= proxyDist && currentPoint < path.Length - 1) {
+					currentPoint++;
+					print (currentPoint + " Kamikaze point!");
+				}
+			} else 
+			{
+				if (chargeNow) {
+					myTransform.position += transform.forward * Time.deltaTime * flySpd;
+					print ("Im movin!");
+				}
 			}
 
-			if (currentPoint >= path.Length - 1)
+			if (dir.magnitude == 0)
 			{
 				StartCoroutine (chargePlayer (2f));
 			}
@@ -446,19 +458,20 @@ public class EnemyAI : MonoBehaviour {
 	IEnumerator chargePlayer(float waitTime)
 	{
 
-		yield return new WaitForSeconds (2f);
-
 		if (!tracking) {
+			print ("I'm Charging!!!");
 			tracking = true;
+			weapon.Shoot();
+			yield return new WaitForSeconds (2f);
+
 			Vector3 lastPosition = player.transform.position;
 			Vector3 directionMid = (player.transform.position - myTransform.position).normalized;
 			Quaternion lookRotation = Quaternion.LookRotation (directionMid);
 			transform.rotation = lookRotation;
+
+			yield return new WaitForSeconds (waitTime);
+			chargeNow = true;
 		}
-
-		yield return new WaitForSeconds (waitTime);
-
-		myTransform.position += transform.forward * Time.deltaTime * 30;
 
 		//rb.AddForce(transform.forward * 20);
 	}
@@ -475,10 +488,11 @@ public class EnemyAI : MonoBehaviour {
         occupied = false;
         phase2 = false;
 		tracking = false;
+		chargeNow = false;
        
     }
 
-	/*void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 
 		if ((collisionMask.value & 1 << other.gameObject.layer) != 0)
@@ -499,13 +513,13 @@ public class EnemyAI : MonoBehaviour {
 					Debug.Log("Player object does not exist");
 				}
 					
-				//transform.gameObject.SetActive(false);
+			    //transform.gameObject.SetActive(false);
 			}
 				
 		}
 
 
-	}*/
+	}
 
 
 
