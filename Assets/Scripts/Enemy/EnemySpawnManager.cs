@@ -8,7 +8,6 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public int maxEnemies = 1; //Equal to the maxEnemies of the current wave
     public int maxBosses = 1;
-	int objectCount = 0;
 
     public int totalEnemiesSpawned = 0;
     public int maxEnemiesAllowed = 6;
@@ -27,14 +26,9 @@ public class EnemySpawnManager : MonoBehaviour {
     public Transform[] path2;
     public Transform[] path3;
     public Transform[] path4;
-	public Transform[] path6;
 
     //MirrorBoss//
     public Transform[] path5;
-
-	//Kamiokaze paths
-	public Transform[] spot1, spot2, spot3, spot4, spot5;
-	public Transform[][] kamikazepath;
 
     [SerializeField]
     private Transform[] reverse_Path;
@@ -71,12 +65,12 @@ public class EnemySpawnManager : MonoBehaviour {
         public void init()
         {
 
-			int distributionMethod = Random.Range(1, 3);
+            int distributionMethod = Random.Range(1, 3);
             Debug.Log("METHOD " + distributionMethod);
            
-            if(distributionMethod == 1)													// Chooses from the the flypass and flyby enemies
+            if(distributionMethod == 1)
             {
-                chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);           // removes the kamikaze enemy type from selection
+                chosenEnemy = Random.Range(0, current.enemyTypes.Length);
                 Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);
 
                 maxEnemies = Random.Range(10, 20);
@@ -86,36 +80,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
                     enemies[x] = current.enemyTypes[chosenEnemy];
                 }
-			} else if (distributionMethod == 2) {										// includes the kamikaze type
-				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
-				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
-
-				maxEnemies = Random.Range (10, 20);
-				
-				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-
-				if(chosenEnemy == 2)														// kamikaze type will only spawn once in groups of 5 if chosen
-				{
-					for (int x = 0; x < 5; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-
-					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);
-
-					for (int x = 5; x < enemies.Length; x++)							// rest of wave is filled with other types
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}
-				else
-				{
-					for (int x = 0; x < enemies.Length; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}
-			}
+            }
             else
             {
                 
@@ -186,15 +151,6 @@ public class EnemySpawnManager : MonoBehaviour {
             waves[x] = new Wave();
             waves[x].init();
         }
-
-		kamikazepath = new Transform[5][];
-
-		kamikazepath [0] = spot1;
-		kamikazepath [1] = spot2;
-		kamikazepath [2] = spot3;
-		kamikazepath [3] = spot4;
-		kamikazepath [4] = spot5;
-
         
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
@@ -240,29 +196,30 @@ public class EnemySpawnManager : MonoBehaviour {
                 temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
                 if (temp == null) return;
 
-				if (temp.tag == "Fly_By") {
-					if (spawnPointIndex == 0) {
-						temp.GetComponent<EnemyAI> ().assignPath (path);
-					} else {
-						temp.GetComponent<EnemyAI> ().assignPath (reverse_Path);
-					}
+                if(temp.tag == "Fly_By")
+                {
+                    if(spawnPointIndex == 0)
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(path);
+                    }
+                    else
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(reverse_Path);
+                    }
                     
-				} else if (temp.tag == "Fly_Pass") {
-					if (spawnPointIndex == 0) {
-						temp.GetComponent<EnemyAI> ().assignPath (path4);
-					} else {
-						temp.GetComponent<EnemyAI> ().assignPath (reverse_Path4);
-					}
+                }
+                else if(temp.tag == "Fly_Pass")
+                {
+                    if(spawnPointIndex == 0)
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(path4);
+                    }
+                    else
+                    {
+                        temp.GetComponent<EnemyAI>().assignPath(reverse_Path4);
+                    }
                     
-				} else if (temp.tag == "Kamikaze") {
-					temp.GetComponent<EnemyAI> ().assignPath (kamikazepath [objectCount]);
-					objectCount++;
-					if (objectCount == EnemySpawnManager.current.waves [currentWave].maxEnemies) {
-						objectCount = 0;
-					}
-					print (objectCount);
-				}
-
+                }
                 
                 temp.SetActive(true);
 
@@ -485,8 +442,7 @@ public class EnemySpawnManager : MonoBehaviour {
                 Gizmos.DrawSphere(path4[x].position, drawDis);
             }
         }
-        
-		for (int x = 0; x < path5.Length; x++)
+        for (int x = 0; x < path5.Length; x++)
         {
 
             if (path5[x] != null)
@@ -495,16 +451,6 @@ public class EnemySpawnManager : MonoBehaviour {
                 Gizmos.DrawSphere(path5[x].position, drawDis);
             }
         }
-
-		for (int x = 0; x < path6.Length; x++)
-		{
-
-			if (path6[x] != null)
-			{
-				Gizmos.color = Color.green;
-				Gizmos.DrawSphere(path6[x].position, drawDis);
-			}
-		}
 
 
         for (int x = 0; x < spawnPoints.Length; x++)
