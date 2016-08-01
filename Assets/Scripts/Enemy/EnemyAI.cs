@@ -10,9 +10,13 @@ public class EnemyAI : MonoBehaviour {
     private Enemy_Weapon weapon;
 
 
-    GameObject player, origin;
+	public LayerMask collisionMask;
+
+	GameObject player, origin;
     private Transform myTransform;
     public Transform[] path; 
+
+	public int damage;
 
     int currentPoint = 0;
     float proxyDist = 1.0f;
@@ -23,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
     float moveSpd = 0.000001f;
     public float flySpd;
 
-    private bool occupied, phase2;
+    private bool occupied, phase2, tracking;
     private CharacterController controller;
 
     private Vector3 startPos;
@@ -123,7 +127,33 @@ public class EnemyAI : MonoBehaviour {
                 myTransform.position = startPos;
             }
         }
+		else if (gameObject.tag == "Kamikaze")
+		{
+			/*
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            */
 
+			// find the target position relative to the player:
+			Vector3 dir = path[currentPoint].position - myTransform.position;
+			// calculate movement at the desired speed:
+			Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+			// limit movement to never pass the target position:
+			if (movement.magnitude > dir.magnitude) movement = dir;
+			// move the character:
+			controller.Move(movement);
+
+			if (dir.magnitude <= proxyDist && currentPoint < path.Length - 1)
+			{
+				currentPoint++;
+				print (currentPoint);
+			}
+
+			if (currentPoint >= path.Length - 1)
+			{
+				StartCoroutine (chargePlayer (2f));
+			}
+		}
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy3"))
         {
             Vector3 dir = path[currentPoint].position - myTransform.position;
@@ -413,6 +443,25 @@ public class EnemyAI : MonoBehaviour {
         occupied = false;
     }
     
+	IEnumerator chargePlayer(float waitTime)
+	{
+
+		yield return new WaitForSeconds (2f);
+
+		if (!tracking) {
+			tracking = true;
+			Vector3 lastPosition = player.transform.position;
+			Vector3 directionMid = (player.transform.position - myTransform.position).normalized;
+			Quaternion lookRotation = Quaternion.LookRotation (directionMid);
+			transform.rotation = lookRotation;
+		}
+
+		yield return new WaitForSeconds (waitTime);
+
+		myTransform.position += transform.forward * Time.deltaTime * 30;
+
+		//rb.AddForce(transform.forward * 20);
+	}
 
     void OnEnable()
     {
@@ -425,8 +474,38 @@ public class EnemyAI : MonoBehaviour {
         currentPoint = 0;
         occupied = false;
         phase2 = false;
+		tracking = false;
        
     }
+
+	/*void OnTriggerEnter(Collider other)
+	{
+
+		if ((collisionMask.value & 1 << other.gameObject.layer) != 0)
+		{
+			if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+			{
+
+
+				//other.transform.gameObject.SetActive(false);
+
+				Player player = other.GetComponent<Player>();
+				if (player != null)
+				{
+					player.DamagePlayer(damage);
+				}
+				else
+				{
+					Debug.Log("Player object does not exist");
+				}
+					
+				//transform.gameObject.SetActive(false);
+			}
+				
+		}
+
+
+	}*/
 
 
 
