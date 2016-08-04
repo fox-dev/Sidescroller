@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
     float moveSpd = 0.000001f;
     public float flySpd;
 
-    private bool occupied, phase2, tracking, chargeNow;
+    private bool occupied, phase2, tracking, chargeNow, disabling;
     private CharacterController controller;
 
     private Vector3 startPos;
@@ -61,6 +61,10 @@ public class EnemyAI : MonoBehaviour {
         {
             vel = origin.GetComponent<OriginMovement>().velocity;
         }
+
+		/*if (gameObject.tag == "Kamikaze") {
+			weapon.Shoot ();
+		}*/
 
     }
 
@@ -149,7 +153,7 @@ public class EnemyAI : MonoBehaviour {
 				// move the character:
 				controller.Move (movement);
 
-				if (dir.magnitude <= proxyDist && currentPoint < path.Length - 1) {
+				if (dir.magnitude <= proxyDist && currentPoint < path.Length) {
 					currentPoint++;
 					print (currentPoint + " Kamikaze point!");
 				}
@@ -161,10 +165,19 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 
-			if (dir.magnitude == 0)
+			/*if (dir.magnitude == 0)
 			{
 				StartCoroutine (chargePlayer (2f));
+			}*/
+
+			if (currentPoint >= path.Length)
+			{
+				currentPoint = 0; 
+				StartCoroutine(chargePlayer(2f));
+				StartCoroutine(disableEnemy (8f));
+
 			}
+
 		}
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy3"))
         {
@@ -476,9 +489,25 @@ public class EnemyAI : MonoBehaviour {
 		//rb.AddForce(transform.forward * 20);
 	}
 
+	IEnumerator disableEnemy(float waitTime)
+	{
+		if (!disabling) {
+			disabling = true;
+
+			yield return new WaitForSeconds (waitTime);
+
+			gameObject.SetActive (false);
+		}
+	
+	}
+
     void OnEnable()
     {
         startPos = myTransform.position;
+
+		/*if (gameObject.tag == "Kamikaze") {
+			weapon.Shoot ();
+		}*/
     }
 
     void OnDisable()
@@ -489,6 +518,7 @@ public class EnemyAI : MonoBehaviour {
         phase2 = false;
 		tracking = false;
 		chargeNow = false;
+		disabling = false;
        
     }
 

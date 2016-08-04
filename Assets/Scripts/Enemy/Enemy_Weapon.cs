@@ -57,10 +57,16 @@ public class Enemy_Weapon : MonoBehaviour
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
         }      
-        if((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
+
+		/*if((transform.parent.gameObject.tag != "Kamikaze" || transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
             InvokeRepeating("Shoot", shootInterval, shootInterval);
-        }
+        }*/
+
+		if (transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Enemy_Fly_Pass") || transform.parent.gameObject.name.Contains("Enemy_Fly_By"))
+		{
+			InvokeRepeating("Shoot", shootInterval, shootInterval);
+		}
     }
 
     void OnDisable()
@@ -78,11 +84,17 @@ public class Enemy_Weapon : MonoBehaviour
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
         }
-        if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && (!enemy.name.Contains("Boss_Enemy3") && !enemy.name.Contains("MirrorBoss")))
+		/* if ((transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && (!enemy.name.Contains("Boss_Enemy3") && !enemy.name.Contains("MirrorBoss")))
         {
             print("im here");
             InvokeRepeating("Shoot", shootInterval, shootInterval);
-        }
+        }*/
+        
+		if (transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Enemy_Fly_Pass") || transform.parent.gameObject.name.Contains("Enemy_Fly_By"))
+		{
+			InvokeRepeating("Shoot", shootInterval, shootInterval);
+		}
+
         
 
     }
@@ -386,13 +398,22 @@ public class Enemy_Weapon : MonoBehaviour
 
     }
 
-    public void reinit()
-    {
-        fire = alternateFire = false;
-        nextBullet = 0f;
-        shootRotation = 0;
-        direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
-    }
+	public void reinit()
+	{
+		if(transform.parent.tag == "Kamikaze")
+		{
+			fire = true;
+			alternateFire = false;
+		}
+		else
+		{
+			fire = alternateFire = false;
+		}
+
+		nextBullet = 0f;
+		shootRotation = 0;
+		direction = Quaternion.Euler(0, shootRotation, 0); //For fireball, rotate along Y-Axis
+	}
 
     public void Shoot()
     {
@@ -418,8 +439,5 @@ public class Enemy_Weapon : MonoBehaviour
         tracking = false;
         occupied = false;
     }
-
-    
-
-
+		
 }

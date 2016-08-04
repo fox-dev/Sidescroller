@@ -76,7 +76,7 @@ public class EnemySpawnManager : MonoBehaviour {
            
             if(distributionMethod == 1)													// Chooses from the the flypass and flyby enemies
             {
-                chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);           // removes the kamikaze enemy type from selection
+				chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);           // removes the kamikaze enemy type from selection
                 Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);
 
                 maxEnemies = Random.Range(10, 20);
