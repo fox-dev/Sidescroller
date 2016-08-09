@@ -6,7 +6,8 @@ public class Explosion : MonoBehaviour {
 
     GameObject flashed;
     Color c;
-    
+
+    private float updateVal = 0;
 
     float startValue, goToValue; //Values for the white image sprite opacity
 
@@ -14,6 +15,7 @@ public class Explosion : MonoBehaviour {
 	void Start () {
       
         GetComponent<AudioSource>().Play();
+        Destroy(this.gameObject, 3f);
 	}
 
     void Awake()
@@ -33,14 +35,16 @@ public class Explosion : MonoBehaviour {
 
     void OnDisable()
     {
-
+        goToValue = 10f;
     }
 
     void Update()
     {
         
+
         if (this.name.Contains("Explosion2"))
         {
+      
             flashWhite();
         }
         
@@ -50,7 +54,7 @@ public class Explosion : MonoBehaviour {
     {
         //print(flashed.GetComponent<SpriteRenderer>().color.a);
         c =  flashed.GetComponent<SpriteRenderer>().color;
-        c.a = Mathf.Lerp(c.a, goToValue, 2 * Time.deltaTime);
+        c.a = Mathf.Lerp(c.a, goToValue, 2f * Time.deltaTime);
         if (c.a < 0.01)
         {
             c.a = 0;

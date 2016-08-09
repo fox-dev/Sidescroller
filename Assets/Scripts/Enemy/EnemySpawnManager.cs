@@ -257,11 +257,12 @@ public class EnemySpawnManager : MonoBehaviour {
 				} else if (temp.tag == "Kamikaze") {
 					if (objectCount == 5) {
 						objectCount = 0;
-					} else {
-						temp.GetComponent<EnemyAI> ().assignPath (kamikazepath [objectCount]);
-						objectCount++;
-					}
-					print (objectCount);
+                    }
+                    temp.GetComponent<EnemyAI>().assignPath(kamikazepath[objectCount]);
+                    objectCount++;
+
+
+                    print (objectCount);
 				}
 
                 

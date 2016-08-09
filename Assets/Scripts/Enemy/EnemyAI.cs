@@ -496,7 +496,8 @@ public class EnemyAI : MonoBehaviour {
 
 			yield return new WaitForSeconds (waitTime);
 
-			gameObject.SetActive (false);
+            //gameObject.SetActive (false);
+            GameManager.disableEnemy(enemy); //send this enemy to be disabled
 		}
 	
 	}

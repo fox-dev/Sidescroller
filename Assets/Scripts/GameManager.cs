@@ -198,6 +198,16 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    public static void disableEnemy(Enemy enemy) //used to disable enemies that move offscreen
+    {
+        enemy.gameObject.SetActive(false);
+        EnemySpawnManager.currentEnemies--;
+
+        //Increment appropriate stats in gameStates//
+        gm.gameStats.addEnemiesMissed();
+
+    }
+
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
 
