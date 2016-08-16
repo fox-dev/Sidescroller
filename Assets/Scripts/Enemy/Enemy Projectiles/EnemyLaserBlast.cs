@@ -102,7 +102,7 @@ public class EnemyLaserBlast : MonoBehaviour
         if (EnemySpawnManager.bossEnemy != null)
         {
             myTransform.rotation = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.rotation;
-            lookRotation = Quaternion.LookRotation(-myTransform.right) * Quaternion.Euler(90, 0, 0);
+            lookRotation = Quaternion.LookRotation(myTransform.right) * Quaternion.Euler(90, 0, 0); //Multiply quaternions to do addition: myTransform.right + 90
             myTransform.rotation = lookRotation;
             shootRay.origin = EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position;
             shootRay.direction = (myTransform.forward);
@@ -145,7 +145,7 @@ public class EnemyLaserBlast : MonoBehaviour
             gunLine.SetWidth(growingWidth, growingWidth);
         }
 
-        if (Physics.SphereCast(shootRay, 6f, out shootHit, range, shootableMask) && damageEnabled)
+        if (Physics.SphereCast(shootRay, 5f, out shootHit, range, shootableMask) && damageEnabled)
         {
             if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
             {

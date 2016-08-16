@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Point : MonoBehaviour
 {
-    public float moveSpeed;
     public float rotateSpeed;
 
     private GameObject player;
@@ -43,7 +42,7 @@ public class Point : MonoBehaviour
 
         float AngleDeg = (180 / Mathf.PI) * AngleRad;
 
-        targetRot = Quaternion.Euler(0, 0, AngleDeg + moveSpeed);
+        targetRot = Quaternion.Euler(0, 0, AngleDeg + 90); // + 90 to properly orient facing position towards player 
 
         
         current = Quaternion.Slerp(current, targetRot, 2f * Time.deltaTime);

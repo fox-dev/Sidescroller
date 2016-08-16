@@ -32,10 +32,14 @@ public class EnemyAI : MonoBehaviour {
 
     private Vector3 startPos;
 
+    Quaternion currentRot;
+
   
 
     // Use this for initialization
     void Awake() {
+        currentRot = this.transform.rotation;
+
         enemy = this.GetComponent<Enemy>();
 
         weapon = this.GetComponentInChildren<Enemy_Weapon>();
@@ -75,8 +79,19 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if(gameObject.tag == "Tutorial_Enemy")
+        {
+            // find the target position relative to the player:
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            // calculate movement at the desired speed:
+            Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+            // limit movement to never pass the target position:
+            if (movement.magnitude > dir.magnitude) movement = dir;
+            // move the character:
+            controller.Move(movement);
 
-        if (gameObject.tag == "Fly_By")
+        }
+        else if (gameObject.tag == "Fly_By")
         {
             /*
             Vector3 dir = path[currentPoint].position - myTransform.position;
@@ -133,6 +148,7 @@ public class EnemyAI : MonoBehaviour {
         }
 		else if (gameObject.tag == "Kamikaze")
 		{
+
 			/*
             Vector3 dir = path[currentPoint].position - myTransform.position;
             myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
@@ -144,7 +160,7 @@ public class EnemyAI : MonoBehaviour {
 			// calculate movement at the desired speed:
 			Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
 
-			if (!tracking) 
+			if (!tracking && !chargeNow) 
 			{
 				
 				// limit movement to never pass the target position:
@@ -159,8 +175,28 @@ public class EnemyAI : MonoBehaviour {
 				}
 			} else 
 			{
-				if (chargeNow) {
-					myTransform.position += transform.forward * Time.deltaTime * flySpd;
+                if (!chargeNow)
+                {
+                    /*
+                    Vector3 lastPosition = player.transform.position;
+                    Vector3 directionMid = (player.transform.position - myTransform.position).normalized;
+                    Quaternion lookRotation = Quaternion.LookRotation(directionMid);
+                    currentRot = Quaternion.Slerp(currentRot, lookRotation, 2f * Time.deltaTime);
+                    myTransform.rotation = currentRot;
+                    */
+                    float AngleRad = Mathf.Atan2(player.transform.position.y - transform.position.y, player.transform.position.x - transform.position.x);
+
+                    float AngleDeg = (180 / Mathf.PI) * AngleRad;
+
+                    Quaternion targetRot = Quaternion.Euler(0, 0, AngleDeg);
+
+
+                    currentRot = Quaternion.Slerp(currentRot, targetRot, 2f * Time.deltaTime);
+                    myTransform.rotation = currentRot;
+                }
+              
+                if (chargeNow) {
+					myTransform.position += transform.right * Time.deltaTime * flySpd;
 					print ("Im movin!");
 				}
 			}
@@ -172,9 +208,13 @@ public class EnemyAI : MonoBehaviour {
 
 			if (currentPoint >= path.Length)
 			{
-				currentPoint = 0; 
-				StartCoroutine(chargePlayer(2f));
-				StartCoroutine(disableEnemy (8f));
+				currentPoint = 0;
+                if (!occupied && !chargeNow)
+                {
+                    StartCoroutine(chargePlayer(2f));
+                    StartCoroutine(disableEnemy(8f));
+                }
+				
 
 			}
 
@@ -470,27 +510,29 @@ public class EnemyAI : MonoBehaviour {
     
 	IEnumerator chargePlayer(float waitTime)
 	{
+        occupied = true;
 
-		if (!tracking) {
+        if (!tracking) {
 			print ("I'm Charging!!!");
 			tracking = true;
 			weapon.Shoot();
-			yield return new WaitForSeconds (2f);
+			
 
-			Vector3 lastPosition = player.transform.position;
-			Vector3 directionMid = (player.transform.position - myTransform.position).normalized;
-			Quaternion lookRotation = Quaternion.LookRotation (directionMid);
-			transform.rotation = lookRotation;
+          
 
-			yield return new WaitForSeconds (waitTime);
+            yield return new WaitForSeconds (waitTime);
+              tracking = false;
 			chargeNow = true;
 		}
+
+        occupied = false;
 
 		//rb.AddForce(transform.forward * 20);
 	}
 
 	IEnumerator disableEnemy(float waitTime)
 	{
+        occupied = true;
 		if (!disabling) {
 			disabling = true;
 
@@ -499,6 +541,7 @@ public class EnemyAI : MonoBehaviour {
             //gameObject.SetActive (false);
             GameManager.disableEnemy(enemy); //send this enemy to be disabled
 		}
+        occupied = false;
 	
 	}
 

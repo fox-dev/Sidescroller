@@ -35,6 +35,14 @@ public class Crosshair : MonoBehaviour {
                 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
                 myTransform.position = pos_at_z_0;
 
+                if(GameManager.gm.state == GameManager.gameState.tutorial_1)  //For tutorial use on moving the crosshair
+                {
+                    if (TutorialOverlayUI.current.jumpPressed && !TutorialOverlayUI.current.crosshairMoved)
+                    {
+                        TutorialOverlayUI.current.crosshairMoved = true;
+                    }
+                }
+
             }
         }
 
@@ -73,6 +81,15 @@ public class Crosshair : MonoBehaviour {
             pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
 
             myTransform.position = pos_at_z_0;
+
+            if (GameManager.gm.state == GameManager.gameState.tutorial_1)  //For tutorial use on moving the crosshair
+            {
+                if (TutorialOverlayUI.current.jumpPressed && !TutorialOverlayUI.current.crosshairMoved)
+                {
+                    TutorialOverlayUI.current.ani.Play("Description_Main", -1, 0f);
+                    TutorialOverlayUI.current.crosshairMoved = true;
+                }
+            }
         }
         
         

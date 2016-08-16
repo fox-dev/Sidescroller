@@ -62,10 +62,24 @@ public class PlayerWeapon : MonoBehaviour {
             }
             
         }
+        else if (GameManager.gm.state == GameManager.gameState.menu){ //Don't charge in menu state
 
-        if(currentCharge < maxCharge && charge && (GameManager.gm.state != GameManager.gameState.setup || GameManager.gm.state != GameManager.gameState.results || GameManager.gm.state != GameManager.gameState.waiting))
+            currentCharge += (0 * Time.deltaTime);
+        }
+        else if (GameManager.gm.state == GameManager.gameState.tutorial_1 || GameManager.gm.state == GameManager.gameState.tutorial_2)
         {
-            currentCharge += (5*Time.deltaTime); 
+            currentCharge += (0 * Time.deltaTime);
+        }
+        else if (GameManager.gm.state == GameManager.gameState.tutorial_3)
+        {
+            currentCharge += (55 * Time.deltaTime);
+        }
+
+        else if (currentCharge < maxCharge && charge && ((GameManager.gm.state != GameManager.gameState.setup) && (GameManager.gm.state != GameManager.gameState.results) && (GameManager.gm.state != GameManager.gameState.waiting))) //Don't charge in transition states
+        {
+
+             currentCharge += (5 * Time.deltaTime);
+           
         }
         else if(firing)
         {

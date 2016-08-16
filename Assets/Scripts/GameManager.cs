@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour {
     {
         test, //Testing purposes
         menu, //Menu state for main menu
+        tutorial_1, tutorial_2, tutorial_3, //Tutorial phases 
         setup,//Setup phase (upgrades, etc)
         results, //Results phase to show round results
         ready, //state lasts 5 seconds before moving to normalPlay
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour {
    
         gm = this;
 
-        state = gameState.test;
+        state = gameState.menu;
 
         score = 0;
         currency = 10000;

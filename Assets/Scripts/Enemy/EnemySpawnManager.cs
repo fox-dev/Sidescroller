@@ -3,6 +3,8 @@ using System.Collections;
 
 public class EnemySpawnManager : MonoBehaviour {
 
+    public bool spawnEnemies, spawnBoss;
+
     public static EnemySpawnManager current;
     private Transform myTransform;
 
@@ -16,6 +18,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public static int currentBosses = 0;
 
     public GameObject[] enemyTypes;
+    public GameObject tutorialEnemy;
     public GameObject[] bossList;
 
     public GameObject boss;
@@ -28,6 +31,8 @@ public class EnemySpawnManager : MonoBehaviour {
     public Transform[] path3;
     public Transform[] path4;
 	public Transform[] path6;
+
+    public Transform[] tutorialPath;
 
     //MirrorBoss//
     public Transform[] path5;
@@ -52,8 +57,6 @@ public class EnemySpawnManager : MonoBehaviour {
 
 
     GameObject player, originMid;
-
-    public bool spawnEnemies, spawnBoss;
 
     [SerializeField]
     private bool occupied; //for IEnumerator
@@ -225,6 +228,29 @@ public class EnemySpawnManager : MonoBehaviour {
             {
                 StartCoroutine(startFirstWave());
             }
+        }
+
+        if(spawnEnemies && GameManager.gm.state == GameManager.gameState.tutorial_2)
+        {
+            if(totalEnemiesSpawned <= 0)
+            {
+                int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+
+                GameObject temp = EnemyObjectPool.current.getPooledObject(tutorialEnemy);
+                currentEnemies++;
+                totalEnemiesSpawned++;
+
+                if (temp == null) return;
+
+                if(temp.tag == "Tutorial_Enemy")
+                {
+                    temp.GetComponent<EnemyAI>().assignPath(tutorialPath);
+                }
+
+                temp.SetActive(true);
+            }
+
+
         }
 
         if (spawnEnemies && GameManager.gm.state == GameManager.gameState.normalPlay)
@@ -507,6 +533,16 @@ public class EnemySpawnManager : MonoBehaviour {
 				Gizmos.DrawSphere(path6[x].position, drawDis);
 			}
 		}
+
+        for (int x = 0; x < tutorialPath.Length; x++)
+        {
+
+            if (path6[x] != null)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(tutorialPath[x].position, drawDis);
+            }
+        }
 
 
         for (int x = 0; x < spawnPoints.Length; x++)

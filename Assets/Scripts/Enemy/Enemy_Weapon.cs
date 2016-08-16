@@ -56,17 +56,20 @@ public class Enemy_Weapon : MonoBehaviour
         if (enemy == null) //immediate parent may not be the enemy object and therefore null
         {
             enemy = transform.parent.parent.parent.GetComponent<Enemy>();
-        }      
+        }
 
-		/*if((transform.parent.gameObject.tag != "Kamikaze" || transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
+        /*if((transform.parent.gameObject.tag != "Kamikaze" || transform.parent.gameObject.tag != "Boss" || transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Boss_Enemy1")) && !enemy.name.Contains("Boss_Enemy3"))
         {
             InvokeRepeating("Shoot", shootInterval, shootInterval);
         }*/
 
-		if (transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Enemy_Fly_Pass") || transform.parent.gameObject.name.Contains("Enemy_Fly_By"))
-		{
-			InvokeRepeating("Shoot", shootInterval, shootInterval);
-		}
+        /*
+        if (transform.parent.gameObject.name.Contains("Boss_Enemy1") || transform.parent.gameObject.name.Contains("Enemy_Fly_Pass") || transform.parent.gameObject.name.Contains("Enemy_Fly_By") || transform.parent.gameObject.name.Contains("Tutorial_Enemy"))
+        {
+            InvokeRepeating("Shoot", shootInterval, shootInterval);
+        }
+        */
+
     }
 
     void OnDisable()
@@ -95,6 +98,11 @@ public class Enemy_Weapon : MonoBehaviour
 			InvokeRepeating("Shoot", shootInterval, shootInterval);
 		}
 
+        if (transform.parent.gameObject.name.Contains("Tutorial_Enemy"))
+        {
+            fire = true;
+        }
+
         
 
     }
@@ -110,7 +118,7 @@ public class Enemy_Weapon : MonoBehaviour
 
             float AngleDeg = (180 / Mathf.PI) * AngleRad;
 
-            targetRot = Quaternion.Euler(0, 0, AngleDeg + 90);
+            targetRot = Quaternion.Euler(0, 0, AngleDeg + 90);  //+ 90 to properly orient facing position towards player 
 
             myTransform.rotation = targetRot;
         }
