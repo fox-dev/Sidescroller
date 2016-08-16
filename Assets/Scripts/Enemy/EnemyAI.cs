@@ -294,7 +294,7 @@ public class EnemyAI : MonoBehaviour {
                 myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(origin.transform.position.x + 10, player.transform.position.y + 25, player.transform.position.z), 15 * Time.deltaTime);
             }
         }
-        else if (gameObject.name.Contains("MirrorBoss"))
+        else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("MirrorBoss"))
         {
             /*
             Vector3 dir = path[currentPoint].position - myTransform.position;

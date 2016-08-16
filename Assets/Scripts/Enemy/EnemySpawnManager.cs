@@ -211,6 +211,8 @@ public class EnemySpawnManager : MonoBehaviour {
         //Since position is not being tracked by raycasting, like the Player is, this line is needed to maintain the Y-position;
         myTransform.position = new Vector3(originMid.transform.position.x + 30, originMid.transform.position.y, 0);
 
+        
+
 
 
     }
@@ -230,13 +232,23 @@ public class EnemySpawnManager : MonoBehaviour {
             }
         }
 
-        if(spawnEnemies && GameManager.gm.state == GameManager.gameState.tutorial_2)
+
+        if(GameManager.gm.state == GameManager.gameState.menu)
         {
-            if(totalEnemiesSpawned <= 0)
+            totalEnemiesSpawned = 0;
+            spawnEnemies = true;
+        }
+
+        if(spawnEnemies && (GameManager.gm.state == GameManager.gameState.tutorial_2 || GameManager.gm.state == GameManager.gameState.tutorial_3))
+        {
+            if(currentEnemies <= 0)
             {
                 int spawnPointIndex = Random.Range(0, spawnPoints.Length);
 
                 GameObject temp = EnemyObjectPool.current.getPooledObject(tutorialEnemy);
+                temp.transform.position = spawnPoints[spawnPointIndex].position;
+                temp.transform.rotation = spawnPoints[spawnPointIndex].rotation;
+
                 currentEnemies++;
                 totalEnemiesSpawned++;
 

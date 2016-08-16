@@ -159,8 +159,25 @@ public class GameManager : MonoBehaviour {
         hitEffect.transform.position = enemy.transform.position;
 
         hitEffect.SetActive(true);
-        
-        if (enemy.tag == "Boss")
+
+        if(enemy.tag == "Tutorial_Enemy")
+        {
+            if (GameManager.gm.state == GameManager.gameState.tutorial_2)
+            {
+                TutorialOverlayUI.current.oneKilled();
+                enemy.gameObject.SetActive(false);
+                EnemySpawnManager.currentEnemies--;
+            }
+
+            if (GameManager.gm.state == GameManager.gameState.tutorial_3)
+            {
+                TutorialOverlayUI.current.twoKilled();
+                enemy.gameObject.SetActive(false);
+                EnemySpawnManager.currentEnemies--;
+                EnemySpawnManager.current.spawnEnemies = false;
+            }
+        }
+        else if (enemy.tag == "Boss")
         {
 
             enemy.gameObject.SetActive(false);
@@ -183,7 +200,7 @@ public class GameManager : MonoBehaviour {
 
         }
         else
-        {           
+        {
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentEnemies--;
             score += enemy.stats.awardPoints;

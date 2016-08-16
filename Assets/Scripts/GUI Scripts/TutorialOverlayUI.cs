@@ -5,7 +5,9 @@ using System.Collections;
 public class TutorialOverlayUI : MonoBehaviour {
 
     public static TutorialOverlayUI current;
-    
+
+    public Button move, jump, fire;
+
 
     [SerializeField]
     private Text descText;
@@ -18,17 +20,26 @@ public class TutorialOverlayUI : MonoBehaviour {
 
     public Animator ani;
 
+    //Phase1 tutorial bools
     public bool goPressed, jumpPressed, crosshairMoved, firePressed;
 
-	// Use this for initialization
-	void Start () {
+    //Phase2 tutorial bools
+    public bool enemyOneKilled;
+
+    //Phase3 tutorial bools
+    public bool enemyTwoKilled;
+
+    // Use this for initialization
+    void Start() {
 
         current = this;
         crosshairArrow.SetActive(false);
         goPressed = jumpPressed = crosshairMoved = firePressed = false;
 
         ani = desc.GetComponent<Animator>();
-	}
+
+        fire.interactable = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,22 +48,42 @@ public class TutorialOverlayUI : MonoBehaviour {
         if (goPressed)
         {
             arrow.anchoredPosition = new Vector2(685, -140);
-            descText.text = "TAP 'JUMP' TO DODGE AND BECOME INVULNERABLE";
-            ani.SetBool("displayText", true);
+            descText.text = "TAP 'JUMP' TO DODGE AND BECOME INVULNERABLE.";
+
             if (jumpPressed)
             {
-                crosshairArrow.SetActive(true);
-                descText.text = "TAP ONSCREEN TO MOVE THE CROSSHAIR";
-                ani.SetBool("displayText", true);
+           
+                descText.text = "TAP ON-SCREEN TO MOVE THE CROSSHAIR.";
 
                 if (crosshairMoved)
                 {
-                    crosshairArrow.SetActive(false);
-                    arrow.gameObject.SetActive(true);
                     arrow.anchoredPosition = new Vector2(762, -140);
-                    descText.text = "TAP 'FIRE' TO SHOOT TOWARDS THE CROSSHAIR";
-                    ani.SetBool("displayText", true);
+                    descText.text = "TAP 'FIRE' TO SHOOT TOWARDS THE CROSSHAIR.";
+
+                    if (firePressed)
+                    {
+                        GameManager.gm.state = GameManager.gameState.tutorial_2;
+                        descText.text = "SHOOT THE ENEMY. ENEMY HEALTH IS INDICATED BY IT'S HEALTH BAR.";
+                    }
                 }
+            }
+        }
+
+        if(GameManager.gm.state == GameManager.gameState.tutorial_2)
+        {
+            if (enemyOneKilled)
+            {
+                arrow.anchoredPosition = new Vector2(351, -176);
+                descText.text = "TAP 'SUPER' WHEN CHARGED TO DESTROY ENEMIES AND PROJECTILES.";
+                GameManager.gm.state = GameManager.gameState.tutorial_3;
+            }
+        }
+
+        if(GameManager.gm.state == GameManager.gameState.tutorial_3)
+        {
+            if (enemyTwoKilled)
+            {
+                descText.text = "NOW YOU'RE READY FOR THE REAL THING! GOOD LUCK!";
             }
         }
 
@@ -62,26 +93,49 @@ public class TutorialOverlayUI : MonoBehaviour {
     {
         if (this.isActiveAndEnabled)
         {
-            ani.Play("Description_Main", -1, 0f);
 
-            if(!goPressed) ani.SetBool("displayText", false);
-
-            goPressed = true;
+            if (!goPressed)
+            {
+                ani.Play("Description_Main", -1, 0f);
+                goPressed = true;
+            }
+            
         }
-        
+
     }
 
     public void pressedJump()
     {
         if (this.isActiveAndEnabled)
         {
-            arrow.gameObject.SetActive(false);
 
-            if(!jumpPressed) ani.Play("Description_Main", -1, 0f);
-
-            jumpPressed = true;
+            if (goPressed && !jumpPressed)
+            {
+                jumpPressed = true;
+                ani.Play("Description_Main", -1, 0f);
+                arrow.gameObject.SetActive(false);
+                crosshairArrow.SetActive(true);
+            }
+            
         }
 
+    }
+
+    public void movedCrosshair()
+    {
+        if (this.isActiveAndEnabled)
+        {
+
+            if (goPressed && jumpPressed && !crosshairMoved)
+            {
+                ani.Play("Description_Main", -1, 0f);
+                crosshairMoved = true;
+                crosshairArrow.SetActive(false);
+                arrow.gameObject.SetActive(true);
+                fire.interactable = true;
+            }
+
+        }
     }
 
     public void pressedFire()
@@ -89,10 +143,64 @@ public class TutorialOverlayUI : MonoBehaviour {
         if (this.isActiveAndEnabled)
         {
 
-            if(!firePressed) ani.Play("Description_Main", -1, 0f);
-
-            firePressed = true;
+            if (goPressed && jumpPressed && crosshairMoved && !firePressed && fire.interactable)
+            {
+                arrow.gameObject.SetActive(false);
+                ani.Play("Description_Main", -1, 0f);
+                firePressed = true;
+            }
         }
 
     }
+
+    public void oneKilled()
+    {
+        if (!enemyOneKilled)
+        {
+            arrow.gameObject.SetActive(true);
+            ani.Play("Description_Main", -1, 0f);
+            enemyOneKilled = true;
+            fire.interactable = false;
+        }
+        
+    }
+
+    public void twoKilled()
+    {
+        if (!enemyTwoKilled)
+        {
+            arrow.gameObject.SetActive(false);
+            ani.Play("Description_Main", -1, 0f);
+            enemyTwoKilled = true;
+            fire.interactable = true;
+            StartCoroutine(switchToMenu());
+        }
+
+    }
+
+    IEnumerator switchToMenu()
+    {
+   
+        yield return new WaitForSeconds(5f);
+
+        GameManager.gm.state = GameManager.gameState.menu;
+    }
+
+    void OnEnable()
+    {
+        fire.interactable = false;
+    }
+
+    void OnDisable()
+    {
+        crosshairArrow.SetActive(false);
+        arrow.gameObject.SetActive(true);
+        arrow.anchoredPosition = new Vector2(40, -140);
+        goPressed = jumpPressed = crosshairMoved = firePressed = enemyOneKilled = enemyTwoKilled = false;
+        fire.interactable = true;
+
+        descText.text = "HOLD 'GO' TO MOVE FORWARD";
+    }
+
+
 }

@@ -84,11 +84,7 @@ public class Crosshair : MonoBehaviour {
 
             if (GameManager.gm.state == GameManager.gameState.tutorial_1)  //For tutorial use on moving the crosshair
             {
-                if (TutorialOverlayUI.current.jumpPressed && !TutorialOverlayUI.current.crosshairMoved)
-                {
-                    TutorialOverlayUI.current.ani.Play("Description_Main", -1, 0f);
-                    TutorialOverlayUI.current.crosshairMoved = true;
-                }
+                TutorialOverlayUI.current.movedCrosshair();
             }
         }
         

@@ -193,7 +193,18 @@ public class PlayerMovement : MonoBehaviour
     //For onscreen button usage//
     public void moveForwardPressed()
     {
-        moveForward = true;
+        if(GameManager.gm.state == GameManager.gameState.tutorial_1)
+        {
+            if (TutorialOverlayUI.current.move.interactable)
+            {
+                moveForward = true;
+            }
+        }
+        else
+        {
+            moveForward = true;
+        }
+        
     }
 
     public void moveForwardReleased()
