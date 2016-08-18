@@ -197,7 +197,6 @@ public class EnemyAI : MonoBehaviour {
               
                 if (chargeNow) {
 					myTransform.position += transform.right * Time.deltaTime * flySpd;
-					print ("Im movin!");
 				}
 			}
 

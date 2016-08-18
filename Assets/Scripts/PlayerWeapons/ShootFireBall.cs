@@ -23,35 +23,32 @@ public class ShootFireBall : MonoBehaviour {
 
     Vector2 directionMid, directionUp;
 
-    private float velocityCompensation;
-
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        
-    }               
-    void OnEnable()
-    {
-        viewDamage = damage;
         player = GameObject.FindGameObjectWithTag("Player");
         crosshair = GameObject.FindGameObjectWithTag("Crosshair");
-
-
-
-        velocityCompensation = 0;
-        //  print(velocityCompensation);
-
         rb = GetComponent<Rigidbody>();
+    }               
 
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //float z_plane_of_2d_game = 0;
-        //Vector3 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
+    void OnEnable()
+    {
+         
+        if (!GameManager.gm.upgrades.fireBall_x3) //Set fireball up and down inactive if upgrade not purchased.
+        {
+            if (this.gameObject.tag == "FireBallUp" || this.gameObject.tag == "FireBallDown")
+            {
+                this.gameObject.SetActive(false);
+            }
+        }
+
+        viewDamage = damage;
+
         Vector3 pos_at_z_0 = crosshair.transform.position;
-        Vector2 point = new Vector2(pos_at_z_0.x + velocityCompensation, pos_at_z_0.y);
+
+        Vector2 point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
 
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
-
-        //Vector2 direction = (point - currentPos).normalized;
 
         ///////////////////
 
@@ -62,14 +59,13 @@ public class ShootFireBall : MonoBehaviour {
             directionMid = (point - currentPos).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(directionMid);
             transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
-            //rb.AddForce(directionMid * speed, ForceMode.Impulse);
 
         }
 
         if (this.gameObject.tag == "FireBallUp")
         {
 
-            point = new Vector2(pos_at_z_0.x + velocityCompensation, pos_at_z_0.y);
+            point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
             currentPos = new Vector2(transform.position.x, transform.position.y);
 
             directionUp = (point - currentPos).normalized;
@@ -78,25 +74,20 @@ public class ShootFireBall : MonoBehaviour {
             transform.rotation = lookRotation * Quaternion.Euler(3, 0, 0);
 
             //rb.AddForce(transform.forward * speed, ForceMode.Impulse);
-
-
         }
 
         if (this.gameObject.tag == "FireBallDown")
         {
 
-            point = new Vector2(pos_at_z_0.x + velocityCompensation, pos_at_z_0.y);
+            point = new Vector2(pos_at_z_0.x, pos_at_z_0.y);
             currentPos = new Vector2(transform.position.x, transform.position.y);
 
             directionUp = (point - currentPos).normalized;
 
             Quaternion lookRotation = Quaternion.LookRotation(directionUp);
             transform.rotation = lookRotation * Quaternion.Euler(-3, 0, 0);
-
-            //rb.AddForce(transform.forward * speed, ForceMode.Impulse);
-
-
         }
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -107,20 +98,12 @@ public class ShootFireBall : MonoBehaviour {
             
             if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                //Instantiate(Resources.Load("HitParticles"), transform.position, Quaternion.identity);
-                //print(other.name);
                 Enemy enemy = other.GetComponent<Enemy>();
                 if (enemy != null)
                 {
                     enemy.DamageEnemy(damage);
-                    //Debug.Log("We hit " + other.name + " and did" + damage + " damage.");
 
                 }
-                
-                // other.transform.gameObject.SetActive(false);
-               //rb.velocity = Vector3.zero;
-                //transform.position = Vector3.zero;
-                //Destroy(gameObject);
             }
             if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
             {
@@ -157,7 +140,6 @@ public class ShootFireBall : MonoBehaviour {
                 if (enemy != null)
                 {
                     enemy.DamageEnemy(damage);
-                    //Debug.Log("We hit " + other.name + " and did" + damage + " damage.");
 
                 }
             }

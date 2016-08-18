@@ -56,6 +56,27 @@ public class GameManager : MonoBehaviour {
         /////////////////////////////////////
     }
 
+    [System.Serializable]
+    public class Upgrades
+    {
+        public bool fireBall_x3;
+        public bool buddy;
+
+        public void init() //Change to init based off player prefs 
+        {
+            fireBall_x3 = buddy = false;
+        }
+
+
+        //enable methods
+        public void enableFireBall_x3() { fireBall_x3 = true; }
+        public void enableBuddy() { buddy = true; }
+
+        //disable methods
+        public void disableFireBall_x3() { fireBall_x3 = false; }
+        public void disableBuddy() { buddy = false; }
+    }
+
     //Enum for Game States
     public enum gameState
     {
@@ -86,6 +107,8 @@ public class GameManager : MonoBehaviour {
 
     public GameStats gameStats = new GameStats();
 
+    public Upgrades upgrades = new Upgrades();
+
     public float moveSpeed; //adjust value to change moveSpeed of origin objects
     private bool occupied = false; //Used for ienumerator calls in Update method
 
@@ -96,13 +119,14 @@ public class GameManager : MonoBehaviour {
    
         gm = this;
 
-        state = gameState.menu;
+        state = gameState.test;
 
         score = 0;
         currency = 10000;
 
         
         gameStats.init();
+        upgrades.init();
     }
 
     void Update()
