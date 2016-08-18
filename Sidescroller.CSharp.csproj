@@ -166,6 +166,7 @@
     <Compile Include="Assets\Scripts\PlayerWeapons\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapons\ShootFireBall.cs" />
     <Compile Include="Assets\Scripts\RoadManager.cs" />
+    <Compile Include="Assets\Scripts\Slots\SlotMachine.cs" />
     <Compile Include="Assets\SetGlobalShaderVariables.cs" />
   </ItemGroup>
   <ItemGroup>
