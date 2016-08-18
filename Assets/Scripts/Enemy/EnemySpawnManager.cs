@@ -49,6 +49,8 @@ public class EnemySpawnManager : MonoBehaviour {
     private Transform[] reverse_Path3;
     [SerializeField]
     private Transform[] reverse_Path4;
+	[SerializeField]
+	private Transform[] reverse_Path6;
 
 
     public float speed = 5f;
