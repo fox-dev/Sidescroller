@@ -91,8 +91,8 @@ public class EnemySpawnManager : MonoBehaviour {
 
                     enemies[x] = current.enemyTypes[chosenEnemy];
                 }
-			} else if (distributionMethod == 2) {										// includes the kamikaze type
-				chosenEnemy = 2; //Random.Range(0, current.enemyTypes.Length);
+			} else if (distributionMethod == 3) {										// includes the kamikaze type
+				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
 				maxEnemies = Random.Range (10, 20);
@@ -158,11 +158,14 @@ public class EnemySpawnManager : MonoBehaviour {
         reverse_Path2 = (Transform[])path2.Clone();
         reverse_Path3 = (Transform[])path3.Clone();
         reverse_Path4 = (Transform[])path4.Clone();
+		reverse_Path6 = (Transform[])path6.Clone();
         //Create reverse copies of the path arrays;
         System.Array.Reverse(reverse_Path);
         System.Array.Reverse(reverse_Path2);
         System.Array.Reverse(reverse_Path3);
         System.Array.Reverse(reverse_Path4);
+		System.Array.Reverse(reverse_Path6);
+
 
 
 
@@ -286,7 +289,14 @@ public class EnemySpawnManager : MonoBehaviour {
 					} else {
 						temp.GetComponent<EnemyAI> ().assignPath (reverse_Path);
 					}
-                    
+				
+				}else if (temp.tag == "Fly_By2") {
+					if (spawnPointIndex == 0) {
+						temp.GetComponent<EnemyAI> ().assignPath (reverse_Path6);
+					} else {
+						temp.GetComponent<EnemyAI> ().assignPath (path6);
+				
+					}
 				} else if (temp.tag == "Fly_Pass") {
 					if (spawnPointIndex == 0) {
 						temp.GetComponent<EnemyAI> ().assignPath (path4);
