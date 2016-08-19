@@ -91,7 +91,7 @@ public class EnemyAI : MonoBehaviour {
             controller.Move(movement);
 
         }
-        else if (gameObject.tag == "Fly_By")
+        else if (gameObject.tag == "Fly_By" || gameObject.tag == "Fly_By2")
         {
             /*
             Vector3 dir = path[currentPoint].position - myTransform.position;

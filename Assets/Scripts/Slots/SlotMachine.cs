@@ -135,7 +135,7 @@ public class SlotMachine : MonoBehaviour {
         yield return new WaitForSeconds(0.5f); //Start spinning slot 2;
         spin3 = true;
 
-        yield return new WaitForSeconds(3f); //Stop spinning slot 1
+        yield return new WaitForSeconds(1f); //Stop spinning slot 1
         spin1 = false;
         off1.y = outcomes[out1]; //Assign random value outcome
 

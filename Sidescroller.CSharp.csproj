@@ -136,6 +136,7 @@
     <Compile Include="Assets\Scripts\GUI Scripts\GetReadyGUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PlayerWeaponUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\PopUpText\FloatingText.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ResultsGUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ResultsPanel.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\ScoreUI.cs" />

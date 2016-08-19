@@ -75,6 +75,7 @@ public class Currency : MonoBehaviour {
         }
     }
 
+  
     IEnumerator delayPlayerTracking()
     {
         
@@ -82,4 +83,5 @@ public class Currency : MonoBehaviour {
         trackPlayer = true;
         rb.velocity = Vector3.zero;
     }
+
 }

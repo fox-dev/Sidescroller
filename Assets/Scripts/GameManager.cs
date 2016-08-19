@@ -5,7 +5,9 @@ public class GameManager : MonoBehaviour {
 
     public bool debug;
 
-    public GameObject particle;
+    public GameObject particle, floatText;
+
+    private GameObject player;
 
     [System.Serializable]
     public class GameStats //Keep track of player's stats for ranking/grade
@@ -119,6 +121,8 @@ public class GameManager : MonoBehaviour {
    
         gm = this;
 
+        player = GameObject.FindGameObjectWithTag("Player");
+
         state = gameState.test;
 
         score = 0;
@@ -157,6 +161,15 @@ public class GameManager : MonoBehaviour {
     public static void CollectCurrency(Currency item)
     {
         item.gameObject.SetActive(false);
+
+        GameObject collectText = ObjectPool.current.getPooledObject(gm.floatText);
+
+        if (collectText == null) return;
+
+        collectText.transform.position = gm.player.transform.position;
+        collectText.GetComponent<FloatingText>().setText("+" + item.amount.ToString());
+        collectText.SetActive(true); //Play currency collection text animation
+
         currency += item.amount;
 
         //Update UI currency text
