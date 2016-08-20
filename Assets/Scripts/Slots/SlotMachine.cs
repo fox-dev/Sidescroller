@@ -166,4 +166,9 @@ public class SlotMachine : MonoBehaviour {
 
 
     }
+
+    public void rollReel()
+    {
+        roll = true;
+    }
 }
