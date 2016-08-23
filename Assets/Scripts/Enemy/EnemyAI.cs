@@ -28,6 +28,10 @@ public class EnemyAI : MonoBehaviour {
     public float flySpd;
 
     private bool occupied, phase2, tracking, chargeNow, disabling;
+
+	//Turret Bools
+	private bool turretTracking;
+
     private CharacterController controller;
 
     private Vector3 startPos;
@@ -145,7 +149,60 @@ public class EnemyAI : MonoBehaviour {
                 currentPoint = 0;
                 myTransform.position = startPos;
             }
-        }
+		}else if (gameObject.tag == "Turret")
+		{
+
+			/*
+            Vector3 dir = path[currentPoint].position - myTransform.position;
+            myTransform.position = Vector3.MoveTowards(myTransform.position, path[currentPoint].position, flySpd * Time.deltaTime);
+            */
+
+
+			// find the target position relative to the player:
+			Vector3 dir = path [currentPoint].position - myTransform.position;
+			// calculate movement at the desired speed:
+			Vector3 movement = dir.normalized * flySpd * Time.deltaTime;
+
+			if (!turretTracking) {
+
+				// limit movement to never pass the target position:
+				if (movement.magnitude > dir.magnitude)
+					movement = dir;
+				// move the character:
+				controller.Move (movement);
+
+				if (dir.magnitude <= proxyDist && currentPoint < path.Length) {
+					currentPoint++;
+					print (currentPoint + " Turret point!");
+				}
+			} else {
+				
+				/*
+                   Vector3 lastPosition = player.transform.position;
+                   Vector3 directionMid = (player.transform.position - myTransform.position).normalized;
+                   Quaternion lookRotation = Quaternion.LookRotation(directionMid);
+                   currentRot = Quaternion.Slerp(currentRot, lookRotation, 2f * Time.deltaTime);
+                   myTransform.rotation = currentRot;
+                   */
+				float AngleRad = Mathf.Atan2 (player.transform.position.y - transform.position.y, player.transform.position.x - transform.position.x);
+
+				float AngleDeg = (180 / Mathf.PI) * AngleRad;
+
+				Quaternion targetRot = Quaternion.Euler (0, 0, AngleDeg);
+
+
+				currentRot = Quaternion.Slerp (currentRot, targetRot, 2f * Time.deltaTime);
+				myTransform.rotation = currentRot;
+		
+			}
+
+			if (currentPoint >= path.Length)
+			{
+				currentPoint = 0;
+
+				StartCoroutine(trackPlayer());
+			}
+		}
 		else if (gameObject.tag == "Kamikaze")
 		{
 
@@ -511,7 +568,8 @@ public class EnemyAI : MonoBehaviour {
 	{
         occupied = true;
 
-        if (!tracking) {
+        if (!tracking) 
+		{
 			print ("I'm Charging!!!");
 			tracking = true;
 			weapon.Shoot();
@@ -520,7 +578,7 @@ public class EnemyAI : MonoBehaviour {
           
 
             yield return new WaitForSeconds (waitTime);
-              tracking = false;
+            tracking = false;
 			chargeNow = true;
 		}
 
@@ -543,6 +601,22 @@ public class EnemyAI : MonoBehaviour {
         occupied = false;
 	
 	}
+
+	/* trackPlayer starts the tracking of players for turret enemy.
+	 * 
+	 * */
+
+	IEnumerator trackPlayer ()
+	{
+		if (!turretTracking) {
+			print ("I'm Tracking!!!");
+			turretTracking = true;
+			weapon.Shoot ();
+		}
+
+		yield return new WaitForSeconds (0f);
+	}
+
 
     void OnEnable()
     {

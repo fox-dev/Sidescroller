@@ -10,7 +10,6 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public int maxEnemies = 1; //Equal to the maxEnemies of the current wave
     public int maxBosses = 1;
-	int objectCount = 0;
 
     public int totalEnemiesSpawned = 0;
     public int maxEnemiesAllowed = 6;
@@ -31,15 +30,22 @@ public class EnemySpawnManager : MonoBehaviour {
     public Transform[] path3;
     public Transform[] path4;
 	public Transform[] path6;
+	public Transform[] pathTurret;
 
     public Transform[] tutorialPath;
 
     //MirrorBoss//
     public Transform[] path5;
 
+	//Turret Paths
+	public Transform[] spotL1, spotL2, spotL3, spotR1, spotR2, spotR3;
+	public Transform[][] turretSpots;
+	int countTurret;
+
 	//Kamiokaze paths
 	public Transform[] spot1, spot2, spot3, spot4, spot5;
 	public Transform[][] kamikazepath;
+	int objectCount;
 
     [SerializeField]
     private Transform[] reverse_Path;
@@ -79,36 +85,79 @@ public class EnemySpawnManager : MonoBehaviour {
 			int distributionMethod = 2; //Random.Range(1, 3);
             Debug.Log("METHOD " + distributionMethod);
            
-            if(distributionMethod == 1)													// Chooses from the the flypass and flyby enemies
-            {
-				chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);           // removes the kamikaze enemy type from selection
-                Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);
+			if (distributionMethod == 1) {													// Chooses from the the flypass and flyby enemies
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);           // removes the kamikaze enemy type from selection
+				Debug.Log (chosenEnemy + " THIS " + current.enemyTypes.Length);
 
-                maxEnemies = Random.Range(10, 20);
-                enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-                for (int x = 0; x < enemies.Length; x++)
-                {
+				maxEnemies = Random.Range (10, 20);
+				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
+				for (int x = 0; x < enemies.Length; x++) {
 
-                    enemies[x] = current.enemyTypes[chosenEnemy];
-                }
+					enemies [x] = current.enemyTypes [chosenEnemy];
+				}
+			
+			}else if (distributionMethod == 2){
+				chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);
+				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
+
+				maxEnemies = Random.Range (10, 20);
+
+				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
+
+				if(chosenEnemy == 3)														// turret type will only spawn once in groups of 6 if chosen
+				{
+					for (int x = 0; x < 6; x++)
+					{
+						enemies[x] = current.enemyTypes[chosenEnemy];
+					}
+
+					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
+
+					for (int x = 6; x < enemies.Length; x++)							// rest of wave is filled with other types
+					{
+						enemies[x] = current.enemyTypes[chosenEnemy];
+					}
+				}
+				else
+				{
+					for (int x = 0; x < enemies.Length; x++)
+					{
+						enemies[x] = current.enemyTypes[chosenEnemy];
+					}
+				}
+				
 			} else if (distributionMethod == 3) {										// includes the kamikaze type
 				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
-				maxEnemies = Random.Range (10, 20);
+				maxEnemies = Random.Range (11, 20);
 				
 				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
 
-				if(chosenEnemy == 2)														// kamikaze type will only spawn once in groups of 5 if chosen
+				if(chosenEnemy == 4)														// kamikaze type will only spawn once in groups of 5 if chosen
 				{
 					for (int x = 0; x < 5; x++)
 					{
 						enemies[x] = current.enemyTypes[chosenEnemy];
 					}
 
-					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);
+					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
 
 					for (int x = 5; x < enemies.Length; x++)							// rest of wave is filled with other types
+					{
+						enemies[x] = current.enemyTypes[chosenEnemy];
+					}
+				}
+				else if(chosenEnemy == 3)														// turret type will only spawn once in groups of 6 if chosen
+				{
+					for (int x = 0; x < 6; x++)
+					{
+						enemies[x] = current.enemyTypes[chosenEnemy];
+					}
+
+					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
+
+					for (int x = 6; x < enemies.Length; x++)							// rest of wave is filled with other types
 					{
 						enemies[x] = current.enemyTypes[chosenEnemy];
 					}
@@ -166,7 +215,8 @@ public class EnemySpawnManager : MonoBehaviour {
         System.Array.Reverse(reverse_Path4);
 		System.Array.Reverse(reverse_Path6);
 
-
+		objectCount = 0;
+		countTurret = 0;
 
 
     }
@@ -203,6 +253,16 @@ public class EnemySpawnManager : MonoBehaviour {
 		kamikazepath [3] = spot4;
 		kamikazepath [4] = spot5;
 
+		turretSpots = new Transform[6][];
+		turretSpots [0] = spotL1;
+		turretSpots [1] = spotR1;
+		turretSpots [2] = spotL2;
+		turretSpots [3] = spotR2;
+		turretSpots [4] = spotL3;
+		turretSpots [5] = spotR3;
+
+		objectCount = 0;
+		countTurret = 0;
         
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
@@ -303,7 +363,17 @@ public class EnemySpawnManager : MonoBehaviour {
 					} else {
 						temp.GetComponent<EnemyAI> ().assignPath (reverse_Path4);
 					}
-                    
+				} else if (temp.tag == "Turret") {
+					if (countTurret == 6) {
+						countTurret = 0;
+					}
+
+					temp.GetComponent<EnemyAI> ().assignPath (turretSpots [countTurret]);
+					countTurret++;
+				
+
+					print ("Turret Count: " + countTurret);
+
 				} else if (temp.tag == "Kamikaze") {
 					if (objectCount == 5) {
 						objectCount = 0;
@@ -555,6 +625,16 @@ public class EnemySpawnManager : MonoBehaviour {
 			{
 				Gizmos.color = Color.green;
 				Gizmos.DrawSphere(path6[x].position, drawDis);
+			}
+		}
+
+		for (int x = 0; x < pathTurret.Length; x++)
+		{
+
+			if (path6[x] != null)
+			{
+				Gizmos.color = Color.gray;
+				Gizmos.DrawSphere(pathTurret[x].position, drawDis);
 			}
 		}
 
