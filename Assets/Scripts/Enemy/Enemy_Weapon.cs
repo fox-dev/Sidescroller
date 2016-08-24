@@ -112,7 +112,7 @@ public class Enemy_Weapon : MonoBehaviour
     {
         if(crosshair != null && enemy.name.Contains("MirrorBoss") && tracking)
         {
-            crosshair.transform.position = Vector3.MoveTowards(crosshair.transform.position, player.transform.position, 25 * Time.deltaTime);
+            crosshair.transform.position = Vector3.MoveTowards(crosshair.transform.position, player.transform.position, 30 * Time.deltaTime);
 
             float AngleRad = Mathf.Atan2(crosshair.transform.position.y - transform.position.y, crosshair.transform.position.x - transform.position.x);
 

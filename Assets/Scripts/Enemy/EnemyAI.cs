@@ -320,7 +320,6 @@ public class EnemyAI : MonoBehaviour {
                 }
             }
 
-
         }
         else if (enemy.stats.curHealth > 0 && gameObject.name.Contains("Boss_Enemy1"))
         {
@@ -366,9 +365,30 @@ public class EnemyAI : MonoBehaviour {
             // move the character:
             controller.Move(movement);
 
-            if(dir.magnitude <= proxyDist && !occupied)
+            if(dir.magnitude <= proxyDist && !occupied && !phase2)
             {
                 StartCoroutine(fireAtCrosshair());
+            }
+
+            if (dir.magnitude <= proxyDist && !occupied && phase2)
+            {
+                print("STARTING");
+                StartCoroutine(wildFire());
+            }
+
+            if (phase2)
+            {
+                if (dir.magnitude <= proxyDist)
+                {
+                    if (currentPoint == 0)
+                    {
+                        currentPoint = 2;
+                    }
+                    else if (currentPoint == 2)
+                    {
+                        currentPoint = 0;
+                    }
+                }
             }
 
         }
@@ -516,6 +536,26 @@ public class EnemyAI : MonoBehaviour {
 
     }
 
+    IEnumerator wildFire() //MirrorBoss phase2
+    {
+        occupied = true;
+
+     
+        weapon.Shoot();
+
+        yield return new WaitForSeconds(10f);
+
+      
+        weapon.Shoot();
+  
+        if (currentPoint == 0)
+        {
+            phase2 = false;
+        }
+
+        occupied = false;
+    }
+
     IEnumerator fireAtCrosshair() //MirrorBoss
     {
         occupied = true;
@@ -531,8 +571,6 @@ public class EnemyAI : MonoBehaviour {
             weapon.Shoot();
         }
         
-
-
         yield return new WaitForSeconds(5);
 
         if (currentPoint == 0 || currentPoint == 2)
@@ -559,6 +597,11 @@ public class EnemyAI : MonoBehaviour {
         {
             currentPoint = 0;
 
+        }
+
+        if (currentPoint == 0)
+        {
+            phase2 = true;
         }
 
         occupied = false;
@@ -668,8 +711,5 @@ public class EnemyAI : MonoBehaviour {
 
 
 	}
-
-
-
 
 }

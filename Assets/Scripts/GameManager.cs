@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
     public bool debug;
 
-    public GameObject particle, floatText;
+    public GameObject particle_Currency, particle_Hit, floatText; //Currency sprite, hit particle for screen clears, and float collecting text;
 
     private GameObject player;
 
@@ -199,7 +199,8 @@ public class GameManager : MonoBehaviour {
 
     public static void KillEnemy(Enemy enemy)
     {
-        GameObject currency = ObjectPool.current.getPooledObject(gm.particle); //Spawn currency
+        
+        GameObject currency = ObjectPool.current.getPooledObject(gm.particle_Currency); //Spawn currency
 
         if (currency == null) return;
         currency.transform.position = enemy.transform.position;
@@ -274,8 +275,9 @@ public class GameManager : MonoBehaviour {
 
     public static void respawnPlayer()
     {
+        clearScreenOfProjectiles();
         gm.player.SetActive(true);
-        gm.player.GetComponent<Player>().respawn(); 
+        gm.player.GetComponent<Player>().respawn();
     }
 
     public static void clearScreenOfEnemies()
@@ -299,6 +301,37 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+    }
+
+    public static void clearScreenOfProjectiles()
+    {
+        GameObject[] listOfObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in listOfObjects)
+        {
+
+            if (obj.activeInHierarchy)
+            {
+                if (obj.layer == LayerMask.NameToLayer("Projectile"))
+                {
+                    GameObject effect = ObjectPool.current.getPooledObject(gm.particle_Hit);
+
+                    if (effect == null) return;
+
+                    effect.transform.position = obj.transform.position;
+                    effect.transform.rotation = obj.transform.rotation;
+                    effect.SetActive(true);
+
+
+                    obj.SetActive(false);
+                }
+
+            }
+        }
+
+        
+
+
     }
 
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;

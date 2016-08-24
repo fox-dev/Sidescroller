@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+//Floating text for collectibles
 public class FloatingText : MonoBehaviour {
 
     public Text text;

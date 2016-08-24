@@ -7,7 +7,7 @@ public class LaserBlast : MonoBehaviour
     private PlayerWeapon playerWeapon; //to tell the weapon to stop decrementing super gauge and start recharging;
     GameObject crosshair;
 
-    public GameObject particle;
+    public GameObject particle; //hit particle
 
     private Transform myTransform;
 

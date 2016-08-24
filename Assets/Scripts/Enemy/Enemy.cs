@@ -114,6 +114,7 @@ public class Enemy : MonoBehaviour {
 
     IEnumerator explode()
     {
+        GameManager.clearScreenOfProjectiles();
         GameObject temp = Instantiate(Resources.Load("Boom"), transform.position, Quaternion.identity) as GameObject;
         temp.transform.parent = transform;
         yield return new WaitForSeconds(1.5f);
