@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour {
         //disable methods
         public void disableFireBall_x3() { fireBall_x3 = false; }
         public void disableBuddy() { buddy = false; }
-    }
+    } //Keep track of player's available upgrades
 
     //Enum for Game States
     public enum gameState
@@ -91,7 +91,8 @@ public class GameManager : MonoBehaviour {
         normalPlay, //Simple spawning of enemies, no bosses
         prepareForBoss, //state lasts a bit before transitioning to bossFight
         bossFight, //Currently in bossFight
-        waiting //For any transitions into normal gameplay
+        waiting, //For any transitions into normal gameplay
+        gameOver //GameOver state
     }
 
     public static GameManager gm; //Static variable single instance of GameManager reference
@@ -106,6 +107,7 @@ public class GameManager : MonoBehaviour {
     public static float currency;
 
     public gameState state;
+    public gameState prevState;
 
     public GameStats gameStats = new GameStats();
 
@@ -123,7 +125,7 @@ public class GameManager : MonoBehaviour {
 
         player = GameObject.FindGameObjectWithTag("Player");
 
-        state = gameState.test;
+        state = gameState.menu;
 
         score = 0;
         currency = 10000;
@@ -188,14 +190,21 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    public static void KillPlayer(Player player)
+    {
+        player.gameObject.SetActive(false);
+        gm.prevState = gm.state;
+        gm.state = gameState.gameOver;
+    }
+
     public static void KillEnemy(Enemy enemy)
     {
-        GameObject hitEffect = ObjectPool.current.getPooledObject(gm.particle);
+        GameObject currency = ObjectPool.current.getPooledObject(gm.particle); //Spawn currency
 
-        if (hitEffect == null) return;
-        hitEffect.transform.position = enemy.transform.position;
+        if (currency == null) return;
+        currency.transform.position = enemy.transform.position;
 
-        hitEffect.SetActive(true);
+        currency.SetActive(true);
 
         if(enemy.tag == "Tutorial_Enemy")
         {
@@ -263,6 +272,35 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    public static void respawnPlayer()
+    {
+        gm.player.SetActive(true);
+        gm.player.GetComponent<Player>().respawn(); 
+    }
+
+    public static void clearScreenOfEnemies()
+    {
+        GameObject[] listOfObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in listOfObjects)
+        {
+
+            if (obj.activeInHierarchy)
+            {
+                if (obj.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    obj.SetActive(false);
+                }
+
+                if (obj.layer == LayerMask.NameToLayer("Projectile"))
+                {
+                    obj.SetActive(false);
+                }
+
+            }
+        }
+    }
+
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
 
@@ -285,6 +323,10 @@ public class GameManager : MonoBehaviour {
         state = gameState.results;
         occupied = false;
     }
+
+
+
+
 
 
 

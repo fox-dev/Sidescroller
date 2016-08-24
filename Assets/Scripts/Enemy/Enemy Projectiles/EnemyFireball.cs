@@ -20,6 +20,7 @@ public class EnemyFireball : MonoBehaviour
 
     Quaternion shootDirection;
 
+
     [SerializeField]
     public bool targetPlayer;
 
@@ -70,10 +71,21 @@ public class EnemyFireball : MonoBehaviour
         //Vector2 point = new Vector2(transform.position.x, player.transform.position.y);
 
         Vector2 point = new Vector2(transform.position.x, transform.position.y - 10);
-        if (targetPlayer)
+
+        if(player != null)
         {
-            point = new Vector2(player.transform.position.x, player.transform.position.y);
+            if (targetPlayer && player.activeSelf)
+            {
+                point = new Vector2(player.transform.position.x, player.transform.position.y);
+            }
+            else if (targetPlayer && !player.activeSelf)
+            {
+                point = new Vector2(point.x, point.y);
+            }
         }
+
+        
+        
        
 
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);

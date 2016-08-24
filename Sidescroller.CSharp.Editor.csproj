@@ -91,6 +91,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="JarResolverLib">
+      <HintPath>Assets\PlayServicesResolver\Editor\JarResolverLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Sidescroller.CSharp.Plugins.csproj">
@@ -134,6 +137,16 @@
     <Compile Include="Assets\Editor\ImageEffects\SunShaftsEditor.cs" />
     <Compile Include="Assets\Editor\ImageEffects\TonemappingEditor.cs" />
     <Compile Include="Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
+    <Compile Include="Assets\GoogleMobileAds\Editor\CocoaPodHelper.cs" />
+    <Compile Include="Assets\GoogleMobileAds\Editor\PostProcessor.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\AdMobDependencies.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\DefaultResolver.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\IResolver.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\PlayServicesResolver.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\ResolverVer1_1.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\ResolverVer1_2.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\SampleDependencies.cs" />
+    <Compile Include="Assets\PlayServicesResolver\Editor\SettingsDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Battlehub\MeshCombiner\MeshCombiner Documentation.txt" />
@@ -143,6 +156,7 @@
     <None Include="Assets\Battlehub\SplineEditor\Shaders\Resources\Spline.shader" />
     <None Include="Assets\FinalCurved.shader" />
     <None Include="Assets\Glow.shader" />
+    <None Include="Assets\Plugins\Android\GoogleMobileAdsPlugin\AndroidManifest.xml" />
     <None Include="Assets\Shaders\Custom.cginc" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

@@ -636,6 +636,7 @@ public class EnemyAI : MonoBehaviour {
 		tracking = false;
 		chargeNow = false;
 		disabling = false;
+        turretTracking = false;
        
     }
 

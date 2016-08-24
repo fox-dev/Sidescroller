@@ -11,7 +11,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public int maxEnemies = 1; //Equal to the maxEnemies of the current wave
     public int maxBosses = 1;
 
-    public int totalEnemiesSpawned = 0;
+    public int totalEnemiesSpawned = 0;  //Total enemies spawned
     public int maxEnemiesAllowed = 6;
     public static int currentEnemies = 0;
     public static int currentBosses = 0;
@@ -263,7 +263,9 @@ public class EnemySpawnManager : MonoBehaviour {
 
 		objectCount = 0;
 		countTurret = 0;
-        
+
+        occupied = false;
+
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
 	
@@ -276,7 +278,22 @@ public class EnemySpawnManager : MonoBehaviour {
         //Since position is not being tracked by raycasting, like the Player is, this line is needed to maintain the Y-position;
         myTransform.position = new Vector3(originMid.transform.position.x + 30, originMid.transform.position.y, 0);
 
-        
+        if (GameManager.gm.state == GameManager.gameState.setup)
+        {
+            if (!current.occupied)
+            {
+                StartCoroutine(startFirstWave());
+            }
+        }
+
+
+        if (GameManager.gm.state == GameManager.gameState.menu)
+        {
+            totalEnemiesSpawned = 0;
+            spawnEnemies = true;
+        }
+
+  
 
 
 
@@ -287,21 +304,6 @@ public class EnemySpawnManager : MonoBehaviour {
         if(currentEnemies == maxEnemiesAllowed)
         {
             StartCoroutine(tooManyEnemies());
-        }
-
-        if (GameManager.gm.state == GameManager.gameState.setup)
-        {
-            if (!occupied)
-            {
-                StartCoroutine(startFirstWave());
-            }
-        }
-
-
-        if(GameManager.gm.state == GameManager.gameState.menu)
-        {
-            totalEnemiesSpawned = 0;
-            spawnEnemies = true;
         }
 
         if(spawnEnemies && (GameManager.gm.state == GameManager.gameState.tutorial_2 || GameManager.gm.state == GameManager.gameState.tutorial_3))
@@ -334,7 +336,7 @@ public class EnemySpawnManager : MonoBehaviour {
         {
             
            
-            if (totalEnemiesSpawned < waves[currentWave].maxEnemies && (currentWave < waves.Length)) //replace with currentWave
+            if (totalEnemiesSpawned < waves[currentWave].maxEnemies && (currentWave < waves.Length)) //if total enemies spawned is less than the amount of total enemies in the wave, continue spawning wave
             {
                 int spawnPointIndex = Random.Range(0, spawnPoints.Length);
                 //GameObject temp = Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation) as GameObject;
@@ -526,13 +528,14 @@ public class EnemySpawnManager : MonoBehaviour {
 
     IEnumerator startFirstWave()
     {
-        
-        currentWave = 0;
         occupied = true;
-        yield return new WaitForSeconds(0f);
+        currentWave = 0;
+        currentEnemies = 0;
         totalEnemiesSpawned = 0;
         spawnEnemies = true;
         occupied = false;
+
+        yield return new WaitForSeconds(0f);
     }
     IEnumerator startNextWave()
     {
@@ -546,6 +549,7 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         else
         {
+            currentEnemies = 0;
             totalEnemiesSpawned = 0;
             spawnEnemies = true;
             

@@ -84,7 +84,9 @@ public class Player : MonoBehaviour {
 
         if (stats.curHealth <= 0 && stats.alive)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+
+            GameManager.KillPlayer(this);
 
             //Damage player stuff here
         }
@@ -116,6 +118,12 @@ public class Player : MonoBehaviour {
 
         model.GetComponent<Renderer>().enabled = true;
         blinking = false;
+    }
+
+    public void respawn()
+    {
+        stats.Init();
+        StartCoroutine(blink(blinkDuration, 0.2f));
     }
 
 
