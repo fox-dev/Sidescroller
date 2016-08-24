@@ -3,7 +3,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public bool debug;
+	private AdController adController;
+
+	public bool debug;
 
     public GameObject particle_Currency, particle_Hit, floatText; //Currency sprite, hit particle for screen clears, and float collecting text;
 
@@ -117,7 +119,21 @@ public class GameManager : MonoBehaviour {
     private bool occupied = false; //Used for ienumerator calls in Update method
 
 
-    void Awake()
+	void Start()
+	{
+		GameObject adControllerObject = GameObject.FindWithTag("AdController");
+		if (adControllerObject != null)
+		{
+			adController = adControllerObject.GetComponent<AdController>();
+		}
+		if (adController == null)
+		{
+			Debug.Log("Cannot find 'AdController' script");
+		}
+
+	}
+
+	void Awake()
     {
         Application.targetFrameRate = 60;
    
