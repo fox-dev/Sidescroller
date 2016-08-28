@@ -17,13 +17,12 @@ public class AdController : MonoBehaviour {
 
 
 		updateAdOptions();
-		if (showAds && SceneManager.GetActiveScene() == SceneManager.GetSceneByName("main")) {
+		if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("main")) {
 			print ("I got new ads");
+
 			RequestBanner ();
-			int adCount = PlayerPrefs.GetInt ("AdCount");
-			if (adCount == 0) {
-				RequestInterstitial ();
-			}
+			RequestInterstitial ();
+			
 			hideBannerAd ();
 		}
 
@@ -76,22 +75,6 @@ public class AdController : MonoBehaviour {
 		// Load the interstitial with the request.
 		interstitial.LoadAd(request);
 	}
-
-	/*public void getNewAds()
-	{
-		RequestBanner ();
-		RequestInterstitial ();
-	}
-
-	public void getIntAd()
-	{
-		RequestInterstitial ();
-	}
-
-	public void getBannerAd()
-	{
-		RequestBanner ();
-	}*/
 
 	//Interstitial Ad stuff
 	public bool adIsLoaded()

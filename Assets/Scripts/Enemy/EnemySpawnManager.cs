@@ -82,7 +82,7 @@ public class EnemySpawnManager : MonoBehaviour {
         public void init()
         {
 
-			int distributionMethod = 2; //Random.Range(1, 3);
+			int distributionMethod = Random.Range(1, 3);
             Debug.Log("METHOD " + distributionMethod);
            
 			if (distributionMethod == 1) {													// Chooses from the the flypass and flyby enemies

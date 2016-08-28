@@ -17,6 +17,8 @@ public class GameOverUI : MonoBehaviour {
             GameManager.gm.state = GameManager.gameState.bossFight;
         }
         
+		GameManager.turnOffAds ();
+
     }
 
     public void setup()
@@ -25,5 +27,6 @@ public class GameOverUI : MonoBehaviour {
         GameManager.respawnPlayer();
         GameManager.gm.state = GameManager.gameState.results;
 
+		GameManager.turnOffAds ();
     }
 }
