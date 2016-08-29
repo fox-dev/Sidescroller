@@ -48,7 +48,7 @@ public class DirectionEnemyFireball : MonoBehaviour
             {
 
                 Quaternion lookRotation = Quaternion.LookRotation(-transform.right);
-                transform.rotation = lookRotation * Quaternion.Euler(93, 0, 0);
+                transform.rotation = lookRotation * Quaternion.Euler(95, 0, 0);
 
             }
 
@@ -56,7 +56,7 @@ public class DirectionEnemyFireball : MonoBehaviour
             {
 
                 Quaternion lookRotation = Quaternion.LookRotation(-transform.right);
-                transform.rotation = lookRotation * Quaternion.Euler(87, 0, 0);
+                transform.rotation = lookRotation * Quaternion.Euler(85, 0, 0);
 
             }
         }

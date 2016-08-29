@@ -212,11 +212,11 @@ public class GameManager : MonoBehaviour {
         gm.prevState = gm.state;
         gm.state = gameState.gameOver;
 
-		if (adController.adIsLoaded ()) {
-			adController.showIntAd ();
+		if (gm.adController.adIsLoaded ()) {
+			gm.adController.showIntAd ();
 		}
 
-		adController.showBannerAd ();
+		gm.adController.showBannerAd ();
     }
 
     public static void KillEnemy(Enemy enemy)
@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour {
 
 	public static void turnOffAds()
 	{
-		adController.hideBannerAd();
+		gm.adController.hideBannerAd();
 	}
 
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
