@@ -380,7 +380,8 @@ public class GameManager : MonoBehaviour {
         gameStats.init();
         yield return new WaitForSeconds(0.5f);
         GetReadyGUI.current.getReadyGUIAnim.SetBool("GetReady", true);
-        yield return new WaitForSeconds(2f);
+        AudioManager.current.PlaySound("Ready");
+        yield return new WaitForSeconds(1.5f);
         GetReadyGUI.current.getReadyGUIAnim.SetBool("GetReady", false);
         state = gameState.normalPlay;
         occupied = false;

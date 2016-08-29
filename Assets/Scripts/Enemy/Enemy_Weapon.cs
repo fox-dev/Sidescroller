@@ -132,7 +132,11 @@ public class Enemy_Weapon : MonoBehaviour
 
         if (nextBullet < Time.time && fire && enemy.stats.alive)
         {
-
+            if (!alternateFire)
+            {
+                AudioManager.current.PlaySound("EnemyFire");
+            }
+            
             
             nextBullet = Time.time + timeBetweenBullets;
 
