@@ -48,6 +48,9 @@ public class AudioManager : MonoBehaviour {
 
     public static AudioManager current;
 
+    private bool playingPart1 = true;
+    private bool playingPart2 = false;
+
     [SerializeField]
     Sound[] sounds;
 
@@ -69,6 +72,27 @@ public class AudioManager : MonoBehaviour {
         
     }
 
+    void Update()
+    {
+        if(GameManager.gm.state == GameManager.gameState.normalPlay && !playingPart1)
+        {
+            playingPart1 = true;
+            playingPart2 = false;
+
+            StopSound("Part1");
+            PlaySound("Part2");
+        }
+
+        if(GameManager.gm.state == GameManager.gameState.setup && !playingPart2)
+        {
+            playingPart2 = true;
+            playingPart1 = false;
+
+            StopSound("Part2");
+            PlaySound("Part1");
+        }
+    }
+
     void Start()
     {
         for(int i = 0; i < sounds.Length; i++)
@@ -78,7 +102,7 @@ public class AudioManager : MonoBehaviour {
             sounds[i].setSource(_go.AddComponent<AudioSource>());
         }
 
-        PlaySound("BGM");
+        PlaySound("Part1");
 
     }
 
@@ -132,6 +156,21 @@ public class AudioManager : MonoBehaviour {
     public void playUICLICK()
     {
         PlaySound("UIClick");
+    }
+
+    public void playUPGRADE()
+    {
+        PlaySound("Upgrade");
+    }
+
+    public void playBACK()
+    {
+        PlaySound("Back");
+    }
+
+    public void playFORWARD()
+    {
+        PlaySound("Forward");
     }
 
 

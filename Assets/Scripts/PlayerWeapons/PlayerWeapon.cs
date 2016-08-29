@@ -37,7 +37,10 @@ public class PlayerWeapon : MonoBehaviour {
 	void Update () {
         if ( ( Input.GetKey("e") || fire) && nextBullet < Time.time)
         {
-
+            if(GameManager.gm.state == GameManager.gameState.setup)
+            {
+                fire = false;
+            }
 
             if (projectile.name == "Player_Beam")
             {

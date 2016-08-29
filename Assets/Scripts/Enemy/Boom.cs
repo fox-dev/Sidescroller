@@ -40,6 +40,8 @@ public class Boom : MonoBehaviour {
         shootRotation = 0;
         direction = Quaternion.Euler(shootRotation, 90, 0); //For fireball, rotate along Y-Axis
 
+        AudioManager.current.PlaySound("ExplodeRay");
+
        
 
     }

@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour {
         if (currency == null) return;
         currency.transform.position = enemy.transform.position;
 
-        currency.SetActive(true);
+        
 
         if(enemy.tag == "Tutorial_Enemy")
         {
@@ -257,6 +257,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (enemy.tag == "Boss")
         {
+            currency.GetComponent<Currency>().amount = 1000;
 
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentBosses--;
@@ -291,6 +292,8 @@ public class GameManager : MonoBehaviour {
             gm.gameStats.addEnemiesDestroyed();
             /////////////////////////////////////////////
         }
+
+        currency.SetActive(true);
 
     }
 

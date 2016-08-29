@@ -458,7 +458,7 @@ public class EnemySpawnManager : MonoBehaviour {
         boss = bossList[bossSelection];
 
         yield return new WaitForSeconds(3);
-        AudioManager.current.StopSound("Warning");
+       
         if (currentBosses < maxBosses)
         {
             //int spawnPointIndex = Random.Range(0, spawnPoints.Length);
@@ -522,10 +522,14 @@ public class EnemySpawnManager : MonoBehaviour {
             totalEnemiesSpawned++;
         }
         yield return new WaitForSeconds(2f);
+        
         BossUI.current.bossGuiAnim.enabled = false;
         BossUI.current.bossGuiAnim.SetBool("ShowBossHealth", false);
         BossUI.current.bossGuiAnim.SetBool("BossFightReady", true);
         spawnBoss = occupied = false;
+
+        yield return new WaitForSeconds(1f);
+        AudioManager.current.StopSound("Warning");
     }
 
     IEnumerator startFirstWave()

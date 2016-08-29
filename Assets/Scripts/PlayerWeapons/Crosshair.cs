@@ -74,7 +74,7 @@ public class Crosshair : MonoBehaviour {
 
 
         
-        /*if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
+        if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             z_plane_of_2d_game = 0;
@@ -86,7 +86,7 @@ public class Crosshair : MonoBehaviour {
             {
                 TutorialOverlayUI.current.movedCrosshair();
             }
-        }*/
+        }
         
         
 
