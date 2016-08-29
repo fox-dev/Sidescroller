@@ -130,14 +130,20 @@ public class GameManager : MonoBehaviour {
 		{
 			Debug.Log("Cannot find 'AdController' script");
 		}
-
-	}
+    }
 
 	void Awake()
     {
         Application.targetFrameRate = 60;
-   
-        gm = this;
+
+        if (gm != null)
+        {
+            Debug.LogError("More than one GameManager in scene");
+        }
+        else
+        {
+            gm = this;
+        }
 
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -190,6 +196,8 @@ public class GameManager : MonoBehaviour {
 
         currency += item.amount;
 
+        AudioManager.current.PlaySound("Collect");
+
         //Update UI currency text
         CurrencyUI.current.UpdateText();
     }
@@ -211,6 +219,7 @@ public class GameManager : MonoBehaviour {
         player.gameObject.SetActive(false);
         gm.prevState = gm.state;
         gm.state = gameState.gameOver;
+        AudioManager.current.delayPlaySound("GameOver", 0.5f);
 
 		if (gm.adController.adIsLoaded ()) {
 			gm.adController.showIntAd ();
@@ -297,6 +306,9 @@ public class GameManager : MonoBehaviour {
 
     public static void respawnPlayer()
     {
+       AudioManager.current.PlaySound("Respawn");
+        AudioManager.current.PlaySound("Spawn");
+
         clearScreenOfProjectiles();
         gm.player.SetActive(true);
         gm.player.GetComponent<Player>().respawn();

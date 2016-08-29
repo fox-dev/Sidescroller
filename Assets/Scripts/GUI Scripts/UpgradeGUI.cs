@@ -81,4 +81,5 @@ public class UpgradeGUI : MonoBehaviour {
         occupied = false;
         
     }
+
 }

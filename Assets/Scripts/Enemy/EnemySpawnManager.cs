@@ -452,11 +452,13 @@ public class EnemySpawnManager : MonoBehaviour {
         print("INCOMING BOSS");
         BossUI.current.bossGuiAnim.SetBool("Normal", false);
         BossUI.current.bossGuiAnim.SetBool("Warning", true);
+        AudioManager.current.PlaySound("Warning");
 
         int bossSelection = Random.Range(0, bossList.Length);
         boss = bossList[bossSelection];
 
         yield return new WaitForSeconds(3);
+        AudioManager.current.StopSound("Warning");
         if (currentBosses < maxBosses)
         {
             //int spawnPointIndex = Random.Range(0, spawnPoints.Length);

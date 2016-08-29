@@ -37,7 +37,21 @@ public class PlayerWeapon : MonoBehaviour {
 	void Update () {
         if ( ( Input.GetKey("e") || fire) && nextBullet < Time.time)
         {
-         
+
+
+            if (projectile.name == "Player_Beam")
+            {
+                AudioManager.current.PlaySound("Beam");
+            }
+            else if (projectile.name == "Player_Fireball")
+            {
+                AudioManager.current.PlaySound("PlayerFire");
+            }
+            else if (projectile.name == "HomingMissile")
+            {
+                AudioManager.current.PlaySound("Rocket");
+            }
+
             nextBullet = Time.time + timeBetweenBullets;
 
             Rigidbody bullet = ObjectPool.current.getPooledObjectRigidBody(projectile);
@@ -57,6 +71,7 @@ public class PlayerWeapon : MonoBehaviour {
 
                     child.gameObject.SetActive(true);
                     child.GetComponent<Rigidbody>().AddForce(child.transform.forward * 100, ForceMode.Impulse);
+                    
 
                 }
             }
