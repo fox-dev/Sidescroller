@@ -54,20 +54,18 @@ public class PlayerMovement : MonoBehaviour
 
         jumping = !controller.collisions.below; //if in the air, jumping is true
 
-
-
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
-
         }
 
         
-
+        //if jump boolean is true or key is pressed, and collisions.below, then perform jump
         if ((jump || Input.GetKeyDown(KeyCode.Space)) && controller.collisions.below)
         {
             jump = false;
             velocity.y = jumpVelocity;
+            AudioManager.current.PlaySound("Jump");
 
         }
 

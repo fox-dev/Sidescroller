@@ -144,7 +144,9 @@
     <Compile Include="Assets\GoogleMobileAds\Platforms\iOS\MonoPInvokeCallbackAttribute.cs" />
     <Compile Include="Assets\GoogleMobileAds\Platforms\iOS\RewardBasedVideoAdClient.cs" />
     <Compile Include="Assets\GoogleMobileAds\Platforms\iOS\Utils.cs" />
+    <Compile Include="Assets\Scripts\AdController.cs" />
     <Compile Include="Assets\Scripts\AppendBounds.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\BackgroundInView.cs" />
     <Compile Include="Assets\Scripts\BoundaryHandler.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />

@@ -68,6 +68,7 @@ public class Enemy : MonoBehaviour {
     {
         
         stats.curHealth -= damage;
+        AudioManager.current.PlaySound("EnemyHit");
 
         //Add damage done to this enemy to the gameStats of the GameManager
         if (stats.alive)
