@@ -22,8 +22,12 @@ public class Enemy_Weapon : MonoBehaviour
 
     [SerializeField]
     private bool fire = false;
+<<<<<<< HEAD
 
 	[SerializeField]
+=======
+    [SerializeField]
+>>>>>>> origin/master
     private bool alternateFire = false;
 
     Quaternion direction;
@@ -112,6 +116,11 @@ public class Enemy_Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.state == GameManager.gameState.setup)
+        {
+            fire = false;
+        }
+
         if(crosshair != null && enemy.name.Contains("MirrorBoss") && tracking)
         {
             crosshair.transform.position = Vector3.MoveTowards(crosshair.transform.position, player.transform.position, 30 * Time.deltaTime);

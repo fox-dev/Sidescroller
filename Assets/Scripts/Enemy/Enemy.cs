@@ -68,19 +68,21 @@ public class Enemy : MonoBehaviour {
     {
         
         stats.curHealth -= damage;
-        AudioManager.current.PlaySound("EnemyHit");
+        
 
         //Add damage done to this enemy to the gameStats of the GameManager
         if (stats.alive)
         {
             GameManager.gm.gameStats.addTotalDamageDone(damage);
+            AudioManager.current.PlaySound("EnemyHit");
         }
         
 
         // print(stats.alive + " " + stats.curHealth);
         if (stats.curHealth <= 0 && stats.alive)
         {
-            if(this.tag == "Boss")
+           
+            if (this.tag == "Boss")
             {
                 //To play explosion animation properly, unparent the boss enemy object
                 if(this.gameObject.transform.parent != null)
