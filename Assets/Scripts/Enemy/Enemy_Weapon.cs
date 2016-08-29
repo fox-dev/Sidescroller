@@ -22,11 +22,8 @@ public class Enemy_Weapon : MonoBehaviour
 
     [SerializeField]
     private bool fire = false;
-<<<<<<< HEAD
+
 	[SerializeField]
-=======
-    [SerializeField]
->>>>>>> origin/master
     private bool alternateFire = false;
 
     Quaternion direction;

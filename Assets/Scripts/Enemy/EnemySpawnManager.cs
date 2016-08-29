@@ -77,30 +77,66 @@ public class EnemySpawnManager : MonoBehaviour {
     {
         public int maxEnemies; //max number of enemies
         public GameObject[] enemies; //array of enemies for the wave;
-        public float rate; //spawnRate;
-        int chosenEnemy;
-        public void init()
+		private ArrayList enemyList; //arraylist of enemies;
+
+
+		public float rate; //spawnRate;
+        
+
+		int chosenEnemy;
+        
+
+		public void init()
         {
 
-			int distributionMethod = Random.Range(1, 3);
+			enemyList = new ArrayList ();
+
+			int distributionMethod = 3;//Random.Range(1, 3);
             Debug.Log("METHOD " + distributionMethod);
            
 			if (distributionMethod == 1) {													// Chooses from the the flypass and flyby enemies
 				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);           // removes the kamikaze enemy type from selection
 				Debug.Log (chosenEnemy + " THIS " + current.enemyTypes.Length);
 
-				maxEnemies = Random.Range (10, 20);
+				/*maxEnemies = Random.Range (10, 20);
+
+				int fWave = Random.Range (5, 10);
+
 				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-				for (int x = 0; x < enemies.Length; x++) {
+				for (int x = 0; x < fWave; x++) {
 
 					enemies [x] = current.enemyTypes [chosenEnemy];
 				}
+
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);
+
+				for (int x = fWave; x < enemies.Length; x++) {
+
+					enemies [x] = current.enemyTypes [chosenEnemy];
+				}*/
+
+				int fWave = Random.Range (6, 8);
+				int sWave = Random.Range (6, 8);
+
+				addEnemies (chosenEnemy, fWave, enemyList);
+
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);
+
+				addEnemies (chosenEnemy, sWave, enemyList);
+
+				print ("enemyList has: " + enemyList.Count);
+			
+				enemies = toArray(enemyList);
+
+				maxEnemies = enemies.Length;
+				print ("enemies has: " + enemies.Length);
+
 			
 			}else if (distributionMethod == 2){
-				chosenEnemy = Random.Range(0, current.enemyTypes.Length - 1);
+				chosenEnemy = 3; //Random.Range(0, current.enemyTypes.Length - 1);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
-				maxEnemies = Random.Range (10, 20);
+				/*maxEnemies = Random.Range (10, 20);
 
 				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
 
@@ -124,13 +160,36 @@ public class EnemySpawnManager : MonoBehaviour {
 					{
 						enemies[x] = current.enemyTypes[chosenEnemy];
 					}
+				}*/
+				int fWave = Random.Range (6, 8);
+				int sWave = Random.Range (6, 8);
+
+				if (chosenEnemy == 3) {                                           
+					addEnemies (chosenEnemy, 6, enemyList);
+				} else {
+					addEnemies (chosenEnemy, fWave, enemyList);
 				}
+
+				int previousEnemy = chosenEnemy;
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 1);
+
+				if (chosenEnemy == 3 && chosenEnemy != previousEnemy) {
+					addEnemies (chosenEnemy, 6, enemyList);
+				} else {
+					addEnemies (chosenEnemy, fWave, enemyList);
+				}
+
+				print ("enemyList has: " + enemyList.Count);
+				enemies = toArray(enemyList);
+
+				maxEnemies = enemies.Length;
+				print ("enemies has: " + enemies.Length);
 				
 			} else if (distributionMethod == 3) {										// includes the kamikaze type
 				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
-				maxEnemies = Random.Range (11, 20);
+				/*maxEnemies = Random.Range (11, 20);
 				
 				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
 
@@ -168,7 +227,35 @@ public class EnemySpawnManager : MonoBehaviour {
 					{
 						enemies[x] = current.enemyTypes[chosenEnemy];
 					}
+				}*/
+
+				int fWave = Random.Range (6, 8);
+				int sWave = Random.Range (6, 8);
+
+				if (chosenEnemy == 4) {													//Includes the kamikaze type to the wave
+					addEnemies (chosenEnemy, 5, enemyList);								//Kamikaze types will only spawn in groups of 5
+				} else if (chosenEnemy == 3) {
+					addEnemies (chosenEnemy, 6, enemyList);								//turret type is also included, same as previous
+				} else {
+					addEnemies (chosenEnemy, fWave, enemyList);
 				}
+
+				int previousEnemy = chosenEnemy;
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length);
+
+				if (chosenEnemy == 4 && chosenEnemy != previousEnemy) {														
+					addEnemies (chosenEnemy, 5, enemyList);
+				} else if (chosenEnemy == 3 && chosenEnemy != previousEnemy) {
+					addEnemies (chosenEnemy, 6, enemyList);
+				} else {
+					addEnemies (chosenEnemy, fWave, enemyList);
+				}
+
+				print ("enemyList has: " + enemyList.Count);
+				enemies = toArray(enemyList);
+
+				maxEnemies = enemies.Length;
+				print ("enemies has: " + enemies.Length);
 			}
             else
             {
@@ -184,7 +271,28 @@ public class EnemySpawnManager : MonoBehaviour {
                 }
             }
         }
-        
+
+		public void addEnemies(int type, int number, ArrayList temp)
+		{
+			
+			for(int i = 0; i < number; i++)
+			{
+				temp.Add (current.enemyTypes [type]);
+			}
+		}
+
+		public GameObject[] toArray(ArrayList myArray)
+		{
+			GameObject[] temp = new GameObject[myArray.Count];
+
+			for (int i = 0; i < myArray.Count; i++)
+			{
+				temp[i] = (GameObject) myArray[i];
+			}
+
+			return temp;
+		}
+				
     }
 
     public Wave[] waves;
