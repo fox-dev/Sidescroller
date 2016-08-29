@@ -173,5 +173,17 @@ public class AudioManager : MonoBehaviour {
         PlaySound("Forward");
     }
 
+    public void playWarning()
+    {
+        StartCoroutine(warningX3());
+    }
+
+    IEnumerator warningX3()
+    {
+        PlaySound("Warning");
+        yield return new WaitForSeconds(3.3f);
+        StopSound("Warning");
+    }
+
 
 }
