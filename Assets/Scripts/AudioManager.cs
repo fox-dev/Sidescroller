@@ -6,184 +6,184 @@ using System.Collections;
 [System.Serializable]
 public class Sound
 {
-    public string name;
-    public AudioClip clip;
+	public string name;
+	public AudioClip clip;
 
-    [Range(0f, 1f)]
-    public float volume = 0.7f;
-    [Range(0.5f, 1.5f)]
-    public float pitch = 1f;
+	[Range(0f, 1f)]
+	public float volume = 0.7f;
+	[Range(0.5f, 1.5f)]
+	public float pitch = 1f;
 
-    [Range(0f, 0.5f)]
-    public float randVolume = 0.1f; //Multiplier for volume
-    [Range(0f, 0.5f)]
-    public float randPitch = 0.1f; //Multipler for pitch;
+	[Range(0f, 0.5f)]
+	public float randVolume = 0.1f; //Multiplier for volume
+	[Range(0f, 0.5f)]
+	public float randPitch = 0.1f; //Multipler for pitch;
 
-    public bool loop = false;
+	public bool loop = false;
 
-    private AudioSource source;
+	private AudioSource source;
 
-    public void setSource(AudioSource _source)
-    {
-        source = _source;
-        source.clip = clip;
-        source.loop = loop;
-    }
+	public void setSource(AudioSource _source)
+	{
+		source = _source;
+		source.clip = clip;
+		source.loop = loop;
+	}
 
-    public void Play()
-    {
-        source.volume = volume * (1 + Random.Range(-randVolume / 2f, randVolume / 2f));
-        source.pitch = pitch * (1 + Random.Range(-randPitch / 2f, randPitch / 2f));
-        source.Play();
-    }
+	public void Play()
+	{
+		source.volume = volume * (1 + Random.Range(-randVolume / 2f, randVolume / 2f));
+		source.pitch = pitch * (1 + Random.Range(-randPitch / 2f, randPitch / 2f));
+		source.Play();
+	}
 
-    public void Stop()
-    {
-        source.Stop();
-    }
+	public void Stop()
+	{
+		source.Stop();
+	}
 
 }
 
 public class AudioManager : MonoBehaviour {
 
-    public static AudioManager current;
+	public static AudioManager current;
 
-    private bool playingPart1 = true;
-    private bool playingPart2 = false;
+	private bool playingPart1 = true;
+	private bool playingPart2 = false;
 
-    [SerializeField]
-    Sound[] sounds;
+	[SerializeField]
+	Sound[] sounds;
 
-    void Awake()
-    {
-        if (current != null)
-        {
-            if(current != this)
-            {
-                Destroy(this.gameObject);
-            }
+	void Awake()
+	{
+		if (current != null)
+		{
+			if(current != this)
+			{
+				Destroy(this.gameObject);
+			}
 
-        }
-        else
-        {
-            current = this;
-            DontDestroyOnLoad(this); //For scene changes, if needed, in the future;
-        }
-        
-    }
+		}
+		else
+		{
+			current = this;
+			DontDestroyOnLoad(this); //For scene changes, if needed, in the future;
+		}
 
-    void Update()
-    {
-        if(GameManager.gm.state == GameManager.gameState.normalPlay && !playingPart1)
-        {
-            playingPart1 = true;
-            playingPart2 = false;
+	}
 
-            StopSound("Part1");
-            PlaySound("Part2");
-        }
+	void Update()
+	{
+		if(GameManager.gm.state == GameManager.gameState.normalPlay && !playingPart1)
+		{
+			playingPart1 = true;
+			playingPart2 = false;
 
-        if(GameManager.gm.state == GameManager.gameState.setup && !playingPart2)
-        {
-            playingPart2 = true;
-            playingPart1 = false;
+			StopSound("Part1");
+			PlaySound("Part2");
+		}
 
-            StopSound("Part2");
-            PlaySound("Part1");
-        }
-    }
+		if(GameManager.gm.state == GameManager.gameState.setup && !playingPart2)
+		{
+			playingPart1 = false;
+			playingPart2 = true;
 
-    void Start()
-    {
-        for(int i = 0; i < sounds.Length; i++)
-        {
-            GameObject _go = new GameObject("Sound_" + i + "_"  + sounds[i].name);
-            _go.transform.SetParent(this.transform);
-            sounds[i].setSource(_go.AddComponent<AudioSource>());
-        }
+			StopSound("Part2");
+			PlaySound("Part1");
+		}
+	}
 
-        PlaySound("Part1");
+	void Start()
+	{
+		for(int i = 0; i < sounds.Length; i++)
+		{
+			GameObject _go = new GameObject("Sound_" + i + "_"  + sounds[i].name);
+			_go.transform.SetParent(this.transform);
+			sounds[i].setSource(_go.AddComponent<AudioSource>());
+		}
 
-    }
+		PlaySound("Part1");
 
-
-    public void PlaySound(string _name)
-    {
-        for(int i = 0; i < sounds.Length; i++)
-        {
-            if(sounds[i].name == _name)
-            {
-                sounds[i].Play();
-                return;
-            }
-        }
-
-        //No sound with _name
-        Debug.LogWarning("AudioManager: Sound not found in list: " + _name);
-    }
-
-    public void StopSound(string _name)
-    {
-        for (int i = 0; i < sounds.Length; i++)
-        {
-            if (sounds[i].name == _name)
-            {
-                sounds[i].Stop();
-                return;
-            }
-        }
-
-        //No sound with _name
-        Debug.LogWarning("AudioManager: Sound not found in list: " + _name);
-    }
-
-    public void delayPlaySound(string _name, float value)
-    {
-        StartCoroutine(_delayPlaySound(_name, value));
-    }
-
-    IEnumerator _delayPlaySound(string _name, float value)
-    {
-
-        yield return new WaitForSeconds(value);
-
-        PlaySound(_name);
+	}
 
 
-    }
+	public void PlaySound(string _name)
+	{
+		for(int i = 0; i < sounds.Length; i++)
+		{
+			if(sounds[i].name == _name)
+			{
+				sounds[i].Play();
+				return;
+			}
+		}
 
-    ///GLOBAL SOUND METHODS///
-    public void playUICLICK()
-    {
-        PlaySound("UIClick");
-    }
+		//No sound with _name
+		Debug.LogWarning("AudioManager: Sound not found in list: " + _name);
+	}
 
-    public void playUPGRADE()
-    {
-        PlaySound("Upgrade");
-    }
+	public void StopSound(string _name)
+	{
+		for (int i = 0; i < sounds.Length; i++)
+		{
+			if (sounds[i].name == _name)
+			{
+				sounds[i].Stop();
+				return;
+			}
+		}
 
-    public void playBACK()
-    {
-        PlaySound("Back");
-    }
+		//No sound with _name
+		Debug.LogWarning("AudioManager: Sound not found in list: " + _name);
+	}
 
-    public void playFORWARD()
-    {
-        PlaySound("Forward");
-    }
+	public void delayPlaySound(string _name, float value)
+	{
+		StartCoroutine(_delayPlaySound(_name, value));
+	}
 
-    public void playWarning()
-    {
-        StartCoroutine(warningX3());
-    }
+	IEnumerator _delayPlaySound(string _name, float value)
+	{
 
-    IEnumerator warningX3()
-    {
-        PlaySound("Warning");
-        yield return new WaitForSeconds(3.3f);
-        StopSound("Warning");
-    }
+		yield return new WaitForSeconds(value);
+
+		PlaySound(_name);
+
+
+	}
+
+	///GLOBAL SOUND METHODS///
+	public void playUICLICK()
+	{
+		PlaySound("UIClick");
+	}
+
+	public void playUPGRADE()
+	{
+		PlaySound("Upgrade");
+	}
+
+	public void playBACK()
+	{
+		PlaySound("Back");
+	}
+
+	public void playFORWARD()
+	{
+		PlaySound("Forward");
+	}
+
+	public void playWarning()
+	{
+		StartCoroutine(warningX3());
+	}
+
+	IEnumerator warningX3()
+	{
+		PlaySound("Warning");
+		yield return new WaitForSeconds(3.3f);
+		StopSound("Warning");
+	}
 
 
 }

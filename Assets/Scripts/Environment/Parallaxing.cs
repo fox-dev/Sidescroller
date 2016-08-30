@@ -94,8 +94,8 @@ public class Parallaxing : MonoBehaviour {
    
 
             //Set a target x position which is the current position plus the parallax
-            Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
-
+            //Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
+			Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
             if(i == 4)
             {
                 backgroundTargetPos = new Vector3(backgrounds[i].localPosition.x + parallax.x/100f, backgrounds[i].localPosition.y, backgrounds[i].localPosition.z);

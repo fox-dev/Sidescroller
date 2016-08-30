@@ -128,7 +128,7 @@ public class LaserBlast : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //To keep the particleShot effect on the player
         myTransform.position = player.transform.position;

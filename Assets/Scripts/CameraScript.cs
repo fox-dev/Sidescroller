@@ -4,69 +4,91 @@ using System.Collections;
 public class CameraScript : MonoBehaviour {
 
 
-    public static CameraScript camera;
+	public static CameraScript camera;
 
-    public GameObject origin, origin2;
-    public float flat, desc, climb, current;
+	public GameObject origin, origin2;
+	public float flat, desc, climb, current;
 
-    private Vector3 startPos, endPos;
-    private float startSize, endSize;
+	private Vector3 startPos, endPos;
+	private float startSize, endSize;
 
-    private Transform myTransform;
+	private Transform myTransform;
 
-    private float shakeAmount, shakeTimer;
+	private float shakeAmount, shakeTimer;
+
+	private bool zoomIn, zoomOut;
+	private bool occupied;
 
 	// Use this for initialization
 	void Start () {
-        camera = this;
+		camera = this;
 
-        shakeAmount = shakeTimer = 0;
+		zoomIn = false;
+		zoomOut = true;
 
-        startPos = transform.localPosition;
-        startSize = Camera.main.orthographicSize;
+		occupied = false;
 
-        endPos = new Vector3(1f, 10.5f, -61f);
-        endSize = 9f;
+		shakeAmount = shakeTimer = 0;
 
-        myTransform = transform;
+		startPos = transform.localPosition;
+		startSize = Camera.main.orthographicSize;
+
+		endPos = new Vector3(1f, 10.5f, -61f);
+		endSize = 9f;
+
+		myTransform = transform;
 
 
 
-        flat = 14f;
-        desc = -5f;
-        climb = 20f;
-        current = flat; //starting position
-        transform.localPosition = new Vector3(transform.localPosition.x, current, transform.localPosition.z);
-            
+		flat = 14f;
+		desc = -5f;
+		climb = 20f;
+		current = flat; //starting position
+		transform.localPosition = new Vector3(transform.localPosition.x, current, transform.localPosition.z);
+
 	}
-	
+
 	// Update is called once per frame
 
-    void FixedUpdate()
-    {
-        if (GameManager.gm.state == GameManager.gameState.setup)
-        {
-            myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, endPos, 4f * Time.deltaTime);
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, endSize, 4f * Time.deltaTime);
-        }
-        else
-        {
-            myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, startPos, 4f * Time.deltaTime);
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, startSize, 4f * Time.deltaTime);
-        }
-    }
-    
+	void FixedUpdate()
+	{
+		if (GameManager.gm.state == GameManager.gameState.setup && !zoomIn)
+		{
+			zoomIn = true;
+			zoomOut = false;
+
+			// myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, endPos, 4f * Time.deltaTime);
+			// Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, endSize, 4f * Time.deltaTime);
+			if(!occupied)
+			{
+				StartCoroutine(_zoomIn());
+			}
+		}
+
+		else if(GameManager.gm.state != GameManager.gameState.setup && !zoomOut)
+		{
+			zoomIn = false;
+			zoomOut = true;
+			// myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, startPos, 4f * Time.deltaTime);
+			// Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, startSize, 4f * Time.deltaTime);
+			if (!occupied)
+			{
+				StartCoroutine(_zoomOut());
+			}
+		}
+	}
+
 	void Update () {
 
-        if(shakeTimer >= 0)
-        {
-            Vector2 shakePos = Random.insideUnitCircle * shakeAmount;
+		if(shakeTimer >= 0)
+		{
+			Vector2 shakePos = Random.insideUnitCircle * shakeAmount;
 
-            myTransform.position = new Vector3(myTransform.position.x + shakePos.x, myTransform.position.y + shakePos.y, myTransform.position.z);
+			myTransform.position = new Vector3(myTransform.position.x + shakePos.x, myTransform.position.y + shakePos.y, myTransform.position.z);
 
-            shakeTimer -= Time.deltaTime;
-        }
-       /*
+			shakeTimer -= Time.deltaTime;
+		}
+		/*
         
         
         transform.localPosition = new Vector3(transform.localPosition.x, current, transform.localPosition.z);
@@ -104,13 +126,42 @@ public class CameraScript : MonoBehaviour {
             }
         }
         */
-        
-	}
-    
 
-    public void ShakeCam(float shakeStr, float duration)
-    {
-        shakeAmount = shakeStr;
-        shakeTimer = duration;
-    }
+	}
+
+	public void ShakeCam(float shakeStr, float duration)
+	{
+		shakeAmount = shakeStr;
+		shakeTimer = duration;
+	}
+
+	IEnumerator _zoomIn()
+	{
+		occupied = true;
+		float timeToStart = Time.time;
+		while(myTransform.localPosition != endPos && Camera.main.orthographicSize != endSize)
+		{
+			myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, endPos, 0.5f * (Time.time - timeToStart));
+			Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, endSize, 0.5f * (Time.time - timeToStart));
+
+			yield return null;
+		}
+
+		occupied = false;
+	}
+
+	IEnumerator _zoomOut()
+	{
+		occupied = true;
+		float timeToStart = Time.time;
+		while (myTransform.localPosition != startPos && Camera.main.orthographicSize != startSize)
+		{
+			myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, startPos, 0.5f * (Time.time - timeToStart));
+			Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, startSize, 0.5f * (Time.time - timeToStart));
+
+			yield return null;
+		}
+
+		occupied = false;
+	}
 }
