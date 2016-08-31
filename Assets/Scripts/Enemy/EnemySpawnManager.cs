@@ -91,7 +91,14 @@ public class EnemySpawnManager : MonoBehaviour {
 
 			enemyList = new ArrayList ();
 
-			int distributionMethod = 3;//Random.Range(1, 3);
+			int distributionMethod = Random.Range(1 + (int)(GameManager.difficulty / 2), 2 + (int)(GameManager.difficulty / 3));
+
+			print("Using distribution method: " + distributionMethod);
+
+			if (distributionMethod > 3) {
+				distributionMethod = 3;
+			}
+
             Debug.Log("METHOD " + distributionMethod);
            
 			if (distributionMethod == 1) {													// Chooses from the the flypass and flyby enemies
@@ -675,13 +682,18 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void reinit() //should be called after every boss fight by the GameManager during state transitions
     {
-        int waveCount = Random.Range(1,2);
-        waves = new Wave[waveCount];
+		int waveCount = Random.Range(1 + (int)(GameManager.difficulty / 2), 2 + (int)(GameManager.difficulty / 2));
+        
+		print ("Number of Waves: " + waveCount);
+
+		waves = new Wave[waveCount];
         for (int x = 0; x < waves.Length; x++)
         {
             waves[x] = new Wave();
             waves[x].init();
         }
+
+
     }
 
     void OnDrawGizmos()

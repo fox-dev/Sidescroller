@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour {
 
     private GameObject player;
 
-    [System.Serializable]
+	public static int difficulty;
+
+	[System.Serializable]
     public class GameStats //Keep track of player's stats for ranking/grade
     {
         public int roundScore; //points accumulated during the round
@@ -130,6 +132,8 @@ public class GameManager : MonoBehaviour {
 		{
 			Debug.Log("Cannot find 'AdController' script");
 		}
+
+		difficulty = 0;
     }
 
 	void Awake()
@@ -152,8 +156,9 @@ public class GameManager : MonoBehaviour {
         score = 0;
         currency = 10000;
 
+		difficulty = 0;
         
-        gameStats.init();
+		gameStats.init();
         upgrades.init();
     }
 
@@ -276,6 +281,9 @@ public class GameManager : MonoBehaviour {
             /////////////////////////////////////////////
 
             GameManager.gm.state = gameState.waiting;
+			difficulty++;
+
+			print ("difficulty level: " + difficulty);
 
         }
         else
