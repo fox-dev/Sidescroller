@@ -44,6 +44,7 @@ public class ChargeMeterGUI : MonoBehaviour {
         else if (player.wep.currentCharge <= 0 && !player.wep.charge)
         {
             button.interactable = false;
+            chargeMeterAnim.SetBool("Charged", false);
             StartCoroutine(waitForAnimation());
         }
     
@@ -62,10 +63,6 @@ public class ChargeMeterGUI : MonoBehaviour {
         occupied = true;
 
         chargeMeterAnim.SetBool("Recharge", true);
-
-        yield return new WaitForSeconds(1f);
-
-        chargeMeterAnim.SetBool("Charged", false);
 
         yield return new WaitForSeconds(1f);
 

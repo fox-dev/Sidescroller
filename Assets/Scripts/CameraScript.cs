@@ -52,6 +52,7 @@ public class CameraScript : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+        /*
 		if (GameManager.gm.state == GameManager.gameState.setup && !zoomIn)
 		{
 			zoomIn = true;
@@ -76,7 +77,23 @@ public class CameraScript : MonoBehaviour {
 				StartCoroutine(_zoomOut());
 			}
 		}
-	}
+        */
+
+        if (GameManager.gm.state == GameManager.gameState.setup)
+        {
+
+
+            myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, endPos, 4f * Time.deltaTime);
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, endSize, 4f * Time.deltaTime);
+        }
+        else if (GameManager.gm.state != GameManager.gameState.setup)
+        {
+
+            myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, startPos, 4f * Time.deltaTime);
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, startSize, 4f * Time.deltaTime);
+
+        }
+    }
 
 	void Update () {
 

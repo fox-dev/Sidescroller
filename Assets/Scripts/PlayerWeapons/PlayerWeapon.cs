@@ -85,7 +85,7 @@ public class PlayerWeapon : MonoBehaviour {
         if (currentCharge < maxCharge && charge && ((GameManager.gm.state != GameManager.gameState.setup) && (GameManager.gm.state != GameManager.gameState.results) && (GameManager.gm.state != GameManager.gameState.waiting))) //Don't charge in transition states
         {
 
-             currentCharge += (5 * Time.deltaTime);
+             currentCharge += (50 * Time.deltaTime);
            
         }
         else if(firing)

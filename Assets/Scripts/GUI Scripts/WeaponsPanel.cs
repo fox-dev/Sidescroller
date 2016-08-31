@@ -12,7 +12,15 @@ public class WeaponsPanel : MonoBehaviour {
     [SerializeField]
     private Text homingMissileText;
 
-	public int upgradeFireBallCost, upgradeBeamCost, upgradeHomingMissileCost;
+    //List of button Texts
+    [SerializeField]
+    private Text fbCost;
+    [SerializeField]
+    private Text beamCost;
+    [SerializeField]
+    private Text hmCost;
+
+    public int upgradeFireBallCost, upgradeBeamCost, upgradeHomingMissileCost;
 	private int[] upgradeCount;
 
 	public int upgradeFireBallDmg, upgradeBeamDmg, upgradeHomingMissileDmg;
@@ -24,7 +32,9 @@ public class WeaponsPanel : MonoBehaviour {
         beamText.text = "DAMAGE: " + Beam.damage.ToString();
         homingMissileText.text = "DAMAGE: " + HomingMissile.damage.ToString();
 
-		upgradeCount = new int[3];
+     
+
+        upgradeCount = new int[3];
 		for (int i = 0; i < upgradeCount.Length; i++) {
 			upgradeCount [i] = 0;
 		}
@@ -32,13 +42,14 @@ public class WeaponsPanel : MonoBehaviour {
 
     public void upgradeFireBallDamage()
     {
-		int upgradeFireBallCostScaled = upgradeBeamCost + upgradeCount [0] * 100;
+		int upgradeFireBallCostScaled = upgradeFireBallCost + upgradeCount [0] * 100;
 
         if (GameManager.currency >= upgradeFireBallCostScaled)
         {
             GameManager.SubtractCurrency(upgradeFireBallCostScaled);
 			ShootFireBall.damage += upgradeFireBallDmg;
             fireBallText.text = "DAMAGE: " + ShootFireBall.damage.ToString();
+            fbCost.text = "UPGRADE\n" + (upgradeFireBallCost + upgradeFireBallCostScaled).ToString() + " NRG";
 
 			upgradeCount[0]++;
         }
@@ -55,8 +66,9 @@ public class WeaponsPanel : MonoBehaviour {
             GameManager.SubtractCurrency(upgradeBeamCostScaled);
 			Beam.damage += upgradeBeamDmg;
             beamText.text = "DAMAGE: " + Beam.damage.ToString();
+            beamCost.text = "UPGRADE\n" + (upgradeBeamCost + upgradeBeamCostScaled).ToString() + " NRG";
 
-			upgradeCount[1]++;
+            upgradeCount[1]++;
         }
   
     }
@@ -70,8 +82,9 @@ public class WeaponsPanel : MonoBehaviour {
 			GameManager.SubtractCurrency(upgradeHomingMissileCostScaled);
             HomingMissile.damage += upgradeHomingMissileDmg;
             homingMissileText.text = "DAMAGE: " + HomingMissile.damage.ToString();
+            hmCost.text = "UPGRADE\n" + (upgradeHomingMissileCost + upgradeHomingMissileCostScaled).ToString() + " NRG";
 
-			upgradeCount [2]++;
+            upgradeCount [2]++;
         }
             
     }

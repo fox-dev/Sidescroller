@@ -37,7 +37,7 @@ public class SideGradesPanel : MonoBehaviour {
 
     public void purcahseBuddy()
     {
-        int cost = 1000;
+        int cost = 10000;
 
         if(GameManager.currency >= cost)
         {
@@ -53,7 +53,7 @@ public class SideGradesPanel : MonoBehaviour {
 
     public void purcahseFireBallUpgrade()
     {
-        int cost = 3000;
+        int cost = 5000;
 
         if (GameManager.currency >= cost)
         {
