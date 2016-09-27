@@ -1,4 +1,6 @@
-﻿Shader "Final Curved" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Final Curved" {
    Properties {
       _MainTex ("Main Texture", 2D) = "white" {}
       _Color ("Main Color", Color) = (1,1,1,1)
@@ -50,12 +52,12 @@
             float4 curvedWorldPos = WorldCurvature(IN.vertex); 
 
             OUT.pos = curvedWorldPos;
-            OUT.posWorld = mul(_Object2World, IN.vertex);
-            OUT.normal = mul(float4(IN.normal, 0.0), _Object2World).xyz;
+            OUT.posWorld = mul(unity_ObjectToWorld, IN.vertex);
+            OUT.normal = mul(float4(IN.normal, 0.0), unity_ObjectToWorld).xyz;
             OUT.texcoord = TRANSFORM_TEX(IN.texcoord,_MainTex);
 
-            float3 posWorld = mul(_Object2World, IN.vertex).xyz;
-			float3 normWorld = normalize(mul(_Object2World, float4(IN.normal,0.0)).xyz);
+            float3 posWorld = mul(unity_ObjectToWorld, IN.vertex).xyz;
+			float3 normWorld = normalize(mul(unity_ObjectToWorld, float4(IN.normal,0.0)).xyz);
 
 			float3 I = posWorld - _WorldSpaceCameraPos.xyz;
 			OUT.refl = _FresnelScale * pow(1.0 + dot(normalize(I), normWorld), _FresnelPower);

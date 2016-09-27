@@ -48,7 +48,11 @@ public class SideGradesPanel : MonoBehaviour {
             buddy_purcahseButton.interactable = false;
             buddy_purchaseText.text = "PURCHASED";
         }
-        
+        else
+        {
+            AudioManager.current.playNEGATIVE();
+        }
+
     }
 
     public void purcahseFireBallUpgrade()
@@ -62,6 +66,10 @@ public class SideGradesPanel : MonoBehaviour {
 
             fireBallUpgrade_purcahseButton.interactable = false;
             fireBallUpgrade_purchaseText.text = "PURCHASED";
+        }
+        else
+        {
+            AudioManager.current.playNEGATIVE();
         }
 
     }

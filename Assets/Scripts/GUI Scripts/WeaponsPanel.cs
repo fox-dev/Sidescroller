@@ -47,11 +47,17 @@ public class WeaponsPanel : MonoBehaviour {
         if (GameManager.currency >= upgradeFireBallCostScaled)
         {
             GameManager.SubtractCurrency(upgradeFireBallCostScaled);
-			ShootFireBall.damage += upgradeFireBallDmg;
+            ShootFireBall.damage += upgradeFireBallDmg;
             fireBallText.text = "DAMAGE: " + ShootFireBall.damage.ToString();
             fbCost.text = "UPGRADE\n" + (upgradeFireBallCost + upgradeFireBallCostScaled).ToString() + " NRG";
 
-			upgradeCount[0]++;
+            upgradeCount[0]++;
+
+            AudioManager.current.playUPGRADE();
+        }
+        else
+        {
+            AudioManager.current.playNEGATIVE();
         }
             
 
@@ -69,8 +75,14 @@ public class WeaponsPanel : MonoBehaviour {
             beamCost.text = "UPGRADE\n" + (upgradeBeamCost + upgradeBeamCostScaled).ToString() + " NRG";
 
             upgradeCount[1]++;
+
+            AudioManager.current.playUPGRADE();
         }
-  
+        else
+        {
+            AudioManager.current.playNEGATIVE();
+        }
+
     }
 
     public void upgradeHomingMissile()
@@ -85,7 +97,13 @@ public class WeaponsPanel : MonoBehaviour {
             hmCost.text = "UPGRADE\n" + (upgradeHomingMissileCost + upgradeHomingMissileCostScaled).ToString() + " NRG";
 
             upgradeCount [2]++;
+
+            AudioManager.current.playUPGRADE();
         }
-            
+        else
+        {
+            AudioManager.current.playNEGATIVE();
+        }
+
     }
 }

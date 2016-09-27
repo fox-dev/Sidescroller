@@ -105,10 +105,10 @@ public class GameManager : MonoBehaviour {
     public GameObject[] weaponList; //List of all possible weapons in the game, used for upgrading and equipping weapons; 
 
     [SerializeField]
-    public static float score;
+    public static int score;
 
     [SerializeField]
-    public static float currency;
+    public static int currency;
 
     public gameState state;
     public gameState prevState;
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour {
 
         state = gameState.menu;
 
-        score = 0;
+        score = PlayerPrefs.GetInt("Highscore");
         currency = 10000;
 
 		difficulty = 0;
@@ -373,10 +373,15 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+    }
 
-        
-
-
+    public static void resetBossFlags()
+    {
+        EnemySpawnManager.currentBosses--;
+        EnemySpawnManager.bossEnemy = null;
+        BossUI.current.bossGuiAnim.enabled = true;
+        BossUI.current.bossGuiAnim.SetBool("BossFightReady", false);
+        BossUI.current.bossGuiAnim.SetBool("Normal", true);
     }
 
 	public static void turnOffAds()
@@ -386,7 +391,7 @@ public class GameManager : MonoBehaviour {
 
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
-
+         
         occupied = true;
         gameStats.init();
         yield return new WaitForSeconds(0.5f);
@@ -402,10 +407,16 @@ public class GameManager : MonoBehaviour {
     {
         
         occupied = true;
+        PlayerPrefs.SetInt("Highscore", score);
         EnemySpawnManager.current.reinit();
         yield return new WaitForSeconds(5f);
         state = gameState.results;
         occupied = false;
+    }
+
+    public static void savePref()
+    {
+        PlayerPrefs.SetInt("Highscore", GameManager.score);
     }
 
 

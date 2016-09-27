@@ -55,6 +55,7 @@ public class GameOverUI : MonoBehaviour {
        
         GameManager.clearScreenOfEnemies();
         GameManager.respawnPlayer();
+        GameManager.resetBossFlags();
         GameManager.gm.state = GameManager.gameState.results;
 
 		GameManager.turnOffAds ();

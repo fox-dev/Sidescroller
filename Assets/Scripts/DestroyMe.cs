@@ -41,6 +41,10 @@ public class DestroyMe : MonoBehaviour {
 
     IEnumerator disable()
     {
+        if(transform.name.Contains("Homing"))
+        {
+
+        }
         yield return new WaitForSeconds(aliveTime);
         transform.position = Vector3.zero;
         gameObject.SetActive(false);

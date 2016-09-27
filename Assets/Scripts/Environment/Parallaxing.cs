@@ -39,14 +39,6 @@ public class Parallaxing : MonoBehaviour {
             parallaxScales[i] = (backgrounds[i].position.z) * -1f;
             
         }
-
-        parallaxScales[4] = parallaxScales[0];
-
-
-
-
-        //parallaxScales[2] = backgrounds[2].position.z * -4f;
-        //parallaxScales[1] = backgrounds[1].position.z * -2f;
     }
 	
    
@@ -98,7 +90,8 @@ public class Parallaxing : MonoBehaviour {
 			Vector3 backgroundTargetPos = new Vector3(backgrounds[i].position.x + parallax.x, backgrounds[i].position.y + parallax.y, backgrounds[i].position.z);
             if(i == 4)
             {
-                backgroundTargetPos = new Vector3(backgrounds[i].localPosition.x + parallax.x/100f, backgrounds[i].localPosition.y, backgrounds[i].localPosition.z);
+
+                //backgroundTargetPos = new Vector3(backgrounds[i].localPosition.x + parallax.x/100f, backgrounds[i].localPosition.y, backgrounds[i].localPosition.z);
                 //print(backgrounds[i].localPosition.x);
             }
 
@@ -111,7 +104,7 @@ public class Parallaxing : MonoBehaviour {
             if (i == 4)
             {
                // backgrounds[i].localPosition = Vector3.Lerp(backgrounds[i].localPosition, backgroundTargetPos, smoothing * Time.deltaTime);
-                backgrounds[i].localPosition = backgroundTargetPos;
+                //backgrounds[i].localPosition = backgroundTargetPos;
 
 
             }

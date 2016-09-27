@@ -1,3 +1,6 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
 //Sphere-map
 float _SpherifyFactor;
 float _SphereRadius;
@@ -7,7 +10,7 @@ float _HorizontalCurvature;
 
 inline float4 WorldCurvature (float4 vertex)
 {
-	float3 worldVertex = mul(_Object2World, vertex).xyz;
+	float3 worldVertex = mul(unity_ObjectToWorld, vertex).xyz;
 	float heightFromGround = worldVertex.y;
 
 	//method 1
@@ -21,7 +24,7 @@ inline float4 WorldCurvature (float4 vertex)
 	
 	worldVertex = lerp(worldVertex, modifiedPosition, _SpherifyFactor);
 	
-	float4 modelVertex = mul(_World2Object, float4(worldVertex, 1));
+	float4 modelVertex = mul(unity_WorldToObject, float4(worldVertex, 1));
 	float4 pos = mul(UNITY_MATRIX_MVP, modelVertex);
 	
 	//Curve-to-left

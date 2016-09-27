@@ -228,6 +228,7 @@ public class LaserBlast : MonoBehaviour
         if (shrink)
         {
             playerWeapon.firing = false;
+            playerWeapon.togglePlayerInvul();
             shapeModule.radius = 0.5f;
             ps.startLifetime = 1f;
             damageEnabled = false;
@@ -235,6 +236,7 @@ public class LaserBlast : MonoBehaviour
             //print("BIG");
             growingWidth = Mathf.Lerp(growingWidth, 0, Time.deltaTime * 10f);
             gunLine.SetWidth(growingWidth, growingWidth);
+          
         }
 
     }
@@ -244,6 +246,7 @@ public class LaserBlast : MonoBehaviour
         occupied = true;
         yield return new WaitForSeconds(0.5f);
         damageEnabled = true;
+        AudioManager.current.playLASERBLAST();
         grow = true;
         //Start decrementing player super gauge
         playerWeapon.charge = false;

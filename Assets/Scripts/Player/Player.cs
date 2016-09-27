@@ -42,7 +42,10 @@ public class Player : MonoBehaviour {
     public float blinkDuration;
 
     [SerializeField]
-    private bool blinking;
+    private bool blinking; //when hit by an enemy projectile
+
+    [SerializeField]
+    private bool invul; //when firing laser
 
     [Header("Optional: ")]
     [SerializeField]
@@ -55,6 +58,9 @@ public class Player : MonoBehaviour {
         stats.Init();
         wep = weapon.GetComponent<PlayerWeapon>();
 
+        invul = false;
+
+
         if (statusIndicator != null)
         {
             statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
@@ -63,7 +69,7 @@ public class Player : MonoBehaviour {
 
     public void DamagePlayer(int damage)
     {
-        if (!blinking && !transform.GetComponent<PlayerMovement>().jumping)
+        if ((!blinking && !transform.GetComponent<PlayerMovement>().jumping) && !invul)
         {
             Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
 
@@ -124,6 +130,13 @@ public class Player : MonoBehaviour {
     {
         stats.Init();
         StartCoroutine(blink(blinkDuration, 0.2f));
+        invul = false;
+        wep.fireReleased();
+    }
+
+    public void invulFlag()
+    {
+        invul = !invul;
     }
 
 

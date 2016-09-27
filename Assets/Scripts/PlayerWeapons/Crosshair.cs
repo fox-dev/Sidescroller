@@ -9,10 +9,15 @@ public class Crosshair : MonoBehaviour {
     public GameObject crosshair;
     public Canvas canvas;
     private Transform myTransform;
+
+    private PlayerWeapon playerWep;
+
     int z = 0;
 	// Use this for initialization
 	void Start () {
         myTransform = transform;
+
+        playerWep = GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<PlayerWeapon>();
 	}
 	
 	// Update is called once per frame
@@ -39,12 +44,17 @@ public class Crosshair : MonoBehaviour {
                 {
                     if (TutorialOverlayUI.current.jumpPressed && !TutorialOverlayUI.current.crosshairMoved)
                     {
-                        TutorialOverlayUI.current.crosshairMoved = true;
+                      
+                        TutorialOverlayUI.current.movedCrosshair();
                     }
                 }
 
+                playerWep.firePressed();
+
             }
+            
         }
+       
 
         if (Input.touchCount > 1)
         {
@@ -55,8 +65,12 @@ public class Crosshair : MonoBehaviour {
                 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
                 myTransform.position = pos_at_z_0;
 
+                playerWep.firePressed();
+
             }
+            
         }
+      
 
         if (Input.touchCount > 2)
         {
@@ -67,13 +81,17 @@ public class Crosshair : MonoBehaviour {
                 pos_at_z_0 = ray.origin + ray.direction * (z_plane_of_2d_game - ray.origin.z) / ray.direction.z;
                 myTransform.position = pos_at_z_0;
 
+                playerWep.firePressed();
+
             }
+            
         }
+       
 
 
 
 
-        
+
         if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -86,7 +104,10 @@ public class Crosshair : MonoBehaviour {
             {
                 TutorialOverlayUI.current.movedCrosshair();
             }
+
+            playerWep.firePressed();
         }
+       
         
         
 

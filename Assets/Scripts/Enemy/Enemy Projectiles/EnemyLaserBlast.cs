@@ -87,16 +87,16 @@ public class EnemyLaserBlast : MonoBehaviour
        
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
 
-        
-
-        
 
 
+
+
+        AudioManager.current.playLASERCHARGE_ENEMY();
 
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         if (EnemySpawnManager.bossEnemy != null)
@@ -119,6 +119,7 @@ public class EnemyLaserBlast : MonoBehaviour
 
         if (growingWidth <= maxWidth - 1f && !grow && !initialFire)
         {
+            
             growingWidth = Mathf.Lerp(growingWidth, 0.5f, Time.deltaTime * 5f);
             gunLine.SetWidth(growingWidth, growingWidth);
             if (!occupied && (growingWidth <= maxWidth - 1f))
@@ -129,6 +130,7 @@ public class EnemyLaserBlast : MonoBehaviour
 
         if (growingWidth <= maxWidth - 1f && grow)
         {
+            CameraScript.camera.ShakeCam(0.3f, 0.5f);
             growingWidth = Mathf.Lerp(growingWidth, maxWidth, Time.deltaTime * 1.5f);
             gunLine.SetWidth(growingWidth, growingWidth);
             if (growingWidth >= maxWidth - 1f)
@@ -167,6 +169,8 @@ public class EnemyLaserBlast : MonoBehaviour
     {
         occupied = true;
         yield return new WaitForSeconds(2f);
+
+        AudioManager.current.playLASERBLAST ();
         damageEnabled = true;
         grow = true;
         initialFire = true;

@@ -161,7 +161,13 @@ public class AudioManager : MonoBehaviour {
 	public void playUPGRADE()
 	{
 		PlaySound("Upgrade");
+        
 	}
+
+    public void playNEGATIVE()
+    {
+        PlaySound("Negative");
+    }
 
 	public void playBACK()
 	{
@@ -173,10 +179,28 @@ public class AudioManager : MonoBehaviour {
 		PlaySound("Forward");
 	}
 
-	public void playWarning()
+    public void playLASERCHARGE()
+    {
+        PlaySound("LaserCharge");
+    }
+
+    public void playLASERCHARGE_ENEMY()
+    {
+        PlaySound("LaserCharge_Enemy");
+    }
+
+    public void playLASERBLAST()
+    {
+        PlaySound("LaserBlast");
+    }
+
+    public void playWarning()
 	{
 		StartCoroutine(warningX3());
 	}
+
+
+
 
 	IEnumerator warningX3()
 	{

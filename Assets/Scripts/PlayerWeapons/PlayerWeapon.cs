@@ -20,6 +20,8 @@ public class PlayerWeapon : MonoBehaviour {
 
     private bool occupied; //for couritine call to make sure it is only called once;
 
+    private Player player;
+
 
     // Use this for initialization
     void Awake () {
@@ -31,6 +33,7 @@ public class PlayerWeapon : MonoBehaviour {
 
         nextBullet = 0f;
         origin = GameObject.FindGameObjectWithTag("Origin");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 	
 	// Update is called once per frame
@@ -44,14 +47,17 @@ public class PlayerWeapon : MonoBehaviour {
 
             if (projectile.name == "Player_Beam")
             {
+                timeBetweenBullets = 0.15f;
                 AudioManager.current.PlaySound("Beam");
             }
             else if (projectile.name == "Player_Fireball")
             {
+                timeBetweenBullets = 0.15f;
                 AudioManager.current.PlaySound("PlayerFire");
             }
             else if (projectile.name == "HomingMissile")
             {
+                timeBetweenBullets = 0.30f;
                 AudioManager.current.PlaySound("Rocket");
             }
 
@@ -78,6 +84,8 @@ public class PlayerWeapon : MonoBehaviour {
 
                 }
             }
+
+           
             
         }
       
@@ -100,6 +108,7 @@ public class PlayerWeapon : MonoBehaviour {
                 currentCharge = 0;
             }
         }
+       
 
         readyToFire = currentCharge >= maxCharge;
 
@@ -123,6 +132,10 @@ public class PlayerWeapon : MonoBehaviour {
     public void fireSuper()
     {
         firing = true;
+
+        AudioManager.current.playLASERCHARGE();
+
+        player.invulFlag();
 
         ChargeMeterGUI.current.button.interactable = false;
 
@@ -159,6 +172,11 @@ public class PlayerWeapon : MonoBehaviour {
     public void fireReleased()
     {
         fire = false;
+    }
+
+    public void togglePlayerInvul()
+    {
+        player.invulFlag();
     }
 
     
