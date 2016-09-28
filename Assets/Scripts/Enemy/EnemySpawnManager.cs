@@ -682,7 +682,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void reinit() //should be called after every boss fight by the GameManager during state transitions
     {
-		int waveCount = Random.Range(1 + (int)(GameManager.difficulty / 2), 2 + (int)(GameManager.difficulty / 2));
+		int waveCount = Random.Range(1 + (int)(GameManager.difficulty / 2), 2 + (int)(GameManager.difficulty / 3));
         
 		print ("Number of Waves: " + waveCount);
 

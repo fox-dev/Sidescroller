@@ -46,6 +46,7 @@ public class GameOverUI : MonoBehaviour {
 
         
         
+		GameManager.getNewAds ();
 		GameManager.turnOffAds ();
 
     }
@@ -59,5 +60,6 @@ public class GameOverUI : MonoBehaviour {
         GameManager.gm.state = GameManager.gameState.results;
 
 		GameManager.turnOffAds ();
+
     }
 }

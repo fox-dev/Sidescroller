@@ -226,9 +226,7 @@ public class GameManager : MonoBehaviour {
         gm.state = gameState.gameOver;
         AudioManager.current.delayPlaySound("GameOver", 0.5f);
 
-		if (gm.adController.adIsLoaded ()) {
-			gm.adController.showIntAd ();
-		}
+		gm.StartCoroutine(gm.showAd (5f));
 
 		gm.adController.showBannerAd ();
     }
@@ -389,6 +387,12 @@ public class GameManager : MonoBehaviour {
 		gm.adController.hideBannerAd();
 	}
 
+	public static void getNewAds()
+	{
+		gm.adController.requestNewBannerAd ();
+		gm.adController.requestNewInterstitialAd ();
+	}
+
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
          
@@ -413,6 +417,16 @@ public class GameManager : MonoBehaviour {
         state = gameState.results;
         occupied = false;
     }
+
+	public IEnumerator showAd(float time)
+	{
+		yield return new WaitForSeconds (time);
+
+		if (gm.adController.adIsLoaded ()) {
+			gm.adController.showIntAd ();
+		}
+
+	}
 
     public static void savePref()
     {
