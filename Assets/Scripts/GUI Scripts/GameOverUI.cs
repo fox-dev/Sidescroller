@@ -28,6 +28,7 @@ public class GameOverUI : MonoBehaviour {
 
         if(GameManager.currency >= retryCost)
         {
+            GameManager.SubtractCurrency(retryCost);
             GameManager.respawnPlayer();
 
             if (GameManager.gm.prevState == GameManager.gameState.normalPlay) //If player died during normal play;

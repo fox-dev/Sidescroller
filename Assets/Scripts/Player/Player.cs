@@ -69,21 +69,34 @@ public class Player : MonoBehaviour {
 
     public void DamagePlayer(int damage)
     {
-        if ((!blinking && !transform.GetComponent<PlayerMovement>().jumping) && !invul)
+
+        if (GameManager.gm.state == GameManager.gameState.tutorial_2 || GameManager.gm.state == GameManager.gameState.tutorial_3)
         {
-            Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
-
-            stats.curHealth -= damage;
-            //Add damage done to player to the gameStats of the GameManager
-            GameManager.gm.gameStats.addTotalDamageTaken(damage);
-            GameManager.gm.gameStats.addTimesHit();
-
-            StartCoroutine(blink(blinkDuration, 0.2f));
+            if ((!blinking && !transform.GetComponent<PlayerMovement>().jumping))
+            {
+                Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
+                StartCoroutine(blink(blinkDuration, 0.2f));
+            }
         }
         else
         {
-            //print("Currently invulnerable");
+            if ((!blinking && !transform.GetComponent<PlayerMovement>().jumping) && !invul)
+            {
+                Instantiate(Resources.Load("explosion"), transform.position, Quaternion.identity);
+
+                stats.curHealth -= damage;
+                //Add damage done to player to the gameStats of the GameManager
+                GameManager.gm.gameStats.addTotalDamageTaken(damage);
+                GameManager.gm.gameStats.addTimesHit();
+
+                StartCoroutine(blink(blinkDuration, 0.2f));
+            }
+            else
+            {
+                //print("Currently invulnerable");
+            }
         }
+        
         
 
         //print(stats.alive + " " + stats.curHealth);

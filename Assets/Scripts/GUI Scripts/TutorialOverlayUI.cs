@@ -14,9 +14,9 @@ public class TutorialOverlayUI : MonoBehaviour {
     [SerializeField]
     private RectTransform desc;
     [SerializeField]
-    private RectTransform arrow;
+    private RectTransform arrow; //used for the GUIspace arrow
     [SerializeField]
-    private GameObject crosshairArrow;
+    private GameObject crosshairArrow; //used for the Worldspace Arrow
 
     public Animator ani;
 
@@ -40,6 +40,7 @@ public class TutorialOverlayUI : MonoBehaviour {
 
         fire.interactable = false;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -189,17 +190,28 @@ public class TutorialOverlayUI : MonoBehaviour {
     void OnEnable()
     {
         fire.interactable = false;
+        if(ani != null)
+        {
+            ani.Play("Description_Main", -1, 0f);
+        }
+        
     }
 
     void OnDisable()
     {
-        crosshairArrow.SetActive(false);
+        if (crosshairArrow != null)
+        {
+            crosshairArrow.SetActive(false);
+        }
+        
         arrow.gameObject.SetActive(true);
         arrow.anchoredPosition = new Vector2(40, -140);
         goPressed = jumpPressed = crosshairMoved = firePressed = enemyOneKilled = enemyTwoKilled = false;
         fire.interactable = true;
+        
 
         descText.text = "HOLD 'GO' TO MOVE FORWARD";
+
     }
 
 
