@@ -12,6 +12,14 @@ public class OptionsUI : MonoBehaviour {
 
     //Volume slider
     public Slider volSlider;
+
+    //ResetHighscore pane//
+    public Button resetHighScoreButton;
+    public RectTransform confirmationPanel;
+    public Text highScoreText;
+    public Button yesButton, noButton;
+
+    ///////////////////////
      
 	// Use this for initialization
 	void Start () {
@@ -29,6 +37,20 @@ public class OptionsUI : MonoBehaviour {
         volSlider.value = AudioManager.current.ml.volume;
 
     }
+
+    void OnEnable()
+    {
+        if(GameManager.highScore == 0)
+        {
+            resetHighScoreButton.interactable = false;
+        }
+        else
+        {
+            resetHighScoreButton.interactable = true;
+        }
+    }
+
+
 	
 
     //Used by the options button
@@ -59,7 +81,7 @@ public class OptionsUI : MonoBehaviour {
     }
 
     //////////////////////////////
-    ///VOLUME FUNCTIONS///
+    ///VOLUME FUNCTIONS ////////// 
     //////////////////////////////
 
     //Called when slider changes
@@ -67,5 +89,31 @@ public class OptionsUI : MonoBehaviour {
     {
         AudioManager.current.adjustMainListenerVolume(volSlider.value);
     }
+
+    //////////////////////////////
+    ///Reset Highscore Functions//
+    //////////////////////////////
+
+    public void toggleConfirmationPanel()
+    {
+        if(confirmationPanel.gameObject.activeSelf)
+        {
+            confirmationPanel.gameObject.SetActive(false);
+            highScoreText.text = GameManager.highScore.ToString();
+        }
+        else
+        {
+            confirmationPanel.gameObject.SetActive(true);
+            highScoreText.text = GameManager.highScore.ToString();
+        }
+        
+    }
+
+    public void resetHighScore()
+    {
+        GameManager.resetHighScore();
+        toggleConfirmationPanel();
+    }
+
 
 }

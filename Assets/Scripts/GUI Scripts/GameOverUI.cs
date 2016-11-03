@@ -33,10 +33,12 @@ public class GameOverUI : MonoBehaviour {
 
             if (GameManager.gm.prevState == GameManager.gameState.normalPlay) //If player died during normal play;
             {
+                GameManager.resetScore();
                 GameManager.gm.state = GameManager.gameState.ready;
             }
             else if (GameManager.gm.prevState == GameManager.gameState.bossFight)
             {
+                GameManager.resetScore();
                 GameManager.gm.state = GameManager.gameState.bossFight;
             }
         }

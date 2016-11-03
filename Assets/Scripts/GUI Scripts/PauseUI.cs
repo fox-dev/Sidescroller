@@ -38,9 +38,11 @@ public class PauseUI : MonoBehaviour {
         this.gameObject.SetActive(false);
         Time.timeScale = 1;
 
+
         GameManager.clearScreenOfEnemies();
         GameManager.respawnPlayer();
         GameManager.resetBossFlags();
+        GameManager.resetScore();
         GameManager.gm.state = GameManager.gameState.menu;
 
         GameManager.turnOffAds();
@@ -51,18 +53,22 @@ public class PauseUI : MonoBehaviour {
 
     public void Pause()
     {
-        if (Time.timeScale == 0)
+        if(GameManager.gm.state == GameManager.gameState.normalPlay || GameManager.gm.state == GameManager.gameState.bossFight)
         {
-            this.gameObject.SetActive(false);
-            Time.timeScale = 1;
-            
+            if (Time.timeScale == 0)
+            {
+                this.gameObject.SetActive(false);
+                Time.timeScale = 1;
+
+            }
+            else
+            {
+                this.gameObject.SetActive(true);
+                Time.timeScale = 0;
+
+            }
         }
-        else
-        {
-            this.gameObject.SetActive(true);
-            Time.timeScale = 0;
-            
-        }
+        
 
     }
 

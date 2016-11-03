@@ -179,6 +179,7 @@
     <Compile Include="Assets\Scripts\GUI Scripts\CurrencyUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\GameOverUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\GetReadyGUI.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\HighscoreUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\OptionsUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PauseUI.cs" />

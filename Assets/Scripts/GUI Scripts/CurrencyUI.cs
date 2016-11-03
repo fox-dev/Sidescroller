@@ -15,13 +15,13 @@ public class CurrencyUI : MonoBehaviour
     {
         current = this;
         currencyText = GetComponent<Text>();
-        currencyText.text = "Currency: " + GameManager.currency.ToString();
+        currencyText.text = "Energy: " + GameManager.currency.ToString();
 
     }
 
 
     public void UpdateText()
     {
-        currencyText.text = "Currency: " + GameManager.currency.ToString();
+        currencyText.text = "Energy: " + GameManager.currency.ToString();
     }
 }

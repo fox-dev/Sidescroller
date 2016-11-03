@@ -30,11 +30,27 @@ public class GameManager : MonoBehaviour {
 
 
         /////Increment methods/functions//////
+
+        //The current round's score//
         public void addRoundScore(int amount)
         {
             roundScore += amount;
         }
 
+        public void addToTotalScore(int amount)
+        {
+            score += amount;
+
+            if(score > highScore)
+            {
+                highScore = score;
+
+                HighscoreUI.current.UpdateText();
+            }
+        }
+
+
+        ///////////////////////////////////////
         public void addTimesHit()
         {
             timesHit += 1;
@@ -63,7 +79,7 @@ public class GameManager : MonoBehaviour {
     }
 
     [System.Serializable]
-    public class Upgrades
+    public class Upgrades //Keep track of player's available upgrades
     {
         public bool fireBall_x3;
         public bool buddy;
@@ -72,8 +88,6 @@ public class GameManager : MonoBehaviour {
         {
             fireBall_x3 = buddy = false;
         }
-
-
         //enable methods
         public void enableFireBall_x3() { fireBall_x3 = true; }
         public void enableBuddy() { buddy = true; }
@@ -81,7 +95,8 @@ public class GameManager : MonoBehaviour {
         //disable methods
         public void disableFireBall_x3() { fireBall_x3 = false; }
         public void disableBuddy() { buddy = false; }
-    } //Keep track of player's available upgrades
+
+    } 
 
     //Enum for Game States
     public enum gameState
@@ -106,6 +121,8 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     public static int score;
+    [SerializeField]
+    public static int highScore;
 
     [SerializeField]
     public static int currency;
@@ -268,7 +285,8 @@ public class GameManager : MonoBehaviour {
             BossUI.current.bossGuiAnim.enabled = true;
             BossUI.current.bossGuiAnim.SetBool("BossFightReady", false);
             BossUI.current.bossGuiAnim.SetBool("Normal", true);
-            score += enemy.stats.awardPoints;
+            //score += enemy.stats.awardPoints;
+            gm.gameStats.addToTotalScore(enemy.stats.awardPoints);
 
             //Update UI score text
             ScoreUI.current.UpdateText();
@@ -288,7 +306,8 @@ public class GameManager : MonoBehaviour {
         {
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentEnemies--;
-            score += enemy.stats.awardPoints;
+            //score += enemy.stats.awardPoints;
+            gm.gameStats.addToTotalScore(enemy.stats.awardPoints);
 
             //Update UI score text
             ScoreUI.current.UpdateText();
@@ -315,7 +334,7 @@ public class GameManager : MonoBehaviour {
 
     public static void respawnPlayer()
     {
-       AudioManager.current.PlaySound("Respawn");
+        AudioManager.current.PlaySound("Respawn");
         AudioManager.current.PlaySound("Spawn");
 
         clearScreenOfProjectiles();
@@ -428,12 +447,6 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-    public static void savePref()
-    {
-        PlayerPrefs.SetInt("Highscore", GameManager.score);
-        PlayerPrefs.SetInt("Currency", GameManager.currency);
-    }
-
     public void Pause()
     {
         if(Time.timeScale == 0)
@@ -447,9 +460,33 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    //Used when respawning or returning to menu/setup;
+    public static void resetScore()
+    {
+        score = 0;
+        ScoreUI.current.UpdateText();
+    }
+
+    //Used by options
+    public static void resetHighScore()
+    {
+        highScore = 0;
+        PlayerPrefs.SetInt("Highscore", GameManager.highScore);
+        HighscoreUI.current.UpdateText();
+
+    }
+
+    public static void savePref()
+    {
+
+        PlayerPrefs.SetInt("Highscore", GameManager.highScore);
+
+        PlayerPrefs.SetInt("Currency", GameManager.currency);
+    }
+
     public void LoadPrefs()
     {
-        score = PlayerPrefs.GetInt("Highscore");
+        highScore = PlayerPrefs.GetInt("Highscore");
         currency = PlayerPrefs.GetInt("Currency");
         //If currency is 0 and no upgrades have been purchased
         if(currency == 0 && PlayerPrefs.GetInt("DamageUpgrades") == 1 && PlayerPrefs.GetInt("DamageUpgrades") == 1)
