@@ -153,8 +153,8 @@ public class GameManager : MonoBehaviour {
 
         state = gameState.menu;
 
-        score = PlayerPrefs.GetInt("Highscore");
-        currency = 10000;
+        LoadPrefs();
+        //currency = 10000;
 
 		difficulty = 0;
         
@@ -411,7 +411,7 @@ public class GameManager : MonoBehaviour {
     {
         
         occupied = true;
-        PlayerPrefs.SetInt("Highscore", score);
+        savePref();
         EnemySpawnManager.current.reinit();
         yield return new WaitForSeconds(5f);
         state = gameState.results;
@@ -431,6 +431,7 @@ public class GameManager : MonoBehaviour {
     public static void savePref()
     {
         PlayerPrefs.SetInt("Highscore", GameManager.score);
+        PlayerPrefs.SetInt("Currency", GameManager.currency);
     }
 
     public void Pause()
@@ -444,6 +445,17 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = 0;
         }
 
+    }
+
+    public void LoadPrefs()
+    {
+        score = PlayerPrefs.GetInt("Highscore");
+        currency = PlayerPrefs.GetInt("Currency");
+        //If currency is 0 and no upgrades have been purchased
+        if(currency == 0 && PlayerPrefs.GetInt("DamageUpgrades") == 1 && PlayerPrefs.GetInt("DamageUpgrades") == 1)
+        {
+            currency = 10000;
+        }
     }
 
 

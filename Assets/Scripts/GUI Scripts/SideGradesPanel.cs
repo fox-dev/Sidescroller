@@ -33,6 +33,37 @@ public class SideGradesPanel : MonoBehaviour {
             }
         }
 
+        if(PlayerPrefs.HasKey("WeaponSidegrades"))
+        {
+            //Weapon sidegrades have been purchased, load which sidegrades have been purchased
+            if(PlayerPrefs.GetInt("WeaponSidegrades") == 1)
+            {
+                if(PlayerPrefs.GetInt("BuddyPurchased") == 1)
+                {
+                    GameManager.gm.upgrades.enableBuddy();
+                    buddy.SetActive(true);
+
+                    buddy_purcahseButton.interactable = false;
+                    buddy_purchaseText.text = "PURCHASED";
+                }
+
+                if(PlayerPrefs.GetInt("FireBallUpgradePurchased") == 1)
+                {
+                    GameManager.gm.upgrades.enableFireBall_x3();
+
+                    fireBallUpgrade_purcahseButton.interactable = false;
+                    fireBallUpgrade_purchaseText.text = "PURCHASED";
+                }
+            }
+        }
+        else
+        {
+            //Weapon sidegrades have not yet been purchased, now initialize the player prefs and set the sidegrades to 0;
+            PlayerPrefs.SetInt("WeaponSidegrades", 1);
+            PlayerPrefs.SetInt("BuddyPurchased", 0);
+            PlayerPrefs.SetInt("FireBallUpgradePurchased", 0);
+        }
+
     }
 
     public void purcahseBuddy()
@@ -47,6 +78,9 @@ public class SideGradesPanel : MonoBehaviour {
 
             buddy_purcahseButton.interactable = false;
             buddy_purchaseText.text = "PURCHASED";
+
+            PlayerPrefs.SetInt("BuddyPurchased", 1);
+            GameManager.savePref();
         }
         else
         {
@@ -66,6 +100,9 @@ public class SideGradesPanel : MonoBehaviour {
 
             fireBallUpgrade_purcahseButton.interactable = false;
             fireBallUpgrade_purchaseText.text = "PURCHASED";
+
+            PlayerPrefs.SetInt("FireBallUpgradePurchased", 1);
+            GameManager.savePref();
         }
         else
         {

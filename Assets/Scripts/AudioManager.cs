@@ -44,6 +44,19 @@ public class Sound
 
 }
 
+//The Audio Listener
+[System.Serializable]
+public class MainListener
+{
+    [Range(0f, 1f)]
+    public float volume = 0.7f;
+
+    public void adjustVolume(float value)
+    {
+        AudioListener.volume = value;
+    }
+}
+
 public class AudioManager : MonoBehaviour {
 
 	public static AudioManager current;
@@ -53,6 +66,9 @@ public class AudioManager : MonoBehaviour {
 
 	[SerializeField]
 	Sound[] sounds;
+
+    [SerializeField]
+    public MainListener ml;
 
 	void Awake()
 	{
@@ -74,6 +90,7 @@ public class AudioManager : MonoBehaviour {
 
 	void Update()
 	{
+
 		if(GameManager.gm.state == GameManager.gameState.normalPlay && !playingPart1)
 		{
 			playingPart1 = true;
@@ -194,13 +211,15 @@ public class AudioManager : MonoBehaviour {
         PlaySound("LaserBlast");
     }
 
+    public void adjustMainListenerVolume(float value)
+    {
+        ml.adjustVolume(value);
+    }
+
     public void playWarning()
 	{
 		StartCoroutine(warningX3());
 	}
-
-
-
 
 	IEnumerator warningX3()
 	{
@@ -208,6 +227,8 @@ public class AudioManager : MonoBehaviour {
 		yield return new WaitForSeconds(3.3f);
 		StopSound("Warning");
 	}
+
+
 
 
 }

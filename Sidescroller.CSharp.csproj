@@ -180,6 +180,7 @@
     <Compile Include="Assets\Scripts\GUI Scripts\GameOverUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\GetReadyGUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\MainUIController.cs" />
+    <Compile Include="Assets\Scripts\GUI Scripts\OptionsUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PauseUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PlayerWeaponUI.cs" />
     <Compile Include="Assets\Scripts\GUI Scripts\PopUpText\FloatingText.cs" />
