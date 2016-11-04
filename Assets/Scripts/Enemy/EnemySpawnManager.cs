@@ -693,7 +693,7 @@ public class EnemySpawnManager : MonoBehaviour {
             waves[x].init();
         }
 
-
+		resetEnemyCounters ();
     }
 
     void OnDrawGizmos()
@@ -790,6 +790,16 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         
     }
+
+	public void resetEnemyCounters()
+
+	{
+		currentEnemies = 0;
+		currentBosses = 0;
+		totalEnemiesSpawned = 0;
+
+	}
+
 
 
 }

@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour {
 
 		if(gm.adController.AdFlag())
 		{
-			gm.StartCoroutine(gm.showAd (5f));
+			gm.StartCoroutine(gm.showAd (2f));
 
 			gm.adController.showBannerAd ();
 		}
@@ -366,6 +366,7 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+		EnemySpawnManager.current.resetEnemyCounters();
     }
 
     public static void clearScreenOfProjectiles()
@@ -406,9 +407,9 @@ public class GameManager : MonoBehaviour {
 
 	public static void turnOffAds()
 	{
-		if (gm.adController.AdFlag ()) {
-			gm.adController.hideBannerAd ();
-		}
+
+		gm.adController.hideBannerAd ();
+		
 	}
 
 	public static void getNewAds()
