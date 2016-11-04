@@ -46,9 +46,7 @@ public class GameOverUI : MonoBehaviour {
         {
             retryButton.interactable = false;
         }
-
-        
-        
+			
 		GameManager.getNewAds ();
 		GameManager.turnOffAds ();
 
@@ -62,6 +60,7 @@ public class GameOverUI : MonoBehaviour {
         GameManager.resetBossFlags();
         GameManager.gm.state = GameManager.gameState.results;
 
+		GameManager.getNewAds ();
 		GameManager.turnOffAds ();
 
     }

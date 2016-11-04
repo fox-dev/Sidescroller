@@ -72,12 +72,14 @@ public class OptionsUI : MonoBehaviour {
     {
         showAds_On.interactable = true;
         showAds_Off.interactable = false;
+		adController.setAdFlagFalse();
     }
 
     public void turnOnAds()
     {
         showAds_On.interactable = false;
         showAds_Off.interactable = true;
+		adController.setAdFlagTrue();
     }
 
     //////////////////////////////

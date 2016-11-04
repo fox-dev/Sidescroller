@@ -115,16 +115,16 @@ public class AdController : MonoBehaviour {
 	}
 	
 	//Ad flag stuff
-	public void setAdFlag(bool flag)
+	public void setAdFlagTrue()
 	{
-		if (flag) {
-			showAds = true;
-			PlayerPrefs.SetString("ads", "true");
-		} else {
-			showAds = false;
-			PlayerPrefs.SetString ("ads", "false");
-		}
+		showAds = true;
+		PlayerPrefs.SetString("ads", "true");
+	}
 
+	public void setAdFlagFalse()
+	{
+		showAds = true;
+		PlayerPrefs.SetString("ads", "false");
 	}
 		
 	public bool AdFlag()
