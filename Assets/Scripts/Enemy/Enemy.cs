@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour {
                     this.gameObject.transform.parent = null;
                 }
                 stats.alive = stats.curHealth > 0;
-                print(stats.alive + " " + stats.curHealth);
+                
                 StartCoroutine(explode());
             }
             else

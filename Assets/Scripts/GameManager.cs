@@ -84,17 +84,45 @@ public class GameManager : MonoBehaviour {
         public bool fireBall_x3;
         public bool buddy;
 
+
+
         public void init() //Change to init based off player prefs 
         {
             fireBall_x3 = buddy = false;
         }
         //enable methods
         public void enableFireBall_x3() { fireBall_x3 = true; }
-        public void enableBuddy() { buddy = true; }
+        public void enableBuddy()
+        {
+            buddy = true;
+
+            foreach (Transform child in gm.player.transform)
+            {
+                if (child.name == "Buddy")
+                {
+                   child.gameObject.SetActive(true);
+                }
+            }
+        }
 
         //disable methods
         public void disableFireBall_x3() { fireBall_x3 = false; }
-        public void disableBuddy() { buddy = false; }
+        public void disableBuddy()
+        {
+            buddy = false;
+            foreach (Transform child in gm.player.transform)
+            {
+                if (child.name == "Buddy")
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+        public void disableAllUpgrades()
+        {
+            disableFireBall_x3();
+            disableBuddy();
+        }
 
     } 
 
@@ -217,6 +245,8 @@ public class GameManager : MonoBehaviour {
         collectText.SetActive(true); //Play currency collection text animation
 
         currency += item.amount;
+
+        PlayerPrefs.SetInt("Currency", currency);
 
         AudioManager.current.PlaySound("Collect");
 
@@ -497,9 +527,59 @@ public class GameManager : MonoBehaviour {
         highScore = PlayerPrefs.GetInt("Highscore");
         currency = PlayerPrefs.GetInt("Currency");
         //If currency is 0 and no upgrades have been purchased
+   
+        
         if(currency == 0 && PlayerPrefs.GetInt("DamageUpgrades") == 1 && PlayerPrefs.GetInt("DamageUpgrades") == 1)
         {
             currency = 10000;
+        }
+        
+      
+
+        if (CurrencyUI.current != null)
+        {
+            CurrencyUI.current.UpdateText();
+        }
+
+        if(ScoreUI.current != null)
+        {
+            ScoreUI.current.UpdateText();
+        }
+        
+        
+    }
+
+    public void resetPrefs()
+    {
+        int prevHighscore = PlayerPrefs.GetInt("Highscore");
+        PlayerPrefs.DeleteAll();
+
+        //Save the old highscore;
+        PlayerPrefs.SetInt("Highscore", prevHighscore);
+
+        //Reset weapon dmg to defaults
+        ShootFireBall.damage = 25;
+        HomingMissile.damage = 30;
+        Beam.damage = 30;
+
+        upgrades.disableAllUpgrades();
+
+        highScore = PlayerPrefs.GetInt("Highscore");
+        currency = PlayerPrefs.GetInt("Currency");
+
+        if (currency == 0)
+        {
+            currency = 10000;
+        }
+
+        if (CurrencyUI.current != null)
+        {
+            CurrencyUI.current.UpdateText();
+        }
+
+        if (ScoreUI.current != null)
+        {
+            ScoreUI.current.UpdateText();
         }
     }
 

@@ -67,6 +67,20 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void OnEnable()
+    {
+        stats.Init();
+        wep = weapon.GetComponent<PlayerWeapon>();
+
+        invul = false;
+
+
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
+        }
+    }
+
     public void DamagePlayer(int damage)
     {
 

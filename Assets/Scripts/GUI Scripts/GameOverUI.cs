@@ -6,8 +6,12 @@ public class GameOverUI : MonoBehaviour {
 
     [SerializeField]
     private Button retryButton;
+    [SerializeField]
+    private Button setupButton;
 
-    public int retryCost = 2500; //retry cost
+    //Values set in inspector
+    public int retryCost; //retry cost
+    public int setupCost; //cost to return to setup
 
     void OnEnable()
     {
@@ -19,6 +23,18 @@ public class GameOverUI : MonoBehaviour {
         {
             retryButton.interactable = false;
         }
+
+        if (GameManager.currency >= setupCost)
+        {
+            setupButton.interactable = true;
+        }
+        else
+        {
+            setupButton.interactable = false;
+        }
+
+        retryButton.GetComponentInChildren<Text>().text = "R E T R Y \n" + retryCost.ToString() + " NRG";
+        setupButton.GetComponentInChildren<Text>().text = "S E T U P \n" + setupCost.ToString() + " NRG";
     }
 
 
@@ -54,6 +70,54 @@ public class GameOverUI : MonoBehaviour {
 
     public void setup()
     {
+        if (GameManager.currency >= setupCost)
+        {
+            GameManager.SubtractCurrency(setupCost);
+            GameManager.clearScreenOfEnemies();
+            GameManager.respawnPlayer();
+            GameManager.resetBossFlags();
+            GameManager.gm.state = GameManager.gameState.results;
+
+            GameManager.getNewAds();
+            GameManager.turnOffAds();
+
+            
+        }
+        else
+        {
+            retryButton.interactable = false;
+        }
+    }
+
+    public void quit()
+    {
+        //Reset all player preferences and load
+        
+        GameManager.gm.resetPrefs();
+
+        //Clear screen of enemies and reset score
+        GameManager.clearScreenOfEnemies();
+        GameManager.respawnPlayer();
+        GameManager.resetBossFlags();
+        GameManager.resetScore();
+
+        //Get new ads
+        GameManager.getNewAds();
+      
+
+        //Return to menu
+        GameManager.gm.state = GameManager.gameState.menu;
+
+        GameManager.turnOffAds();
+
+        StopAllCoroutines();
+
+
+    }
+
+    /*
+    public void setup()
+    {
        
         GameManager.clearScreenOfEnemies();
         GameManager.respawnPlayer();
@@ -64,4 +128,5 @@ public class GameOverUI : MonoBehaviour {
 		GameManager.turnOffAds ();
 
     }
+    */
 }

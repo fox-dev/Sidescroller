@@ -6,7 +6,6 @@ public class SideGradesPanel : MonoBehaviour {
     [SerializeField]
     private GameObject player;
 
-    private GameObject buddy;
 
     [SerializeField]
     private Button buddy_purcahseButton;
@@ -25,29 +24,30 @@ public class SideGradesPanel : MonoBehaviour {
         buddy_purchaseText = buddy_purcahseButton.GetComponentInChildren<Text>();
         fireBallUpgrade_purchaseText = fireBallUpgrade_purcahseButton.GetComponentInChildren<Text>();
 
-        foreach (Transform child in player.transform)
-        {
-            if(child.name == "Buddy")
-            {
-                buddy = child.gameObject;
-            }
-        }
+       
+    }
 
-        if(PlayerPrefs.HasKey("WeaponSidegrades"))
+    void OnEnable()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        buddy_purchaseText = buddy_purcahseButton.GetComponentInChildren<Text>();
+        fireBallUpgrade_purchaseText = fireBallUpgrade_purcahseButton.GetComponentInChildren<Text>();
+
+        if (PlayerPrefs.HasKey("WeaponSidegrades"))
         {
             //Weapon sidegrades have been purchased, load which sidegrades have been purchased
-            if(PlayerPrefs.GetInt("WeaponSidegrades") == 1)
+            if (PlayerPrefs.GetInt("WeaponSidegrades") == 1)
             {
-                if(PlayerPrefs.GetInt("BuddyPurchased") == 1)
+                if (PlayerPrefs.GetInt("BuddyPurchased") == 1)
                 {
                     GameManager.gm.upgrades.enableBuddy();
-                    buddy.SetActive(true);
+                    
 
                     buddy_purcahseButton.interactable = false;
                     buddy_purchaseText.text = "PURCHASED";
                 }
 
-                if(PlayerPrefs.GetInt("FireBallUpgradePurchased") == 1)
+                if (PlayerPrefs.GetInt("FireBallUpgradePurchased") == 1)
                 {
                     GameManager.gm.upgrades.enableFireBall_x3();
 
@@ -62,8 +62,15 @@ public class SideGradesPanel : MonoBehaviour {
             PlayerPrefs.SetInt("WeaponSidegrades", 1);
             PlayerPrefs.SetInt("BuddyPurchased", 0);
             PlayerPrefs.SetInt("FireBallUpgradePurchased", 0);
-        }
 
+            buddy_purcahseButton.interactable = true;
+            buddy_purchaseText.text = "UPGRADE\n" + "10000 NRG";
+            GameManager.gm.upgrades.disableBuddy();
+
+            fireBallUpgrade_purcahseButton.interactable = true;
+            fireBallUpgrade_purchaseText.text = "UPGRADE\n" + "5000 NRG";
+            GameManager.gm.upgrades.disableFireBall_x3();
+        }
     }
 
     public void purcahseBuddy()
@@ -74,7 +81,7 @@ public class SideGradesPanel : MonoBehaviour {
         {
             GameManager.SubtractCurrency(cost);
             GameManager.gm.upgrades.enableBuddy();
-            buddy.SetActive(true);
+          
 
             buddy_purcahseButton.interactable = false;
             buddy_purchaseText.text = "PURCHASED";

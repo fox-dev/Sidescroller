@@ -82,7 +82,7 @@ public class EnemyLaserBlast : MonoBehaviour
 
             gunLine.SetPosition(0, EnemySpawnManager.bossEnemy.GetComponentInChildren<Enemy_Weapon>().transform.position);
         }
-        print(transform.forward);
+        
 
        
         gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);

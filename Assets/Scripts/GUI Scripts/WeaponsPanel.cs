@@ -25,13 +25,10 @@ public class WeaponsPanel : MonoBehaviour {
 
 	public int upgradeFireBallDmg, upgradeBeamDmg, upgradeHomingMissileDmg;
 
-    // Use this for initialization
-    void Start () {
-       //PlayerPrefs.DeleteAll();
-        
-
-        if(PlayerPrefs.HasKey("DamageUpgrades"))
-        { 
+    void OnEnable()
+    {
+        if (PlayerPrefs.HasKey("DamageUpgrades"))
+        {
 
             //A weapon has been upgrade, load upgrades from PlayerPrefs
             //Weapon keys//
@@ -88,11 +85,6 @@ public class WeaponsPanel : MonoBehaviour {
             beamCost.text = "UPGRADE\n" + upgradeBeamCost + " NRG";
             hmCost.text = "UPGRADE\n" + upgradeHomingMissileCost + " NRG";
         }
-           
-
-     
-
-       
     }
 
     public void upgradeFireBallDamage()

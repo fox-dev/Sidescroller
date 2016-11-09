@@ -18,6 +18,9 @@ public class PlayerWeapon : MonoBehaviour {
     public bool firing;
     public bool readyToFire;
 
+    [Range(0,100)]
+    public int chargeRate; //How fast the laser charges
+
     private bool occupied; //for couritine call to make sure it is only called once;
 
     private Player player;
@@ -93,7 +96,7 @@ public class PlayerWeapon : MonoBehaviour {
         if (currentCharge < maxCharge && charge && ((GameManager.gm.state != GameManager.gameState.setup) && (GameManager.gm.state != GameManager.gameState.results) && (GameManager.gm.state != GameManager.gameState.waiting))) //Don't charge in transition states
         {
 
-             currentCharge += (50 * Time.deltaTime);
+             currentCharge += (chargeRate * Time.deltaTime);
            
         }
         else if(firing)
