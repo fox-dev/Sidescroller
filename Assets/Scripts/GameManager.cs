@@ -583,7 +583,28 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+	void OnApplicationQuit() 
+	{
+		if (state == gameState.gameOver) 
+		{
+			//Reset all player preferences and load
 
+			resetPrefs ();
+
+			//Clear screen of enemies and reset score
+			clearScreenOfEnemies ();
+			respawnPlayer ();
+			resetBossFlags ();
+			resetScore ();
+
+			//Get new ads
+			getNewAds ();
+
+			turnOffAds ();
+
+			StopAllCoroutines ();
+		}
+	}
 
 
 
