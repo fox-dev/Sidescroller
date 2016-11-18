@@ -83,15 +83,19 @@ public class GameManager : MonoBehaviour {
     {
         public bool fireBall_x3;
         public bool buddy;
+        public bool pierceBeam;
+        public bool rocketRate;
 
 
 
         public void init() //Change to init based off player prefs 
         {
-            fireBall_x3 = buddy = false;
+            fireBall_x3 = buddy = pierceBeam = rocketRate = false;
         }
         //enable methods
+        public void enablePierceBeam() { pierceBeam = true; }
         public void enableFireBall_x3() { fireBall_x3 = true; }
+        public void enableRocketRate() { rocketRate = true; }
         public void enableBuddy()
         {
             buddy = true;
@@ -106,7 +110,9 @@ public class GameManager : MonoBehaviour {
         }
 
         //disable methods
+        public void disablePierceBeam() { pierceBeam = false; }
         public void disableFireBall_x3() { fireBall_x3 = false; }
+        public void disableRocketRate() { rocketRate = false; }
         public void disableBuddy()
         {
             buddy = false;
@@ -120,7 +126,9 @@ public class GameManager : MonoBehaviour {
         }
         public void disableAllUpgrades()
         {
+            disablePierceBeam();
             disableFireBall_x3();
+            disableRocketRate();
             disableBuddy();
         }
 
@@ -284,13 +292,8 @@ public class GameManager : MonoBehaviour {
     public static void KillEnemy(Enemy enemy)
     {
         
-        GameObject currency = ObjectPool.current.getPooledObject(gm.particle_Currency); //Spawn currency
-
-        if (currency == null) return;
-        currency.transform.position = enemy.transform.position;
-
-        
-
+  
+     
         if(enemy.tag == "Tutorial_Enemy")
         {
             if (GameManager.gm.state == GameManager.gameState.tutorial_2)
@@ -310,6 +313,10 @@ public class GameManager : MonoBehaviour {
         }
         else if (enemy.tag == "Boss")
         {
+            GameObject currency = ObjectPool.current.getPooledObject(gm.particle_Currency); //Spawn currency
+            if (currency == null) return;
+            currency.transform.position = enemy.transform.position;
+
             currency.GetComponent<Currency>().amount = 1000;
 
             enemy.gameObject.SetActive(false);
@@ -334,9 +341,12 @@ public class GameManager : MonoBehaviour {
 
 			print ("difficulty level: " + difficulty);
 
+            currency.SetActive(true);
+
         }
         else
         {
+            
             enemy.gameObject.SetActive(false);
             EnemySpawnManager.currentEnemies--;
             //score += enemy.stats.awardPoints;
@@ -349,9 +359,19 @@ public class GameManager : MonoBehaviour {
             gm.gameStats.addRoundScore(enemy.stats.awardPoints);
             gm.gameStats.addEnemiesDestroyed();
             /////////////////////////////////////////////
+
+            int rand = Random.Range(0, 5);
+            if (rand == 2) //Spawn
+            {
+                GameObject currency = ObjectPool.current.getPooledObject(gm.particle_Currency); //Spawn currency
+                if (currency == null) return;
+                currency.transform.position = enemy.transform.position;
+
+                currency.SetActive(true);
+            }
         }
 
-        currency.SetActive(true);
+        
 
     }
 
@@ -562,7 +582,7 @@ public class GameManager : MonoBehaviour {
         HomingMissile.damage = 30;
         Beam.damage = 30;
 
-        upgrades.disableAllUpgrades();
+       upgrades.disableAllUpgrades();
 
         highScore = PlayerPrefs.GetInt("Highscore");
         currency = PlayerPrefs.GetInt("Currency");

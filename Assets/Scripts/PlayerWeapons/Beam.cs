@@ -26,6 +26,9 @@ public class Beam : MonoBehaviour {
     public LayerMask shootableMask;
     LineRenderer gunLine;
 
+    //UpgradedBeamPurchased for piercing
+    RaycastHit[] shootHitPath;
+
 
 
 	// Use this for initialization
@@ -64,39 +67,69 @@ public class Beam : MonoBehaviour {
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = lookRotation * Quaternion.Euler(0, 0, 0);
 
-        if (Physics.SphereCast(shootRay, 0.5f, out shootHit, range, shootableMask))
+        
+        ///////////////Basic functions, no upgrades, single target/////////////////
+        if(!GameManager.gm.upgrades.pierceBeam)
         {
-            //hit an enemy goes here
-            gunLine.SetPosition(1, shootHit.point);
-            GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
-
-            if (hitEffect == null) return;
-            hitEffect.transform.position = shootHit.point;
-            hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, shootHit.normal);
-
-            hitEffect.SetActive(true);
-            //Instantiate(Resources.Load("HitParticles"), shootHit.point, Quaternion.FromToRotation(Vector3.up, shootHit.normal));
-            if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            if (Physics.SphereCast(shootRay, 0.5f, out shootHit, range, shootableMask))
             {
-                Enemy enemy = shootHit.collider.GetComponent<Enemy>();
-                if (enemy != null)
+                //hit an enemy goes here
+                gunLine.SetPosition(1, shootHit.point);
+
+                //Play hit effect
+                GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
+                if (hitEffect == null) return;
+                hitEffect.transform.position = shootHit.point;
+                hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, shootHit.normal);
+                hitEffect.SetActive(true);
+
+                //Instantiate(Resources.Load("HitParticles"), shootHit.point, Quaternion.FromToRotation(Vector3.up, shootHit.normal));
+                if (shootHit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                 {
-                    enemy.DamageEnemy(damage);
-                    
+                    Enemy enemy = shootHit.collider.GetComponent<Enemy>();
+                    if (enemy != null)
+                    {
+                        enemy.DamageEnemy(damage);
+
+                    }
                 }
+                //Debug.Log("We hit " + shootHit.collider.name + " and did" + damage + " damage.");
             }
-          
-
-            //Debug.Log("We hit " + shootHit.collider.name + " and did" + damage + " damage.");
-
+            else
+            {
+                gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            }
         }
+        //////////////////////////////////////////////////////////////////////////////
+        /////////////Upgrades purchased, piercing/////////////////////////////////////
         else
         {
+            shootHitPath = Physics.SphereCastAll(shootRay, 0.5f, range, shootableMask);
+
+            foreach (RaycastHit hit in shootHitPath)
+            {
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    Enemy enemy = hit.collider.GetComponent<Enemy>();
+                    if (enemy != null)
+                    {
+                        enemy.DamageEnemy(damage);
+
+                    }
+
+                    GameObject hitEffect = ObjectPool.current.getPooledObject(particle);
+                    if (hitEffect == null) return;
+                    hitEffect.transform.position = hit.point;
+                    hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                    hitEffect.SetActive(true);
+                }
+
+            }
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
         }
 
-     
-     
+
+
     }
 	
 	// Update is called once per frame

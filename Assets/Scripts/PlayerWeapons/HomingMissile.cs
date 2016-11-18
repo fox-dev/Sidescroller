@@ -31,6 +31,7 @@ public class HomingMissile : MonoBehaviour {
     {
         rb.velocity = Vector3.zero;
         guide = false;
+        GetComponent<TrailRenderer>().Clear();
 
     }
     void OnEnable()

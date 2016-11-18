@@ -60,7 +60,15 @@ public class PlayerWeapon : MonoBehaviour {
             }
             else if (projectile.name == "HomingMissile")
             {
-                timeBetweenBullets = 0.30f;
+                if(GameManager.gm.upgrades.rocketRate)
+                {
+                    timeBetweenBullets = 0.15f;
+                }
+                else
+                {
+                    timeBetweenBullets = 0.3f;
+                }
+                
                 AudioManager.current.PlaySound("Rocket");
             }
 
