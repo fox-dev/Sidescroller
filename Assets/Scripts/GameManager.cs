@@ -589,7 +589,7 @@ public class GameManager : MonoBehaviour {
 
         if (currency == 0)
         {
-            currency = 10000;
+            currency = 0;
         }
 
         if (CurrencyUI.current != null)

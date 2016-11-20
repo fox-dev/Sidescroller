@@ -28,10 +28,19 @@ public class Enemy : MonoBehaviour {
 
         public void Init()
         {
-            curHealth = maxHealth;
+			maxHealth = maxHealth + (int)(maxHealth * (GameManager.difficulty / 3));
+			curHealth = maxHealth;
             alive = true;
 
         }
+
+		public void BossInit()
+		{
+			maxHealth = maxHealth + (int)(Mathf.Pow(maxHealth, GameManager.difficulty / 30));
+			curHealth = maxHealth;
+			alive = true;
+
+		}
     }
 
     public EnemyStats stats = new EnemyStats();
@@ -42,7 +51,10 @@ public class Enemy : MonoBehaviour {
 
     void Start()
     {
-        stats.Init();
+		if (this.gameObject.tag == "Boss")
+			stats.BossInit ();
+		else
+			stats.Init();
         
         renderers = GetComponentsInChildren<Renderer>();
         defaultColor = renderers[0].material.color;
