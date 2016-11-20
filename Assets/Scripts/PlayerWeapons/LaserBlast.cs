@@ -220,15 +220,14 @@ public class LaserBlast : MonoBehaviour
             gunLine.SetWidth(growingWidth, growingWidth);
             if(growingWidth >= maxWidth - 1f && !occupied)
             {
-                //shrink = true;
                 StartCoroutine(extendBlast());
             }
         }
 
         if (shrink)
         {
+            
             playerWeapon.firing = false;
-            playerWeapon.togglePlayerInvul();
             shapeModule.radius = 0.5f;
             ps.startLifetime = 1f;
             damageEnabled = false;
@@ -260,6 +259,7 @@ public class LaserBlast : MonoBehaviour
         occupied = true;
         yield return new WaitForSeconds(2f);
         shrink = true;
+        playerWeapon.togglePlayerInvulOff();
         //Start recharging player super gauge
         playerWeapon.charge = true;
         occupied = false;

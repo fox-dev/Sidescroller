@@ -161,9 +161,10 @@ public class Player : MonoBehaviour {
         wep.fireReleased();
     }
 
-    public void invulFlag()
+    public void invulFlag(bool flag)
     {
-        invul = !invul;
+        invul = flag;
+        
     }
 
 

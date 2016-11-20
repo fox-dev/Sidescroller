@@ -11,8 +11,10 @@ public class PlayerWeapon : MonoBehaviour {
 
     float nextBullet; //when next can be fired
 
-    private bool fire;
+    private bool fire; //if the weapon should be fired or not, toggle on and off
 
+
+    //Laser Blase variables//
     public float currentCharge, maxCharge; //charge amount, when full super can be used
     public bool charge; //to charge or not to charge
     public bool firing;
@@ -146,7 +148,7 @@ public class PlayerWeapon : MonoBehaviour {
 
         AudioManager.current.playLASERCHARGE();
 
-        player.invulFlag();
+        togglePlayerInvulOn();
 
         ChargeMeterGUI.current.button.interactable = false;
 
@@ -185,9 +187,14 @@ public class PlayerWeapon : MonoBehaviour {
         fire = false;
     }
 
-    public void togglePlayerInvul()
+    public void togglePlayerInvulOn()
     {
-        player.invulFlag();
+        player.invulFlag(true);
+    }
+
+    public void togglePlayerInvulOff()
+    {
+        player.invulFlag(false);
     }
 
     
