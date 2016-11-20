@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour {
 
         public void Init()
         {
-			maxHealth = maxHealth + (int)(maxHealth * (GameManager.difficulty / 3));
+			maxHealth = maxHealth + (int)(maxHealth * (GameManager.difficulty / 10));
 			curHealth = maxHealth;
             alive = true;
 

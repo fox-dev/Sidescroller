@@ -101,88 +101,47 @@ public class EnemySpawnManager : MonoBehaviour {
 
             Debug.Log("METHOD " + distributionMethod);
            
-			if (distributionMethod == 1) {													// Chooses from the the flypass and flyby enemies
+			if (distributionMethod == 1) {												 // Chooses from the the flypass and flyby enemies
 				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);           // removes the kamikaze enemy type from selection
 				Debug.Log (chosenEnemy + " THIS " + current.enemyTypes.Length);
 
-				/*maxEnemies = Random.Range (10, 20);
+				int fWave = Random.Range (6, 8);										//selects random number of enemies from 6 to 8 in first part of wave
+				int sWave = Random.Range (6, 8);										//number of enmies in second part of the wave
 
-				int fWave = Random.Range (5, 10);
-
-				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-				for (int x = 0; x < fWave; x++) {
-
-					enemies [x] = current.enemyTypes [chosenEnemy];
-				}
+				addEnemies (chosenEnemy, fWave, enemyList);								//adds first set of enemies of chosen type to type
 
 				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);
 
-				for (int x = fWave; x < enemies.Length; x++) {
-
-					enemies [x] = current.enemyTypes [chosenEnemy];
-				}*/
-
-				int fWave = Random.Range (6, 8);
-				int sWave = Random.Range (6, 8);
-
-				addEnemies (chosenEnemy, fWave, enemyList);
-
-				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);
-
-				addEnemies (chosenEnemy, sWave, enemyList);
+				addEnemies (chosenEnemy, sWave, enemyList);								//adds another set of enemies of another random type
 
 				print ("enemyList has: " + enemyList.Count);
 			
-				enemies = toArray(enemyList);
+				enemies = toArray (enemyList);
 
 				maxEnemies = enemies.Length;
 				print ("enemies has: " + enemies.Length);
 
 			
-			}else if (distributionMethod == 2){
-				chosenEnemy = 3; //Random.Range(0, current.enemyTypes.Length - 1);
+			} else if (distributionMethod == 2) {
+				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 1);			//chooses randomly from enemy types 0 to 3, Includes the stationary turret type
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
-				/*maxEnemies = Random.Range (10, 20);
-
-				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-
-				if(chosenEnemy == 3)														// turret type will only spawn once in groups of 6 if chosen
-				{
-					for (int x = 0; x < 6; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-
-					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
-
-					for (int x = 6; x < enemies.Length; x++)							// rest of wave is filled with other types
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}
-				else
-				{
-					for (int x = 0; x < enemies.Length; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}*/
-				int fWave = Random.Range (6, 8);
+				int fWave = Random.Range (6, 8);										//randomly select number of enemies for each part of wave
 				int sWave = Random.Range (6, 8);
 
-				if (chosenEnemy == 3) {                                           
-					addEnemies (chosenEnemy, 6, enemyList);
+				if (chosenEnemy == 3) {             			                        // if the chosen enemy is the stationary turret
+					addEnemies (chosenEnemy, 6, enemyList);								// adds only 6 of the stationary turrets to the wave
 				} else {
-					addEnemies (chosenEnemy, fWave, enemyList);
+					addEnemies (chosenEnemy, fWave, enemyList);							//otherwise add enemies to the wave
 				}
 
-				int previousEnemy = chosenEnemy;
+				int previousEnemy = chosenEnemy;										//track the previous enemy type added
 				chosenEnemy = Random.Range (0, current.enemyTypes.Length - 1);
 
-				if (chosenEnemy == 3 && chosenEnemy != previousEnemy) {
+				if (chosenEnemy == 3 && chosenEnemy != previousEnemy) {					//cannot pick stationary turret type twice
 					addEnemies (chosenEnemy, 6, enemyList);
 				} else {
+					chosenEnemy = Random.Range (0, current.enemyTypes.Length - 2);		//picks another enemy type that is not the stationary turret
 					addEnemies (chosenEnemy, fWave, enemyList);
 				}
 
@@ -196,47 +155,7 @@ public class EnemySpawnManager : MonoBehaviour {
 				chosenEnemy = Random.Range(0, current.enemyTypes.Length);
 				Debug.Log(chosenEnemy + " THIS " + current.enemyTypes.Length);			
 
-				/*maxEnemies = Random.Range (11, 20);
-				
-				enemies = new GameObject[maxEnemies]; //Array of size max Enemies;
-
-				if(chosenEnemy == 4)														// kamikaze type will only spawn once in groups of 5 if chosen
-				{
-					for (int x = 0; x < 5; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-
-					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
-
-					for (int x = 5; x < enemies.Length; x++)							// rest of wave is filled with other types
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}
-				else if(chosenEnemy == 3)														// turret type will only spawn once in groups of 6 if chosen
-				{
-					for (int x = 0; x < 6; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-
-					chosenEnemy = Random.Range(0, current.enemyTypes.Length - 2);
-
-					for (int x = 6; x < enemies.Length; x++)							// rest of wave is filled with other types
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}
-				else
-				{
-					for (int x = 0; x < enemies.Length; x++)
-					{
-						enemies[x] = current.enemyTypes[chosenEnemy];
-					}
-				}*/
-
-				int fWave = Random.Range (6, 8);
+				int fWave = Random.Range (6, 8);										//randomly select number of enemies for each part of wave
 				int sWave = Random.Range (6, 8);
 
 				if (chosenEnemy == 4) {													//Includes the kamikaze type to the wave
@@ -661,7 +580,7 @@ public class EnemySpawnManager : MonoBehaviour {
     IEnumerator startNextWave()
     {
         occupied = true;
-   
+   		
         currentWave++;
         if (currentWave >= waves.Length) //It is the last wave and all enemies have been destroyed
         {
@@ -682,7 +601,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void reinit() //should be called after every boss fight by the GameManager during state transitions
     {
-		int waveCount = Random.Range(1 + (int)(GameManager.difficulty / 2), 2 + (int)(GameManager.difficulty / 3));
+		int waveCount = Random.Range(2 + (int)(GameManager.difficulty / 2), 3 + (int)(GameManager.difficulty / 2));
         
 		print ("Number of Waves: " + waveCount);
 
