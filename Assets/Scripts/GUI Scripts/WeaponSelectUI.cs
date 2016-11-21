@@ -16,7 +16,7 @@ public class WeaponSelectUI : MonoBehaviour {
 
         
     }
-
+    
     void OnEnable()
     {
         if(GameManager.gm != null)
@@ -51,6 +51,8 @@ public class WeaponSelectUI : MonoBehaviour {
         fireBall.interactable = false;
         beam.interactable = true;
         homingMissile.interactable = true;
+
+        PlayerPrefs.SetString("CurrentWeapon", "FireBall");
     }
 
     public void selectBeam()
@@ -59,6 +61,8 @@ public class WeaponSelectUI : MonoBehaviour {
         fireBall.interactable = true;
         beam.interactable = false;
         homingMissile.interactable = true;
+
+        PlayerPrefs.SetString("CurrentWeapon", "Beam");
     }
 
     public void selectHomingMissile()
@@ -67,5 +71,6 @@ public class WeaponSelectUI : MonoBehaviour {
         fireBall.interactable = true;
         beam.interactable = true;
         homingMissile.interactable = false;
+        PlayerPrefs.SetString("CurrentWeapon", "Homing");
     }
 }

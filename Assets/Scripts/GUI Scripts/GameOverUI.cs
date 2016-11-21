@@ -58,10 +58,7 @@ public class GameOverUI : MonoBehaviour {
                 GameManager.gm.state = GameManager.gameState.bossFight;
             }
         }
-        else
-        {
-            retryButton.interactable = false;
-        }
+      
 			
 		GameManager.getNewAds ();
 		GameManager.turnOffAds ();
@@ -78,22 +75,20 @@ public class GameOverUI : MonoBehaviour {
             GameManager.resetBossFlags();
             GameManager.gm.state = GameManager.gameState.results;
 
+            StopAllCoroutines();
+
             GameManager.getNewAds();
             GameManager.turnOffAds();
 
             
         }
-        else
-        {
-            retryButton.interactable = false;
-        }
+      
     }
 
     public void quit()
     {
         //Reset all player preferences and load
-        
-        GameManager.gm.resetPrefs();
+        GameManager.gm.resetPrefs();    
 
         //Clear screen of enemies and reset score
         GameManager.clearScreenOfEnemies();

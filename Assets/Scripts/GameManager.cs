@@ -505,19 +505,6 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-    public void Pause()
-    {
-        if(Time.timeScale == 0)
-        {
-            Time.timeScale = 1;
-        }
-        else
-        {
-            Time.timeScale = 0;
-        }
-
-    }
-
     //Used when respawning or returning to menu/setup;
     public static void resetScore()
     {
@@ -547,15 +534,11 @@ public class GameManager : MonoBehaviour {
         highScore = PlayerPrefs.GetInt("Highscore");
         currency = PlayerPrefs.GetInt("Currency");
         //If currency is 0 and no upgrades have been purchased
-   
-        
         if(currency == 0 && PlayerPrefs.GetInt("DamageUpgrades") == 1 && PlayerPrefs.GetInt("DamageUpgrades") == 1)
         {
             currency = 10000;
         }
         
-      
-
         if (CurrencyUI.current != null)
         {
             CurrencyUI.current.UpdateText();
@@ -565,12 +548,39 @@ public class GameManager : MonoBehaviour {
         {
             ScoreUI.current.UpdateText();
         }
+
+        //Load player selected weapon;
+        if (PlayerPrefs.GetString("CurrentWeapon") == "FireBall")
+        {
+            player.GetComponent<Player>().wep.projectile = GameManager.gm.weaponList[0];
+        }
+        else if (PlayerPrefs.GetString("CurrentWeapon") == "Beam")
+        {
+            player.GetComponent<Player>().wep.projectile = GameManager.gm.weaponList[1];
+        }
+        else
+        {
+            player.GetComponent<Player>().wep.projectile = GameManager.gm.weaponList[2];
+        }
+
+
+            //If no session key created, create key, but no new session exists on load;
+            if (!PlayerPrefs.HasKey("NewSession"))
+        {
+            //Create key, init to 0;
+            PlayerPrefs.SetInt("NewSession", 0);
+        }
+
         
-        
+
+
+
     }
 
-    public void resetPrefs()
+    //For new game initialization;
+    public void initPrefs()
     {
+        //Highscore persists even when clearing prefs;
         int prevHighscore = PlayerPrefs.GetInt("Highscore");
         PlayerPrefs.DeleteAll();
 
@@ -582,7 +592,9 @@ public class GameManager : MonoBehaviour {
         HomingMissile.damage = 30;
         Beam.damage = 30;
 
-       upgrades.disableAllUpgrades();
+        upgrades.disableAllUpgrades();
+
+        //
 
         highScore = PlayerPrefs.GetInt("Highscore");
         currency = PlayerPrefs.GetInt("Currency");
@@ -601,7 +613,54 @@ public class GameManager : MonoBehaviour {
         {
             ScoreUI.current.UpdateText();
         }
+
+        //New game has begun, create new session
+        PlayerPrefs.SetInt("NewSession", 1);
     }
+
+    //For game over/quit reset prefs
+    public void resetPrefs()
+    {
+        //Highscore persists even when clearing prefs;
+        int prevHighscore = PlayerPrefs.GetInt("Highscore");
+        PlayerPrefs.DeleteAll();
+
+        //Save the old highscore;
+        PlayerPrefs.SetInt("Highscore", prevHighscore);
+
+        //Reset weapon dmg to defaults
+        ShootFireBall.damage = 25;
+        HomingMissile.damage = 30;
+        Beam.damage = 30;
+
+        upgrades.disableAllUpgrades();
+
+        //Default selected weapon
+        player.GetComponent<Player>().wep.projectile = GameManager.gm.weaponList[0]; //fireball
+
+        highScore = PlayerPrefs.GetInt("Highscore");
+        currency = PlayerPrefs.GetInt("Currency");
+
+        if (currency == 0)
+        {
+            currency = 0;
+        }
+
+        if (CurrencyUI.current != null)
+        {
+            CurrencyUI.current.UpdateText();
+        }
+
+        if (ScoreUI.current != null)
+        {
+            ScoreUI.current.UpdateText();
+        }
+
+        //Initialize "NewSession" after gameOver, there is no current session;
+        PlayerPrefs.SetInt("NewSession", 0);
+    }
+
+
 
 	void OnApplicationQuit() 
 	{
