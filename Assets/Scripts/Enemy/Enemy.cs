@@ -63,6 +63,21 @@ public class Enemy : MonoBehaviour {
         {
             statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
         }
+
+		//Special case for Boss_Enemy3
+		if (this.gameObject.name.Contains("Boss_Enemy3"))
+		{
+			renderers = new Renderer[0];
+			foreach (Transform children in transform)
+			{
+				foreach (Transform child in children)
+					if (child.name.Contains("Boss3_head"))
+					{
+						renderers = new Renderer[] { child.GetComponent<Renderer>() };
+					}
+			}
+		}
+
     }
 
     void OnEnable()
