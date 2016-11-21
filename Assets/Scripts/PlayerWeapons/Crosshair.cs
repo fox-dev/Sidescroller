@@ -120,7 +120,7 @@ public class Crosshair : MonoBehaviour {
 
 
 
-
+        /*
 
         if (Input.GetMouseButton(0) && !IsPointerOverUIObject(canvas, Input.mousePosition))
         {
@@ -147,6 +147,7 @@ public class Crosshair : MonoBehaviour {
             playerWep.fireReleased();
 
         }
+        */
 
 
 
