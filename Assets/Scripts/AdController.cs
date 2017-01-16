@@ -9,14 +9,25 @@ public class AdController : MonoBehaviour {
 	private BannerView bannerView;
 	private InterstitialAd interstitial;
 
+    public static AdController current;
+
 	bool showAds;
 
 	// Use this for initialization
 	void Start () 
 	{
 
+        if (current != null)
+        {
+            Debug.LogError("More than one AdController in scene");
+        }
+        else
+        {
+            current = this;
+        }
 
-		updateAdOptions();
+
+        updateAdOptions();
 		if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("main")) {
 			print ("I got new ads");
 
@@ -91,6 +102,7 @@ public class AdController : MonoBehaviour {
 	//BannerAd Stuff
 	public void hideBannerAd()
 	{
+
 		bannerView.Hide ();
 	}
 

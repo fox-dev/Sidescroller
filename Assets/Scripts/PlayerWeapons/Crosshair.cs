@@ -90,7 +90,9 @@ public class Crosshair : MonoBehaviour {
             }
 
         }
-      
+       
+        
+
 
         if (Input.touchCount > 2)
         {

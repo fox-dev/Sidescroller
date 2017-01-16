@@ -37,6 +37,12 @@ public class GameOverUI : MonoBehaviour {
         setupButton.GetComponentInChildren<Text>().text = "S E T U P \n" + setupCost.ToString() + " NRG";
     }
 
+    void OnDisable()
+    {
+        //Get new ads
+        GameManager.getNewAds();
+    }
+
 
     public void retry()
     {
@@ -60,8 +66,9 @@ public class GameOverUI : MonoBehaviour {
         }
       
 			
-		GameManager.getNewAds ();
+		//GameManager.getNewAds ();
 		GameManager.turnOffAds ();
+
 
     }
 
@@ -77,10 +84,10 @@ public class GameOverUI : MonoBehaviour {
 
             StopAllCoroutines();
 
-            GameManager.getNewAds();
+            //GameManager.getNewAds();
             GameManager.turnOffAds();
 
-            
+
         }
       
     }
@@ -97,31 +104,17 @@ public class GameOverUI : MonoBehaviour {
         GameManager.resetScore();
 
         //Get new ads
-        GameManager.getNewAds();
+        //GameManager.getNewAds();
       
 
         //Return to menu
         GameManager.gm.state = GameManager.gameState.menu;
 
-        GameManager.turnOffAds();
-
         StopAllCoroutines();
 
+        GameManager.turnOffAds();
+    
+
 
     }
-
-    /*
-    public void setup()
-    {
-       
-        GameManager.clearScreenOfEnemies();
-        GameManager.respawnPlayer();
-        GameManager.resetBossFlags();
-        GameManager.gm.state = GameManager.gameState.results;
-
-		GameManager.getNewAds ();
-		GameManager.turnOffAds ();
-
-    }
-    */
 }

@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour {
 	public static void turnOffAds()
 	{
 
-		gm.adController.hideBannerAd ();
+		gm.adController.hideBannerAd();
 		
 	}
 
@@ -468,7 +468,11 @@ public class GameManager : MonoBehaviour {
 			gm.adController.requestNewBannerAd ();
 			gm.adController.requestNewInterstitialAd ();
 		}
-	}
+
+        turnOffAds();
+        gm.adController.hideBannerAd();
+        AdController.current.hideBannerAd();
+    }
 
     public IEnumerator readyState() //Transitioning after Setup state into NormalPlay;
     {
