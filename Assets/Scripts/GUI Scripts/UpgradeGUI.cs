@@ -78,6 +78,8 @@ public class UpgradeGUI : MonoBehaviour {
 
             yield return null;
         }
+
+    
         occupied = false;
         
     }

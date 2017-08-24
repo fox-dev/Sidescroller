@@ -1,4 +1,6 @@
-﻿Shader "Battlehub/RTHandles/VertexColor" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Battlehub/RTHandles/VertexColor" {
 	Properties
 	{
 		_ZWrite("ZWrite", Float) = 0.0
@@ -32,7 +34,7 @@
 			vertexOutput vert(vertexInput input)
 			{
 				vertexOutput output;
-				output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+				output.pos = UnityObjectToClipPos(input.vertex);
 				output.color = input.color;
 				return output;
 			}

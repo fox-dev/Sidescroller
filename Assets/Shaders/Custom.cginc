@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
@@ -25,7 +27,7 @@ inline float4 WorldCurvature (float4 vertex)
 	worldVertex = lerp(worldVertex, modifiedPosition, _SpherifyFactor);
 	
 	float4 modelVertex = mul(unity_WorldToObject, float4(worldVertex, 1));
-	float4 pos = mul(UNITY_MATRIX_MVP, modelVertex);
+	float4 pos = UnityObjectToClipPos(modelVertex);
 	
 	//Curve-to-left
 	//Exponential

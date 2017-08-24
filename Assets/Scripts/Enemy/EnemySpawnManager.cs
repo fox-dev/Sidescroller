@@ -555,6 +555,7 @@ public class EnemySpawnManager : MonoBehaviour {
             currentBosses++;
             totalEnemiesSpawned++;
         }
+
         yield return new WaitForSeconds(2f);
         
         BossUI.current.bossGuiAnim.enabled = false;

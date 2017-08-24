@@ -1,4 +1,6 @@
-﻿Shader "Battlehub/RTHandles/Shape" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Battlehub/RTHandles/Shape" {
 	Properties
 	{
 		_Color("Color", Color) = (1,1,1,1)
@@ -36,7 +38,7 @@
 			{
 				float3 viewNorm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, input.normal));
 				vertexOutput output;
-				output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+				output.pos = UnityObjectToClipPos(input.vertex);
 				output.color = input.color * 1.5 * dot(viewNorm, float3(0, 0, 1));
 				return output;
 			}

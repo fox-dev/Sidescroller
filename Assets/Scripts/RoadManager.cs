@@ -28,13 +28,13 @@ public class RoadManager : MonoBehaviour {
         if(nextRoadSet.tag == "SlopeRoad")
         {
             //Local position of the nextRoadSet's BackEnd has the change in y.position
-            nextRoadSet.transform.position = new Vector3(currentRoadSet.transform.FindChild("FrontEnd").transform.position.x, currentRoadSet.transform.FindChild("FrontEnd").transform.position.y + nextRoadSet.transform.FindChild("BackEnd").transform.localPosition.y, currentRoadSet.transform.position.z);
+            nextRoadSet.transform.position = new Vector3(currentRoadSet.transform.Find("FrontEnd").transform.position.x, currentRoadSet.transform.Find("FrontEnd").transform.position.y + nextRoadSet.transform.Find("BackEnd").transform.localPosition.y, currentRoadSet.transform.position.z);
             
         }
        
         else
         {
-            nextRoadSet.transform.position = new Vector3(currentRoadSet.transform.FindChild("FrontEnd").transform.position.x - 1f, currentRoadSet.transform.FindChild("FrontEnd").transform.position.y, currentRoadSet.transform.position.z);
+            nextRoadSet.transform.position = new Vector3(currentRoadSet.transform.Find("FrontEnd").transform.position.x - 1f, currentRoadSet.transform.Find("FrontEnd").transform.position.y, currentRoadSet.transform.position.z);
             
         }
 

@@ -323,8 +323,8 @@ public class GameManager : MonoBehaviour {
             EnemySpawnManager.currentBosses--;
             EnemySpawnManager.bossEnemy = null;
             BossUI.current.bossGuiAnim.enabled = true;
-            BossUI.current.bossGuiAnim.SetBool("BossFightReady", false);
-            BossUI.current.bossGuiAnim.SetBool("Normal", true);
+
+            gm.StartCoroutine(gm.waitForReset());
             //score += enemy.stats.awardPoints;
             gm.gameStats.addToTotalScore(enemy.stats.awardPoints);
 
@@ -688,6 +688,14 @@ public class GameManager : MonoBehaviour {
 			StopAllCoroutines ();
 		}
 	}
+
+    public IEnumerator waitForReset() //Needed for proper UI reset
+    {
+        yield return new WaitForSeconds(1f);
+        BossUI.current.bossGuiAnim.SetBool("BossFightReady", false);
+        yield return new WaitForSeconds(1f);
+        BossUI.current.bossGuiAnim.SetBool("Normal", true);
+    }
 
 
 
